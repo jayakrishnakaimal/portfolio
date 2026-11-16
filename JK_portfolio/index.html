@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JK Kaimal — Design Manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,900;1,700&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #03030a;
+      --bg2: #07070f;
+      --surface: #0d0d1a;
+      --surface2: #13132a;
+      --border: rgba(255,255,255,.06);
+      --border2: rgba(255,255,255,.12);
+      --text: #e2e4f0;
+      --muted: #4a4f6a;
+      --muted2: #7a80a0;
+      --accent: #6366f1;
+      --accent2: #a78bfa;
+      --green: #00ffa3;
+      --gold: #f59e0b;
+      --font: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+      --serif: 'Playfair Display', Georgia, serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 15px;
+      line-height: 1.7;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ═══════════════════════════════
+       CUSTOM CURSOR
+    ═══════════════════════════════ */
+    .cursor {
+      position: fixed; z-index: 9999;
+      pointer-events: none;
+      mix-blend-mode: difference;
+    }
+    .cursor-dot {
+      width: 8px; height: 8px;
+      background: #fff; border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: transform .1s;
+    }
+    .cursor-ring {
+      width: 36px; height: 36px;
+      border: 1.5px solid rgba(255,255,255,.5);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: all .15s cubic-bezier(.25,.46,.45,.94);
+    }
+    body:has(a:hover) .cursor-ring,
+    body:has(button:hover) .cursor-ring {
+      transform: translate(-50%, -50%) scale(1.8);
+      background: rgba(99,102,241,.15);
+      border-color: var(--accent);
+    }
+
+    /* ═══════════════════════════════
+       BG EFFECTS
+    ═══════════════════════════════ */
+    .bg-aurora {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      overflow: hidden;
+    }
+    .aurora-blob {
+      position: absolute; border-radius: 50%;
+      filter: blur(120px);
+      animation: float 20s ease-in-out infinite;
+    }
+    .aurora-1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(99,102,241,.12), transparent 70%);
+      top: -200px; right: -100px;
+      animation-delay: 0s;
+    }
+    .aurora-2 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(167,139,250,.08), transparent 70%);
+      bottom: 20%; left: -150px;
+      animation-delay: -8s;
+    }
+    .aurora-3 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(0,255,163,.06), transparent 70%);
+      top: 50%; right: 10%;
+      animation-delay: -15s;
+    }
+    @keyframes float {
+      0%,100% { transform: translate(0,0) scale(1); }
+      33% { transform: translate(30px,-50px) scale(1.05); }
+      66% { transform: translate(-20px,30px) scale(.95); }
+    }
+    .grid-overlay {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
+    }
+
+    a { color: var(--accent2); text-decoration: none; transition: color .2s; }
+    a:hover { color: var(--green); }
+
+    /* ═══════════════════════════════
+       NAV
+    ═══════════════════════════════ */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 500;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.5rem 3rem;
+      transition: all .5s cubic-bezier(.4,0,.2,1);
+    }
+    nav.scrolled {
+      padding: .9rem 3rem;
+      background: rgba(3,3,10,.7);
+      backdrop-filter: blur(24px) saturate(180%);
+      border-bottom: 1px solid var(--border2);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: .7rem;
+    }
+    .nav-logo-mark {
+      width: 34px; height: 34px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .8rem; font-weight: 900; color: #fff;
+      letter-spacing: -1px;
+    }
+    .nav-logo-text {
+      font-size: .82rem; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: rgba(255,255,255,.6);
+    }
+    .nav-links { display: flex; gap: .3rem; list-style: none; align-items: center; }
+    .nav-links a {
+      font-size: .72rem; font-weight: 600; letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted2);
+      padding: .4rem .9rem; border-radius: 6px;
+      transition: all .2s;
+    }
+    .nav-links a:hover { color: #fff; background: rgba(255,255,255,.06); }
+    .nav-btn {
+      font-size: .72rem !important; font-weight: 700 !important;
+      padding: .5rem 1.2rem !important;
+      background: linear-gradient(135deg, var(--accent), var(--accent2)) !important;
+      color: #fff !important; border-radius: 6px !important;
+    }
+    .nav-btn:hover { opacity: .85; background: linear-gradient(135deg, var(--accent), var(--accent2)) !important; }
+
+    /* ═══════════════════════════════
+       HERO
+    ═══════════════════════════════ */
+    .hero {
+      min-height: 100vh;
+      display: grid; grid-template-rows: 1fr auto;
+      padding: 0 3rem; max-width: 1280px; margin: 0 auto;
+      position: relative; z-index: 2;
+    }
+    .hero-center {
+      display: flex; flex-direction: column;
+      justify-content: center; padding-top: 8rem;
+    }
+    .hero-chip {
+      display: inline-flex; align-items: center; gap: .6rem;
+      background: rgba(0,255,163,.07);
+      border: 1px solid rgba(0,255,163,.2);
+      border-radius: 999px;
+      padding: .35rem 1rem;
+      width: fit-content;
+      margin-bottom: 2.5rem;
+    }
+    .hero-chip-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+      animation: blink 2s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+    .hero-chip-text { font-size: .7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); }
+
+    .hero-headline {
+      font-family: var(--serif);
+      font-size: clamp(4.5rem, 10vw, 9rem);
+      font-weight: 900; line-height: .92;
+      letter-spacing: -4px;
+      margin-bottom: 2rem;
+    }
+    .hero-headline .line1 { color: #fff; display: block; }
+    .hero-headline .line2 {
+      display: block;
+      background: linear-gradient(90deg, var(--accent) 0%, var(--accent2) 50%, var(--green) 100%);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-style: italic;
+    }
+
+    .hero-sub-row {
+      display: flex; align-items: flex-start; gap: 4rem;
+      margin-bottom: 3rem; flex-wrap: wrap;
+    }
+    .hero-desc {
+      max-width: 420px; font-size: 1rem; color: var(--muted2); line-height: 1.85; font-weight: 400;
+    }
+    .hero-roles { display: flex; flex-direction: column; gap: .5rem; }
+    .hero-role-item {
+      display: flex; align-items: center; gap: .75rem;
+      font-size: .78rem; color: var(--muted2); font-weight: 500;
+    }
+    .hero-role-icon {
+      width: 26px; height: 26px; border-radius: 6px;
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .8rem;
+    }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: .6rem;
+      padding: .9rem 2rem; border-radius: 8px;
+      font-size: .82rem; font-weight: 700; font-family: var(--font);
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff; border: none; cursor: none;
+      box-shadow: 0 0 40px rgba(99,102,241,.3), inset 0 1px 0 rgba(255,255,255,.15);
+      transition: all .3s;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 50px rgba(99,102,241,.4); color: #fff; }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: .6rem;
+      padding: .9rem 2rem; border-radius: 8px;
+      font-size: .82rem; font-weight: 700; font-family: var(--font);
+      background: transparent;
+      color: var(--muted2);
+      border: 1px solid var(--border2); cursor: none;
+      transition: all .3s;
+    }
+    .btn-secondary:hover { border-color: rgba(99,102,241,.5); color: var(--accent2); transform: translateY(-2px); }
+
+    .hero-numbers {
+      display: flex; border-top: 1px solid var(--border); padding-top: 2.5rem; gap: 0;
+    }
+    .hero-num {
+      flex: 1; padding: 0 2.5rem 2rem 0; position: relative;
+    }
+    .hero-num:not(:last-child)::after {
+      content: ''; position: absolute; right: 0; top: 20%; bottom: 0;
+      width: 1px; background: var(--border);
+    }
+    .hero-num:not(:first-child) { padding-left: 2.5rem; }
+    .hero-n { font-size: 2.6rem; font-weight: 900; letter-spacing: -2px; color: #fff; line-height: 1; }
+    .hero-n .sup { font-size: 1.2rem; color: var(--accent2); vertical-align: super; }
+    .hero-nl { font-size: .65rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-top: .4rem; }
+
+    /* ═══════════════════════════════
+       MARQUEE
+    ═══════════════════════════════ */
+    .ticker {
+      position: relative; z-index: 2;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: .85rem 0;
+      overflow: hidden;
+      background: linear-gradient(90deg, transparent, rgba(99,102,241,.03), transparent);
+    }
+    .ticker::before, .ticker::after {
+      content: ''; position: absolute; top: 0; bottom: 0; width: 120px; z-index: 2;
+    }
+    .ticker::before { left: 0; background: linear-gradient(90deg, var(--bg), transparent); }
+    .ticker::after { right: 0; background: linear-gradient(-90deg, var(--bg), transparent); }
+    .ticker-track {
+      display: flex; gap: 2.5rem; width: max-content;
+      animation: tick 30s linear infinite;
+    }
+    @keyframes tick { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    .ticker-item {
+      display: flex; align-items: center; gap: 2.5rem;
+      font-size: .68rem; font-weight: 700; letter-spacing: 2.5px;
+      text-transform: uppercase; color: var(--muted);
+      white-space: nowrap;
+    }
+    .ticker-sep { color: var(--accent); font-size: .6rem; }
+
+    /* ═══════════════════════════════
+       SECTION SHELL
+    ═══════════════════════════════ */
+    .wrap {
+      max-width: 1280px; margin: 0 auto;
+      padding: 8rem 3rem;
+      position: relative; z-index: 2;
+    }
+    .wrap + .wrap { border-top: 1px solid var(--border); }
+    .eyebrow {
+      display: flex; align-items: center; gap: .8rem;
+      margin-bottom: 1.5rem;
+    }
+    .eyebrow-num {
+      font-size: .62rem; font-weight: 700; letter-spacing: 3px;
+      color: var(--accent2); font-family: var(--font);
+    }
+    .eyebrow-dash { width: 32px; height: 1px; background: linear-gradient(90deg, var(--accent), transparent); }
+    .eyebrow-label { font-size: .62rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); }
+    .sh {
+      font-family: var(--serif);
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 900; line-height: 1.0;
+      letter-spacing: -1.5px; color: #fff;
+      margin-bottom: 1.2rem;
+    }
+    .sh em { font-style: italic; color: transparent;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent; }
+    .sdesc { font-size: .95rem; color: var(--muted2); max-width: 480px; margin-bottom: 4rem; line-height: 1.85; }
+
+    /* ═══════════════════════════════
+       PHILOSOPHY
+    ═══════════════════════════════ */
+    .quote-block {
+      position: relative;
+      padding: 3rem 3.5rem;
+      margin-bottom: 4rem;
+      border-radius: 16px;
+      overflow: hidden;
+      max-width: 860px;
+    }
+    .quote-block::before {
+      content: ''; position: absolute; inset: 0; border-radius: 16px;
+      background: linear-gradient(135deg, rgba(99,102,241,.08), rgba(167,139,250,.04));
+      border: 1px solid rgba(99,102,241,.2);
+    }
+    .quote-block::after {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+      width: 3px; border-radius: 3px 0 0 3px;
+      background: linear-gradient(180deg, var(--accent), var(--accent2), var(--green));
+    }
+    .quote-mark {
+      position: absolute; top: 1.5rem; right: 2.5rem;
+      font-family: var(--serif); font-size: 8rem; line-height: 1;
+      color: var(--accent); opacity: .07; font-weight: 900;
+      pointer-events: none;
+    }
+    .quote-text {
+      font-family: var(--serif); font-size: clamp(1.2rem, 2.5vw, 1.7rem);
+      font-style: italic; font-weight: 700;
+      color: rgba(255,255,255,.85); line-height: 1.55;
+      position: relative;
+    }
+
+    .principles-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 1px; background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 16px; overflow: hidden;
+    }
+    .p-card {
+      background: var(--surface);
+      padding: 2.5rem 2rem;
+      transition: background .25s;
+      position: relative; overflow: hidden;
+    }
+    .p-card::before {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform .3s;
+    }
+    .p-card:hover { background: var(--surface2); }
+    .p-card:hover::before { transform: scaleX(1); }
+    .p-num { font-size: 4rem; font-weight: 900; font-family: var(--serif); color: var(--accent); opacity: .1; line-height: 1; }
+    .p-title { font-size: .95rem; font-weight: 700; color: #fff; margin: .8rem 0 .6rem; }
+    .p-body { font-size: .83rem; color: var(--muted2); line-height: 1.85; }
+
+    /* ═══════════════════════════════
+       CASE STUDIES
+    ═══════════════════════════════ */
+    .cs-wrap { display: flex; flex-direction: column; gap: 2px; }
+    .cs-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px; overflow: hidden;
+      transition: border-color .3s;
+    }
+    .cs-card.open { border-color: rgba(99,102,241,.3); }
+    .cs-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 2rem 2.5rem; cursor: none; gap: 1rem; width: 100%;
+      background: none; border: none; text-align: left;
+    }
+    .cs-head-l { display: flex; align-items: center; gap: 2rem; }
+    .cs-num {
+      font-size: .62rem; font-weight: 700; letter-spacing: 3px;
+      color: var(--accent2); min-width: 26px;
+    }
+    .cs-t { font-size: 1.05rem; font-weight: 700; color: #fff; }
+    .cs-meta { font-size: .75rem; color: var(--muted); margin-top: .2rem; }
+    .cs-tags-r { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; }
+    .ctag {
+      font-size: .6rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 3px 10px; border-radius: 3px;
+      background: rgba(167,139,250,.1); color: var(--accent2);
+    }
+    .cs-toggle {
+      width: 32px; height: 32px; flex-shrink: 0; border-radius: 50%;
+      border: 1px solid var(--border2);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted2); font-size: 1.1rem; font-weight: 300;
+      transition: all .3s;
+      background: none; cursor: none;
+    }
+    .cs-card.open .cs-toggle {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-color: transparent; color: #fff;
+      transform: rotate(45deg);
+      box-shadow: 0 0 20px rgba(99,102,241,.4);
+    }
+    .cs-body-wrap { max-height: 0; overflow: hidden; transition: max-height .55s cubic-bezier(.4,0,.2,1); }
+    .cs-card.open .cs-body-wrap { max-height: 1400px; }
+    .cs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; padding: 0 2.5rem 2rem; }
+    .cs-col-h {
+      font-size: .6rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 1rem; padding-bottom: .6rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .cs-col-p { font-size: .87rem; color: var(--muted2); line-height: 1.9; }
+    .cs-col-p strong { color: var(--text); font-weight: 600; }
+    .cs-kpis {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 1px; background: var(--border);
+      margin: 0 2.5rem 2rem;
+      border-radius: 10px; overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .kpi { background: var(--surface2); padding: 1.5rem; position: relative; overflow: hidden; }
+    .kpi::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--green));
+    }
+    .kpi-v { font-size: 1.7rem; font-weight: 900; color: var(--green); line-height: 1; letter-spacing: -1px; }
+    .kpi-l { font-size: .62rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; margin-top: .4rem; }
+    .cs-insight {
+      margin: 0 2.5rem 2.5rem; padding: 1.5rem 2rem;
+      background: rgba(0,255,163,.04);
+      border: 1px solid rgba(0,255,163,.12);
+      border-radius: 10px;
+    }
+    .cs-insight p { font-size: .87rem; font-style: italic; color: var(--muted2); line-height: 1.8; }
+    .cs-insight p::before { content: '"'; color: var(--green); font-family: var(--serif); font-size: 1.2rem; }
+
+    /* ═══════════════════════════════
+       SKILLS
+    ═══════════════════════════════ */
+    .skills-shell { display: grid; grid-template-columns: 220px 1fr; gap: 4rem; }
+    .skill-tabs { display: flex; flex-direction: column; gap: 3px; }
+    .s-tab {
+      padding: .75rem 1.2rem; border-radius: 8px;
+      font-size: .8rem; font-weight: 600;
+      background: none; border: none; cursor: none;
+      color: var(--muted2); text-align: left;
+      transition: all .2s; display: flex; align-items: center; gap: .8rem;
+    }
+    .s-tab-bar { width: 3px; height: 16px; border-radius: 2px; background: transparent; transition: background .2s; flex-shrink: 0; }
+    .s-tab:hover { color: var(--text); background: var(--surface); }
+    .s-tab.on { color: #fff; background: var(--surface); }
+    .s-tab.on .s-tab-bar { background: linear-gradient(180deg, var(--accent), var(--accent2)); }
+
+    .s-panel { display: none; }
+    .s-panel.on { display: block; }
+    .s-panel-title { font-size: 1.2rem; font-weight: 800; color: #fff; margin-bottom: 2rem; }
+    .s-rows { display: flex; flex-direction: column; gap: 1.2rem; }
+    .s-row {}
+    .s-row-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: .5rem; }
+    .s-name { font-size: .88rem; font-weight: 600; color: var(--text); }
+    .s-lv { font-size: .65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); }
+    .s-track { height: 2px; background: var(--border2); border-radius: 2px; overflow: hidden; }
+    .s-fill {
+      height: 100%; border-radius: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2), var(--green));
+      animation: grow .9s cubic-bezier(.4,0,.2,1) forwards;
+    }
+    @keyframes grow { from{width:0} }
+
+    /* ═══════════════════════════════
+       BENTO LEADERSHIP
+    ═══════════════════════════════ */
+    .bento {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-auto-rows: 180px;
+      gap: 12px;
+    }
+    .bc {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.8rem;
+      transition: border-color .3s, transform .3s;
+      position: relative; overflow: hidden;
+    }
+    .bc::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(99,102,241,.04), transparent 60%);
+      opacity: 0; transition: opacity .3s;
+    }
+    .bc:hover { border-color: rgba(99,102,241,.3); transform: translateY(-3px); }
+    .bc:hover::before { opacity: 1; }
+    .bc.c3 { grid-column: span 3; }
+    .bc.c4 { grid-column: span 4; }
+    .bc.c5 { grid-column: span 5; }
+    .bc.c6 { grid-column: span 6; }
+    .bc.c7 { grid-column: span 7; }
+    .bc.c8 { grid-column: span 8; }
+    .bc.r2 { grid-row: span 2; }
+    .bc-icon { font-size: 1.5rem; margin-bottom: .8rem; }
+    .bc-label { font-size: .6rem; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--accent2); margin-bottom: .5rem; }
+    .bc-big { font-size: 3.5rem; font-weight: 900; letter-spacing: -2px; color: #fff; line-height: 1; }
+    .bc-big span { font-size: 1.5rem; color: var(--accent2); }
+    .bc-sub { font-size: .62rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; margin-top: .3rem; }
+    .bc-title { font-size: .92rem; font-weight: 700; color: #fff; margin-bottom: .5rem; }
+    .bc-body { font-size: .8rem; color: var(--muted2); line-height: 1.8; }
+    .bc-grad { background: linear-gradient(135deg, rgba(99,102,241,.15), rgba(167,139,250,.08)); border-color: rgba(99,102,241,.2); }
+    .bc-green { background: rgba(0,255,163,.04); border-color: rgba(0,255,163,.15); }
+
+    /* ═══════════════════════════════
+       TIMELINE
+    ═══════════════════════════════ */
+    .tl { position: relative; padding-left: 2.5rem; }
+    .tl::before {
+      content: ''; position: absolute; left: 0; top: .6rem; bottom: 0;
+      width: 1px;
+      background: linear-gradient(180deg, var(--accent), var(--accent2), transparent);
+    }
+    .tl-item { position: relative; padding-bottom: 3rem; }
+    .tl-item:last-child { padding-bottom: 0; }
+    .tl-dot {
+      position: absolute; left: -2.9rem; top: .4rem;
+      width: 10px; height: 10px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 0 16px rgba(99,102,241,.5);
+    }
+    .tl-year { font-size: .68rem; font-weight: 700; letter-spacing: 2px; color: var(--accent2); margin-bottom: .3rem; }
+    .tl-co { font-size: .7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: .3rem; }
+    .tl-role { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: .5rem; }
+    .tl-body { font-size: .84rem; color: var(--muted2); line-height: 1.8; max-width: 550px; }
+
+    /* ═══════════════════════════════
+       RECOGNITION
+    ═══════════════════════════════ */
+    .recog {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 1px; background: var(--border);
+      border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
+    }
+    .rc { background: var(--surface); padding: 2rem; transition: background .2s; }
+    .rc:hover { background: var(--surface2); }
+    .rc-type {
+      font-size: .6rem; font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--accent2); margin-bottom: 1.2rem;
+    }
+    .rc-list { display: flex; flex-direction: column; gap: .7rem; }
+    .rc-item {
+      font-size: .82rem; color: var(--muted2); line-height: 1.6;
+      padding-left: 1rem; border-left: 1px solid var(--border2);
+    }
+
+    /* ═══════════════════════════════
+       CONTACT
+    ═══════════════════════════════ */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 5rem; }
+    .ct-left h3 {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 900; color: #fff; line-height: 1.15; margin-bottom: 1.5rem;
+    }
+    .ct-left h3 em {
+      font-style: italic;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .ct-left p { font-size: .92rem; color: var(--muted2); line-height: 1.9; margin-bottom: 2.5rem; }
+    .ct-details { display: flex; flex-direction: column; gap: .9rem; }
+    .ct-row { display: flex; align-items: center; gap: 1rem; }
+    .ct-ico {
+      width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
+      background: var(--surface2); border: 1px solid var(--border2);
+      display: flex; align-items: center; justify-content: center; font-size: .9rem;
+    }
+    .ct-val { font-size: .87rem; color: var(--muted2); }
+    .ct-val a { color: var(--muted2); }
+    .ct-val a:hover { color: var(--accent2); }
+
+    .ct-form {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px; padding: 2.5rem;
+      position: relative; overflow: hidden;
+    }
+    .ct-form::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2), var(--green));
+    }
+    .f-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .fg { display: flex; flex-direction: column; gap: .45rem; margin-bottom: 1.1rem; }
+    .fg label { font-size: .62rem; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--muted); }
+    .fg input, .fg textarea, .fg select {
+      background: var(--surface2); border: 1px solid var(--border2);
+      border-radius: 10px; padding: .85rem 1.1rem;
+      color: var(--text); font-family: var(--font); font-size: .88rem;
+      transition: border-color .2s, box-shadow .2s; resize: none;
+      -webkit-appearance: none;
+    }
+    .fg input::placeholder, .fg textarea::placeholder { color: var(--muted); }
+    .fg input:focus, .fg textarea:focus, .fg select:focus {
+      outline: none;
+      border-color: rgba(99,102,241,.6);
+      box-shadow: 0 0 0 3px rgba(99,102,241,.12), 0 0 20px rgba(99,102,241,.08);
+    }
+
+    /* ═══════════════════════════════
+       FOOTER
+    ═══════════════════════════════ */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 3rem;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+      position: relative; z-index: 2;
+      max-width: 1280px; margin: 0 auto;
+    }
+    .f-logo { display: flex; align-items: center; gap: .6rem; }
+    .f-logo-mark {
+      width: 28px; height: 28px; border-radius: 7px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: .7rem; font-weight: 900; color: #fff;
+    }
+    .f-logo-text { font-size: .72rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted2); }
+    .f-copy { font-size: .72rem; color: var(--muted); }
+    .f-links { display: flex; gap: 1.5rem; }
+    .f-links a { font-size: .72rem; color: var(--muted); transition: color .2s; }
+    .f-links a:hover { color: var(--text); }
+
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 2px; }
+
+    @media (max-width: 960px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero, .wrap { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .hero-headline { letter-spacing: -2px; }
+      .hero-sub-row { gap: 2rem; }
+      .principles-grid { grid-template-columns: 1fr 1fr; }
+      .cs-grid { grid-template-columns: 1fr; }
+      .cs-kpis { grid-template-columns: repeat(2,1fr); }
+      .skills-shell { grid-template-columns: 1fr; }
+      .skill-tabs { flex-direction: row; flex-wrap: wrap; }
+      .bento { grid-template-columns: repeat(4,1fr); grid-auto-rows: auto; }
+      .bc.c3,.bc.c4,.bc.c5,.bc.c6,.bc.c7,.bc.c8 { grid-column: span 4; }
+      .bc.r2 { grid-row: span 1; }
+      .recog { grid-template-columns: repeat(2,1fr); }
+      .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .f-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- CUSTOM CURSOR -->
+<div class="cursor" id="cDot" style="position:fixed;z-index:9999;pointer-events:none;top:0;left:0">
+  <div class="cursor-dot"></div>
+</div>
+<div class="cursor" id="cRing" style="position:fixed;z-index:9998;pointer-events:none;top:0;left:0">
+  <div class="cursor-ring"></div>
+</div>
+
+<!-- BACKGROUND -->
+<div class="bg-aurora">
+  <div class="aurora-blob aurora-1"></div>
+  <div class="aurora-blob aurora-2"></div>
+  <div class="aurora-blob aurora-3"></div>
+</div>
+<div class="grid-overlay"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo">
+    <div class="nav-logo-mark">JK</div>
+    <span class="nav-logo-text">Portfolio</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#philosophy">Philosophy</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#leadership">Leadership</a></li>
+    <li><a href="#journey">Journey</a></li>
+    <li><a href="#contact" class="nav-btn">Let's Talk ↗</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-center">
+    <div class="hero-chip">
+      <div class="hero-chip-dot"></div>
+      <span class="hero-chip-text">Available for the right role</span>
+    </div>
+
+    <h1 class="hero-headline">
+      <span class="line1">Jayakrishna</span>
+      <span class="line2">Kaimal</span>
+    </h1>
+
+    <div class="hero-sub-row">
+      <p class="hero-desc">
+        I build design teams that ship work worth shipping — turning ambiguity into interfaces, strategy into systems, and designers into leaders.
+      </p>
+      <div class="hero-roles">
+        <div class="hero-role-item"><span class="hero-role-icon">🎯</span> Design Manager</div>
+        <div class="hero-role-item"><span class="hero-role-icon">⚡</span> Product Experience</div>
+        <div class="hero-role-item"><span class="hero-role-icon">🧩</span> Systems Thinking</div>
+        <div class="hero-role-item"><span class="hero-role-icon">🌱</span> Team Builder</div>
+      </div>
+    </div>
+
+    <div class="hero-numbers">
+      <div class="hero-num">
+        <div class="hero-n">10<span class="sup">+</span></div>
+        <div class="hero-nl">Years in Design</div>
+      </div>
+      <div class="hero-num">
+        <div class="hero-n">40<span class="sup">+</span></div>
+        <div class="hero-nl">Designers Led</div>
+      </div>
+      <div class="hero-num">
+        <div class="hero-n">3</div>
+        <div class="hero-nl">Systems Built</div>
+      </div>
+      <div class="hero-num">
+        <div class="hero-n">$4<span class="sup">.2M</span></div>
+        <div class="hero-nl">ARR Impact</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="ticker-item">User Research <span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">Design Systems <span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">Team Leadership <span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">Product Strategy <span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">Figma <span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">DesignOps <span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">Accessibility <span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">Stakeholder Influence <span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">Prototyping <span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">Cross-functional Leadership <span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">User Research <span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">Design Systems <span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">Team Leadership <span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">Product Strategy <span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">Figma <span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">DesignOps <span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">Accessibility <span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">Stakeholder Influence <span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">Prototyping <span class="ticker-sep">✦</span></span>
+    <span class="ticker-item">Cross-functional Leadership <span class="ticker-sep">✦</span></span>
+  </div>
+</div>
+
+<!-- PHILOSOPHY -->
+<div class="wrap" id="philosophy">
+  <div class="eyebrow"><span class="eyebrow-num">01</span><span class="eyebrow-dash"></span><span class="eyebrow-label">Philosophy</span></div>
+  <h2 class="sh">What I believe about<br><em>design leadership</em></h2>
+  <div class="quote-block">
+    <div class="quote-mark">"</div>
+    <p class="quote-text">Great design is not decoration — it is the clearest expression of strategy. My job is to make that visible to everyone in the room.</p>
+  </div>
+  <div class="principles-grid">
+    <div class="p-card">
+      <div class="p-num">01</div>
+      <div class="p-title">Clarity Over Cleverness</div>
+      <div class="p-body">Every decision must reduce friction, not add beauty for its own sake. If a user has to think about it, we haven't finished designing it.</div>
+    </div>
+    <div class="p-card">
+      <div class="p-num">02</div>
+      <div class="p-title">Systems Before Screens</div>
+      <div class="p-body">I build reusable thinking, not one-off solutions. A component delivered once is debt. A system delivered once is leverage.</div>
+    </div>
+    <div class="p-card">
+      <div class="p-num">03</div>
+      <div class="p-title">Influence Through Evidence</div>
+      <div class="p-body">I equip teams with research, data, and narrative to earn a seat at every table. Opinion is a starting point; evidence is the close.</div>
+    </div>
+    <div class="p-card">
+      <div class="p-num">04</div>
+      <div class="p-title">People Are the Product</div>
+      <div class="p-body">The best output of a great design manager is not a great interface — it's a great team. I invest more in growing designers than reviewing their work.</div>
+    </div>
+  </div>
+</div>
+
+<!-- CASE STUDIES -->
+<div class="wrap" id="work">
+  <div class="eyebrow"><span class="eyebrow-num">02</span><span class="eyebrow-dash"></span><span class="eyebrow-label">Case Studies</span></div>
+  <h2 class="sh">Selected <em>work</em></h2>
+  <p class="sdesc">End-to-end stories — problem framing, team leadership, process decisions, and measurable outcomes.</p>
+  <div class="cs-wrap">
+
+    <div class="cs-card open" id="cs1">
+      <button class="cs-head" onclick="toggleCS('cs1')">
+        <div class="cs-head-l">
+          <span class="cs-num">01</span>
+          <div>
+            <div class="cs-t">Onboarding Redesign — Enterprise SaaS</div>
+            <div class="cs-meta">Research · Product Design · 12 weeks · $4.2M ARR recovered</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:1rem">
+          <div class="cs-tags-r"><span class="ctag">Research</span><span class="ctag">Leadership</span><span class="ctag">Product</span></div>
+          <div class="cs-toggle">+</div>
+        </div>
+      </button>
+      <div class="cs-body-wrap">
+        <div class="cs-grid">
+          <div>
+            <div class="cs-col-h">The Problem</div>
+            <p class="cs-col-p"><strong>68% of new enterprise accounts dropped off within 7 days.</strong> Customer Success called it a training problem. I reframed it as a design problem — specifically, a missing mental model.<br><br>
+            Ran 18 moderated sessions across 3 enterprise tiers, mapped a 47-step journey users expected in 8, analysed 6 months of Mixpanel funnels, and shadowed 4 CSM calls to surface the unspoken pain.</p>
+          </div>
+          <div>
+            <div class="cs-col-h">How I Led the Team</div>
+            <p class="cs-col-p"><strong>Wk 1–2 · Align</strong> — Cross-functional kickoff. One metric: time-to-first-value 7d → 2d.<br><br>
+            <strong>Wk 3–4 · Diverge</strong> — 2-day sprint. 60+ concepts → 3 directions via weighted matrix.<br><br>
+            <strong>Wk 5–8 · Test</strong> — 3 usability rounds. 48-hr cycles. Introduced "80% reviews" to unblock perfectionism.<br><br>
+            <strong>Wk 9–12 · Ship</strong> — Phased delivery. Component specs. QA. 15% cohort → full rollout.</p>
+          </div>
+        </div>
+        <div class="cs-kpis">
+          <div class="kpi"><div class="kpi-v">↓52%</div><div class="kpi-l">Drop-off rate</div></div>
+          <div class="kpi"><div class="kpi-v">↑38%</div><div class="kpi-l">NPS (42→58)</div></div>
+          <div class="kpi"><div class="kpi-v">$4.2M</div><div class="kpi-l">ARR retained</div></div>
+          <div class="kpi"><div class="kpi-v">12wk</div><div class="kpi-l">Discovery to ship</div></div>
+        </div>
+        <div class="cs-insight">
+          <p>The most important decision wasn't a UI choice — it was reframing the problem from 'confusing UI' to 'missing mental model.' That shift got engineering and product genuinely invested.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cs-card" id="cs2" style="margin-top:10px">
+      <button class="cs-head" onclick="toggleCS('cs2')">
+        <div class="cs-head-l">
+          <span class="cs-num">02</span>
+          <div>
+            <div class="cs-t">Unified Design System Across 3 Product Lines</div>
+            <div class="cs-meta">Design Systems · DesignOps · 6 months · 94% adoption</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:1rem">
+          <div class="cs-tags-r"><span class="ctag">Systems</span><span class="ctag">DesignOps</span><span class="ctag">Eng</span></div>
+          <div class="cs-toggle">+</div>
+        </div>
+      </button>
+      <div class="cs-body-wrap">
+        <div class="cs-grid">
+          <div>
+            <div class="cs-col-h">The Problem</div>
+            <p class="cs-col-p"><strong>4,200+ inconsistent UI elements.</strong> Three teams building independently. Engineers recreating UI every sprint. Design reviews 3× slower than needed.<br><br>
+            Leadership saw visual inconsistency. I reframed it as a velocity and trust problem — customers were losing confidence in the product's coherence.</p>
+          </div>
+          <div>
+            <div class="cs-col-h">Strategy &amp; Execution</div>
+            <p class="cs-col-p"><strong>Design System Council</strong> — 1 designer per squad + 1 eng lead. Shared ownership from day one.<br><br>
+            <strong>Full audit</strong> — 4,200 → 180 core components. "Pave the cowpath" — standardised what teams did well, not what I wished they did.<br><br>
+            <strong>Semantic tokens</strong> as npm package, consumed by all 3 repos. Monthly Office Hours drove adoption faster than any mandate.</p>
+          </div>
+        </div>
+        <div class="cs-kpis">
+          <div class="kpi"><div class="kpi-v">↓60%</div><div class="kpi-l">Review time</div></div>
+          <div class="kpi"><div class="kpi-v">4.1×</div><div class="kpi-l">Handoff speed</div></div>
+          <div class="kpi"><div class="kpi-v">94%</div><div class="kpi-l">Squad adoption</div></div>
+          <div class="kpi"><div class="kpi-v">&lt;2d</div><div class="kpi-l">Component SLA</div></div>
+        </div>
+        <div class="cs-insight">
+          <p>A design system is not a UI kit — it is an agreement. I spent as much time on governance and contribution process as on the components themselves. That's what made it last.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SKILLS -->
+<div class="wrap" id="skills">
+  <div class="eyebrow"><span class="eyebrow-num">03</span><span class="eyebrow-dash"></span><span class="eyebrow-label">Skills</span></div>
+  <h2 class="sh">What I bring to<br><em>the table</em></h2>
+  <p class="sdesc">A manager's toolkit spans strategy, craft, systems, and people.</p>
+  <div class="skills-shell">
+    <div class="skill-tabs">
+      <button class="s-tab on" onclick="switchTab('t-lead',this)"><span class="s-tab-bar"></span>Leadership</button>
+      <button class="s-tab" onclick="switchTab('t-prod',this)"><span class="s-tab-bar"></span>Product Design</button>
+      <button class="s-tab" onclick="switchTab('t-res',this)"><span class="s-tab-bar"></span>Research</button>
+      <button class="s-tab" onclick="switchTab('t-tools',this)"><span class="s-tab-bar"></span>Tools</button>
+    </div>
+    <div>
+      <div class="s-panel on" id="t-lead">
+        <div class="s-panel-title">Design Leadership</div>
+        <div class="s-rows">
+          <div class="s-row"><div class="s-row-top"><span class="s-name">Team Building &amp; Hiring</span><span class="s-lv">Expert</span></div><div class="s-track"><div class="s-fill" style="width:96%"></div></div></div>
+          <div class="s-row"><div class="s-row-top"><span class="s-name">Career Growth Frameworks</span><span class="s-lv">Expert</span></div><div class="s-track"><div class="s-fill" style="width:93%"></div></div></div>
+          <div class="s-row"><div class="s-row-top"><span class="s-name">DesignOps &amp; Process Design</span><span class="s-lv">Advanced</span></div><div class="s-track"><div class="s-fill" style="width:88%"></div></div></div>
+          <div class="s-row"><div class="s-row-top"><span class="s-name">Cross-functional Influence</span><span class="s-lv">Expert</span></div><div class="s-track"><div class="s-fill" style="width:94%"></div></div></div>
+          <div class="s-row"><div class="s-row-top"><span class="s-name">Executive Communication</span><span class="s-lv">Advanced</span></div><div class="s-track"><div class="s-fill" style="width:87%"></div></div></div>
+          <div class="s-row"><div class="s-row-top"><span class="s-name">Design Critique &amp; Reviews</span><span class="s-lv">Expert</span></div><div class="s-track"><div class="s-fill" style="width:97%"></div></div></div>
+        </div>
+      </div>
+      <div class="s-panel" id="t-prod">
+        <div class="s-panel-title">Product Design</div>
+        <div class="s-rows">
+          <div class="s-row"><div class="s-row-top"><span class="s-name">0→1 Product Design</span><span class="s-lv">Expert</span></div><div class="s-track"><div class="s-fill" style="width:95%"></div></div></div>
+          <div class="s-row"><div class="s-row-top"><span class="s-name">Interaction Design</span><span class="s-lv">Expert</span></div><div class="s-track"><div class="s-fill" style="width:93%"></div></div></div>
+          <div class="s-row"><div class="s-row-top"><span class="s-name">Design Systems</span><span class="s-lv">Expert</span></div><div class="s-track"><div class="s-fill" style="width:98%"></div></div></div>
+          <div class="s-row"><div class="s-row-top"><span class="s-name">Accessible UI (WCAG)</span><span class="s-lv">Advanced</span></div><div class="s-track"><div class="s-fill" style="width:86%"></div></div></div>
+          <div class="s-row"><div class="s-row-top"><span class="s-name">Prototyping &amp; Specs</span><span class="s-lv">Expert</span></div><div class="s-track"><div class="s-fill" style="width:95%"></div></div></div>
+        </div>
+      </div>
+      <div class="s-panel" id="t-res">
+        <div class="s-panel-title">Research &amp; Strategy</div>
+        <div class="s-rows">
+          <div class="s-row"><div class="s-row-top"><span class="s-name">Moderated User Research</span><span class="s-lv">Expert</span></div><div class="s-track"><div class="s-fill" style="width:96%"></div></div></div>
+          <div class="s-row"><div class="s-row-top"><span class="s-name">Jobs-to-be-Done</span><span class="s-lv">Advanced</span></div><div class="s-track"><div class="s-fill" style="width:88%"></div></div></div>
+          <div class="s-row"><div class="s-row-top"><span class="s-name">Journey Mapping</span><span class="s-lv">Expert</span></div><div class="s-track"><div class="s-fill" style="width:92%"></div></div></div>
+          <div class="s-row"><div class="s-row-top"><span class="s-name">Quantitative UX</span><span class="s-lv">Advanced</span></div><div class="s-track"><div class="s-fill" style="width:84%"></div></div></div>
+          <div class="s-row"><div class="s-row-top"><span class="s-name">Competitive Analysis</span><span class="s-lv">Expert</span></div><div class="s-track"><div class="s-fill" style="width:91%"></div></div></div>
+        </div>
+      </div>
+      <div class="s-panel" id="t-tools">
+        <div class="s-panel-title">Tools &amp; Tech</div>
+        <div class="s-rows">
+          <div class="s-row"><div class="s-row-top"><span class="s-name">Figma &amp; FigJam</span><span class="s-lv">Expert</span></div><div class="s-track"><div class="s-fill" style="width:99%"></div></div></div>
+          <div class="s-row"><div class="s-row-top"><span class="s-name">Storybook &amp; Zeroheight</span><span class="s-lv">Advanced</span></div><div class="s-track"><div class="s-fill" style="width:85%"></div></div></div>
+          <div class="s-row"><div class="s-row-top"><span class="s-name">HTML &amp; CSS</span><span class="s-lv">Intermediate</span></div><div class="s-track"><div class="s-fill" style="width:75%"></div></div></div>
+          <div class="s-row"><div class="s-row-top"><span class="s-name">Dovetail &amp; Maze</span><span class="s-lv">Advanced</span></div><div class="s-track"><div class="s-fill" style="width:82%"></div></div></div>
+          <div class="s-row"><div class="s-row-top"><span class="s-name">Jira, Linear, Notion</span><span class="s-lv">Expert</span></div><div class="s-track"><div class="s-fill" style="width:90%"></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BENTO LEADERSHIP -->
+<div class="wrap" id="leadership">
+  <div class="eyebrow"><span class="eyebrow-num">04</span><span class="eyebrow-dash"></span><span class="eyebrow-label">Leadership</span></div>
+  <h2 class="sh">How I build &amp;<br><em>grow teams</em></h2>
+  <p class="sdesc">My leadership impact is measured by the growth of the people around me — not the quality of my own deliverables.</p>
+  <div class="bento">
+    <div class="bc c8 r2 bc-grad">
+      <div class="bc-icon">🎯</div>
+      <div class="bc-title">Hiring Philosophy</div>
+      <div class="bc-body">I hire for curiosity and craft, then invest in everything else. I look for designers who ask "why" before "what" — and who treat feedback as a gift, not a threat. I have never made a hire I regretted by rushing the process.<br><br>
+      Every candidate goes through a structured process: portfolio review, design challenge, culture interview, and a reference check with someone they didn't list. The thoroughness shows the candidate how seriously I take building a team they'll want to stay on.</div>
+    </div>
+    <div class="bc c4 bc-green">
+      <div class="bc-label">Team eNPS</div>
+      <div class="bc-big">74<span></span></div>
+      <div class="bc-sub">vs company avg of 51</div>
+    </div>
+    <div class="bc c4">
+      <div class="bc-label">ICs promoted to Senior</div>
+      <div class="bc-big">4<span> in 18mo</span></div>
+      <div class="bc-sub">2 Seniors → Lead. 0 involuntary attrition.</div>
+    </div>
+    <div class="bc c4">
+      <div class="bc-icon">📈</div>
+      <div class="bc-title">Growth Frameworks</div>
+      <div class="bc-body">Bi-weekly 1:1s with career check-ins. IDPs tied to a public design ladder. Stretch assignments every quarter.</div>
+    </div>
+    <div class="bc c4">
+      <div class="bc-icon">🤝</div>
+      <div class="bc-title">Cross-functional Influence</div>
+      <div class="bc-body">I embed in roadmap planning as co-author. Re-allocated $800K in engineering budget by demonstrating design ROI.</div>
+    </div>
+    <div class="bc c4">
+      <div class="bc-icon">📊</div>
+      <div class="bc-title">Design Health Reports</div>
+      <div class="bc-body">Quarterly NPS, task completion, accessibility debt, and system adoption — design decisions tracked to business outcomes.</div>
+    </div>
+  </div>
+</div>
+
+<!-- TIMELINE -->
+<div class="wrap" id="journey">
+  <div class="eyebrow"><span class="eyebrow-num">05</span><span class="eyebrow-dash"></span><span class="eyebrow-label">Journey</span></div>
+  <h2 class="sh">Career <em>timeline</em></h2>
+  <p class="sdesc" style="margin-bottom:3rem">10+ years building products, teams, and systems.</p>
+  <div class="tl">
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">2021 — Present</div>
+      <div class="tl-co">Company C</div>
+      <div class="tl-role">Design Manager</div>
+      <div class="tl-body">Own 3 product squads. Drove 38% NPS lift. Established DesignOps practice. Grew team from 6 → 14 designers.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">2018 — 2021</div>
+      <div class="tl-co">Company B</div>
+      <div class="tl-role">Lead Designer</div>
+      <div class="tl-body">Scaled design team 4 → 14. Launched company's first design system. Shipped 6 major product initiatives.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">2015 — 2018</div>
+      <div class="tl-co">Company A</div>
+      <div class="tl-role">Senior UX Designer</div>
+      <div class="tl-body">Built a 0→1 mobile product serving 2M users. First UX hire — shaped the design culture from the ground up.</div>
+    </div>
+  </div>
+</div>
+
+<!-- RECOGNITION -->
+<div class="wrap" id="recognition">
+  <div class="eyebrow"><span class="eyebrow-num">06</span><span class="eyebrow-dash"></span><span class="eyebrow-label">Recognition</span></div>
+  <h2 class="sh">Thought leadership &amp;<br><em>community</em></h2>
+  <div class="recog" style="margin-top:3rem">
+    <div class="rc"><div class="rc-type">Awards</div><div class="rc-list"><div class="rc-item">Best Enterprise UX — [Award] 20XX</div><div class="rc-item">Design Team of the Year — [Award] 20XX</div><div class="rc-item">Nominated — [Industry Award] 20XX</div></div></div>
+    <div class="rc"><div class="rc-type">Speaking</div><div class="rc-list"><div class="rc-item">[Conference] — "Design Systems at Scale"</div><div class="rc-item">[Podcast] — "Teams That Don't Burn Out"</div><div class="rc-item">Guest Lecturer — [University]</div></div></div>
+    <div class="rc"><div class="rc-type">Writing</div><div class="rc-list"><div class="rc-item">Medium / Substack — 12 articles · 8K+ followers</div><div class="rc-item">"The Design Manager's Playbook" — top post 2023</div><div class="rc-item">Contributor — [Design publication]</div></div></div>
+    <div class="rc"><div class="rc-type">Community</div><div class="rc-list"><div class="rc-item">ADPList Mentor — 40+ sessions · 4.9★</div><div class="rc-item">UX Meetup Organiser — 600+ members</div><div class="rc-item">Open-source — [Figma plugin]</div></div></div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div class="wrap" id="contact">
+  <div class="eyebrow"><span class="eyebrow-num">07</span><span class="eyebrow-dash"></span><span class="eyebrow-label">Contact</span></div>
+  <div class="contact-grid">
+    <div class="ct-left">
+      <h3>Let's build something<br><em>worth building.</em></h3>
+      <p>Looking for a company where design is genuinely strategic — not cosmetic. If you're building something that changes how people work or live, I want to hear about it.</p>
+      <div class="ct-details">
+        <div class="ct-row"><div class="ct-ico">✉</div><div class="ct-val"><a href="mailto:jk@email.com">jk@email.com</a></div></div>
+        <div class="ct-row"><div class="ct-ico">in</div><div class="ct-val"><a href="#">linkedin.com/in/jkkaimal</a></div></div>
+        <div class="ct-row"><div class="ct-ico">⬡</div><div class="ct-val"><a href="#">jkdesign.com</a></div></div>
+        <div class="ct-row"><div class="ct-ico">📍</div><div class="ct-val">India · Open to remote</div></div>
+      </div>
+    </div>
+    <div class="ct-form">
+      <form onsubmit="onSend(event)">
+        <div class="f-row">
+          <div class="fg"><label>Name</label><input type="text" placeholder="Jane Smith" required /></div>
+          <div class="fg"><label>Email</label><input type="email" placeholder="jane@company.com" required /></div>
+        </div>
+        <div class="fg">
+          <label>What's this about?</label>
+          <select><option value="">Select…</option><option>Full-time opportunity</option><option>Freelance / contract</option><option>Speaking / mentoring</option><option>Just saying hi</option></select>
+        </div>
+        <div class="fg"><label>Message</label><textarea rows="4" placeholder="Tell me about what you're building…" required></textarea></div>
+        <button type="submit" class="btn-primary" id="sendBtn" style="width:100%;justify-content:center;cursor:none">Send Message →</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-logo">
+    <div class="f-logo-mark">JK</div>
+    <span class="f-logo-text">Kaimal</span>
+  </div>
+  <div class="f-copy">© 2025 Jayakrishna Kaimal · Designed with intention.</div>
+  <div class="f-links">
+    <a href="#philosophy">Philosophy</a>
+    <a href="#work">Work</a>
+    <a href="#contact">Contact</a>
+  </div>
+</footer>
+
+<script>
+  // Custom cursor
+  const dot = document.getElementById('cDot');
+  const ring = document.getElementById('cRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function animCursor() {
+    dot.style.left = mx + 'px'; dot.style.top = my + 'px';
+    rx += (mx - rx) * .14; ry += (my - ry) * .14;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animCursor);
+  }
+  animCursor();
+
+  // Nav scroll
+  window.addEventListener('scroll', () => {
+    document.getElementById('nav').classList.toggle('scrolled', scrollY > 60);
+  });
+
+  // Case study accordion
+  function toggleCS(id) {
+    const el = document.getElementById(id);
+    const isOpen = el.classList.contains('open');
+    document.querySelectorAll('.cs-card').forEach(c => c.classList.remove('open'));
+    if (!isOpen) el.classList.add('open');
+  }
+
+  // Skills tabs
+  function switchTab(id, btn) {
+    document.querySelectorAll('.s-panel').forEach(p => p.classList.remove('on'));
+    document.querySelectorAll('.s-tab').forEach(b => b.classList.remove('on'));
+    document.getElementById(id).classList.add('on');
+    btn.classList.add('on');
+  }
+
+  // Contact form
+  function onSend(e) {
+    e.preventDefault();
+    const btn = document.getElementById('sendBtn');
+    btn.textContent = '✓ Sent! I\'ll be in touch soon.';
+    btn.style.background = 'linear-gradient(135deg,#00ffa3,#00c97e)';
+    btn.style.boxShadow = '0 0 40px rgba(0,255,163,.3)';
+    btn.disabled = true;
+  }
+
+  // Intersection observer — fade in sections
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.bc, .p-card, .tl-item, .rc, .kpi').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity .6s ease, transform .6s ease';
+    io.observe(el);
+  });
+</script>
+</body>
+</html>

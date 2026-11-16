@@ -1,0 +1,656 @@
+
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Future of UX Design Career</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    background: #f7f8fa;
+    color: #1f2328;
+  }
+  .page {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 40px 24px 60px;
+  }
+
+  /* HERO */
+  .hero {
+    background: #1f2328;
+    color: #fff;
+    border-radius: 12px;
+    padding: 36px 32px 28px;
+    margin-bottom: 32px;
+  }
+  .hero-tag {
+    display: inline-block;
+    background: #3b82d4;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 10px;
+  }
+  .hero h1 span { color: #7c5cd8; }
+  .hero p {
+    color: #9ba3ae;
+    font-size: 14px;
+    max-width: 540px;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 24px;
+    margin-top: 22px;
+    flex-wrap: wrap;
+  }
+  .hero-meta-item { font-size: 12px; color: #9ba3ae; }
+  .hero-meta-item strong { color: #e8eaed; display: block; font-size: 18px; }
+
+  /* SECTION */
+  .section { margin-bottom: 36px; }
+  .section-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: #57606a;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  /* CAREER PATH */
+  .career-path {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .path-row {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+  }
+  .path-node {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 12px 16px;
+    flex: 1;
+    min-width: 0;
+    position: relative;
+  }
+  .path-node .role {
+    font-weight: 600;
+    font-size: 13px;
+    color: #1f2328;
+  }
+  .path-node .yrs {
+    font-size: 11px;
+    color: #57606a;
+    margin-top: 2px;
+  }
+  .path-node .sal {
+    font-size: 12px;
+    color: #3b82d4;
+    font-weight: 600;
+    margin-top: 4px;
+  }
+  .path-arrow {
+    display: flex;
+    align-items: center;
+    padding: 0 6px;
+    color: #adb5bd;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .path-split {
+    display: flex;
+    gap: 12px;
+    margin-top: 0;
+  }
+  .path-connector {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 0;
+    color: #adb5bd;
+    font-size: 18px;
+  }
+  .track-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: #57606a;
+    margin-bottom: 6px;
+    text-align: center;
+  }
+  .track-col { flex: 1; }
+  .track-col .path-node { border-color: #d0d7de; }
+  .track-ic .path-node { border-left: 3px solid #3b82d4; }
+  .track-mgmt .path-node { border-left: 3px solid #7c5cd8; }
+
+  /* SKILLS TABLE */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .skill-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .skill-card .skill-name {
+    font-weight: 600;
+    font-size: 13px;
+    margin-bottom: 8px;
+    color: #1f2328;
+  }
+  .skill-bar-wrap {
+    background: #f0f1f3;
+    border-radius: 4px;
+    height: 6px;
+    margin-bottom: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+  .skill-bar {
+    height: 100%;
+    border-radius: 4px;
+  }
+  .skill-label-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #57606a;
+  }
+
+  /* AI IMPACT */
+  .ai-table { width: 100%; border-collapse: collapse; }
+  .ai-table th {
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: #57606a;
+    padding: 8px 12px;
+    background: #f7f8fa;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .ai-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #f0f1f3;
+    font-size: 13px;
+    vertical-align: top;
+  }
+  .ai-table tr:last-child td { border-bottom: none; }
+  .ai-table .area { font-weight: 600; color: #1f2328; }
+  .ai-table .status {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 12px;
+  }
+  .status-high { background: #fce8e8; color: #c0392b; }
+  .status-med  { background: #fff3cd; color: #856404; }
+  .status-low  { background: #d4edda; color: #155724; }
+
+  /* SPECIALISATIONS */
+  .spec-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .spec-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 14px;
+    text-align: center;
+  }
+  .spec-icon {
+    font-size: 22px;
+    margin-bottom: 8px;
+  }
+  .spec-name {
+    font-weight: 600;
+    font-size: 12px;
+    color: #1f2328;
+    margin-bottom: 4px;
+  }
+  .spec-growth {
+    font-size: 11px;
+    font-weight: 700;
+    color: #3b82d4;
+  }
+  .spec-desc {
+    font-size: 11px;
+    color: #57606a;
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+
+  /* SALARY BAR CHART */
+  .salary-table { width: 100%; }
+  .salary-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .salary-role {
+    font-size: 12px;
+    font-weight: 500;
+    color: #1f2328;
+    width: 160px;
+    flex-shrink: 0;
+  }
+  .salary-bar-wrap {
+    flex: 1;
+    background: #f0f1f3;
+    border-radius: 4px;
+    height: 20px;
+    overflow: hidden;
+    position: relative;
+  }
+  .salary-bar-base {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    border-radius: 4px;
+    background: #3b82d4;
+  }
+  .salary-bar-total {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    border-radius: 4px;
+    background: rgba(124,92,216,0.35);
+  }
+  .salary-val {
+    font-size: 11px;
+    color: #57606a;
+    width: 100px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .salary-legend {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 14px;
+    font-size: 11px;
+    color: #57606a;
+  }
+  .legend-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    margin-right: 5px;
+    vertical-align: middle;
+  }
+
+  /* TAKEAWAYS */
+  .takeaway-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .takeaway-list li {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 13px;
+  }
+  .takeaway-list li .num {
+    background: #1f2328;
+    color: #fff;
+    font-weight: 700;
+    font-size: 11px;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* FOOTER */
+  .footer {
+    margin-top: 48px;
+    padding-top: 16px;
+    border-top: 1px solid #e5e7eb;
+    text-align: center;
+    font-size: 12px;
+    color: #adb5bd;
+  }
+
+  @media (max-width: 560px) {
+    .skills-grid { grid-template-columns: 1fr; }
+    .spec-grid { grid-template-columns: 1fr 1fr; }
+    .path-split { flex-direction: column; }
+    .salary-role { width: 110px; font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  
+  <div class="hero">
+    <div class="hero-tag">2025 — 2030 Outlook</div>
+    <h1>The Future of <span>UX Design</span><br />Careers &amp; AI</h1>
+    <p>Where the discipline is heading, which skills will matter most, how AI reshapes your work, and what the career ladder looks like.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item"><strong>+900%</strong>AI/UX job growth by 2030</div>
+      <div class="hero-meta-item"><strong>$260K+</strong>Total comp at VP level</div>
+      <div class="hero-meta-item"><strong>6</strong>Emerging specialisations</div>
+      <div class="hero-meta-item"><strong>2030</strong>Forecast horizon</div>
+    </div>
+  </div>
+
+  
+  <div class="section">
+    <div class="section-title">Career Path</div>
+    <div class="career-path">
+      
+      <div class="path-row">
+        <div class="path-node">
+          <div class="role">Junior UX Designer</div>
+          <div class="yrs">0 – 2 years</div>
+          <div class="sal">$65K – $85K</div>
+        </div>
+        <div class="path-arrow">→</div>
+        <div class="path-node">
+          <div class="role">UX Designer</div>
+          <div class="yrs">2 – 4 years</div>
+          <div class="sal">$85K – $110K</div>
+        </div>
+        <div class="path-arrow">→</div>
+        <div class="path-node">
+          <div class="role">Senior UX Designer</div>
+          <div class="yrs">4 – 7 years</div>
+          <div class="sal">$110K – $145K</div>
+        </div>
+      </div>
+      <div class="path-connector">↓</div>
+      
+      <div class="track-label">Choose your track at Senior level</div>
+      <div class="path-split">
+        <div class="track-col track-ic">
+          <div class="track-label" style="color:#3b82d4">Individual Contributor</div>
+          <div class="path-node" style="margin-bottom:10px">
+            <div class="role">Staff / Principal Designer</div>
+            <div class="yrs">7 – 10 years</div>
+            <div class="sal">$145K – $180K</div>
+          </div>
+          <div class="path-node">
+            <div class="role">Distinguished / Fellow</div>
+            <div class="yrs">10+ years</div>
+            <div class="sal">$180K – $240K</div>
+          </div>
+        </div>
+        <div class="track-col track-mgmt">
+          <div class="track-label" style="color:#7c5cd8">Management</div>
+          <div class="path-node" style="margin-bottom:10px">
+            <div class="role">UX Manager / Design Lead</div>
+            <div class="yrs">7 – 10 years</div>
+            <div class="sal">$150K – $190K</div>
+          </div>
+          <div class="path-node">
+            <div class="role">VP Design / CDO</div>
+            <div class="yrs">10+ years</div>
+            <div class="sal">$205K – $340K</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="section">
+    <div class="section-title">Skills Shift — Today vs 2030</div>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-name">AI Literacy &amp; Prompt Design</div>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:45%;background:#e5e7eb"></div></div>
+        <div class="skill-label-row"><span>2025: 45%</span></div>
+        <div class="skill-bar-wrap" style="margin-top:4px"><div class="skill-bar" style="width:90%;background:#7c5cd8"></div></div>
+        <div class="skill-label-row"><span>2030: 90%</span><span style="color:#7c5cd8;font-weight:700">+100%</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-name">Systems Thinking</div>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:60%;background:#e5e7eb"></div></div>
+        <div class="skill-label-row"><span>2025: 60%</span></div>
+        <div class="skill-bar-wrap" style="margin-top:4px"><div class="skill-bar" style="width:85%;background:#3b82d4"></div></div>
+        <div class="skill-label-row"><span>2030: 85%</span><span style="color:#3b82d4;font-weight:700">+42%</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-name">Data &amp; Analytics</div>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:50%;background:#e5e7eb"></div></div>
+        <div class="skill-label-row"><span>2025: 50%</span></div>
+        <div class="skill-bar-wrap" style="margin-top:4px"><div class="skill-bar" style="width:78%;background:#1e8a6e"></div></div>
+        <div class="skill-label-row"><span>2030: 78%</span><span style="color:#1e8a6e;font-weight:700">+56%</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-name">Traditional UI Craft</div>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:90%;background:#e5e7eb"></div></div>
+        <div class="skill-label-row"><span>2025: 90%</span></div>
+        <div class="skill-bar-wrap" style="margin-top:4px"><div class="skill-bar" style="width:70%;background:#adb5bd"></div></div>
+        <div class="skill-label-row"><span>2030: 70%</span><span style="color:#c0392b;font-weight:700">−22%</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-name">Accessibility &amp; Inclusive Design</div>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:65%;background:#e5e7eb"></div></div>
+        <div class="skill-label-row"><span>2025: 65%</span></div>
+        <div class="skill-bar-wrap" style="margin-top:4px"><div class="skill-bar" style="width:85%;background:#f59e0b"></div></div>
+        <div class="skill-label-row"><span>2030: 85%</span><span style="color:#f59e0b;font-weight:700">+31%</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-name">Design-to-Code Fluency</div>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:30%;background:#e5e7eb"></div></div>
+        <div class="skill-label-row"><span>2025: 30%</span></div>
+        <div class="skill-bar-wrap" style="margin-top:4px"><div class="skill-bar" style="width:72%;background:#e85d4a"></div></div>
+        <div class="skill-label-row"><span>2030: 72%</span><span style="color:#e85d4a;font-weight:700">+140%</span></div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="section">
+    <div class="section-title">How AI Changes Your Work</div>
+    <table class="ai-table">
+      <thead>
+        <tr>
+          <th>Area</th>
+          <th>What Changes</th>
+          <th>Disruption</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="area">Wireframing &amp; Prototyping</td>
+          <td>AI generates low-fi → hi-fi in seconds. Your job shifts to critique, direction &amp; validation.</td>
+          <td><span class="status status-high">High</span></td>
+        </tr>
+        <tr>
+          <td class="area">Research Synthesis</td>
+          <td>AI summarises transcripts &amp; tags themes. Designers own insight interpretation &amp; ethics.</td>
+          <td><span class="status status-med">Medium</span></td>
+        </tr>
+        <tr>
+          <td class="area">Conversational / AI UX</td>
+          <td>New specialisation: designing prompts, error states, tone &amp; guardrails for AI products.</td>
+          <td><span class="status status-low">Opportunity</span></td>
+        </tr>
+        <tr>
+          <td class="area">Design Systems</td>
+          <td>AI enforces tokens &amp; component rules automatically. DS becomes strategic, not maintenance.</td>
+          <td><span class="status status-med">Medium</span></td>
+        </tr>
+        <tr>
+          <td class="area">Accessibility Audits</td>
+          <td>Automated contrast, ARIA, and flow checks. Human judgment remains for context &amp; edge cases.</td>
+          <td><span class="status status-low">Augmented</span></td>
+        </tr>
+        <tr>
+          <td class="area">User Testing</td>
+          <td>AI simulates user flows &amp; generates test scripts. Live moderated testing becomes premium.</td>
+          <td><span class="status status-med">Medium</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  
+  <div class="section">
+    <div class="section-title">Emerging Specialisations (2025–2030)</div>
+    <div class="spec-grid">
+      <div class="spec-card">
+        <div class="spec-icon">🤖</div>
+        <div class="spec-name">AI Product Designer</div>
+        <div class="spec-growth">+900% demand</div>
+        <div class="spec-desc">Designing AI-powered products, prompt flows, and human-AI handoffs.</div>
+      </div>
+      <div class="spec-card">
+        <div class="spec-icon">💬</div>
+        <div class="spec-name">Conversational UX</div>
+        <div class="spec-growth">+700% demand</div>
+        <div class="spec-desc">Chat interfaces, voice assistants, and multimodal interaction design.</div>
+      </div>
+      <div class="spec-card">
+        <div class="spec-icon">🥽</div>
+        <div class="spec-name">Spatial / AR / VR UX</div>
+        <div class="spec-growth">+650% demand</div>
+        <div class="spec-desc">3D interfaces, headset UX, Apple Vision Pro &amp; beyond.</div>
+      </div>
+      <div class="spec-card">
+        <div class="spec-icon">🧩</div>
+        <div class="spec-name">Design Systems Ops</div>
+        <div class="spec-growth">+400% demand</div>
+        <div class="spec-desc">Token architecture, component governance, and multi-brand systems at scale.</div>
+      </div>
+      <div class="spec-card">
+        <div class="spec-icon">🔬</div>
+        <div class="spec-name">UX Research Strategist</div>
+        <div class="spec-growth">Stable + premium</div>
+        <div class="spec-desc">Human empathy, ethics, and insight strategy — resilient to automation.</div>
+      </div>
+      <div class="spec-card">
+        <div class="spec-icon">⚡</div>
+        <div class="spec-name">Design Engineer</div>
+        <div class="spec-growth">+300% demand</div>
+        <div class="spec-desc">Fluent in React, tokens &amp; design systems — bridges design and engineering.</div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="section">
+    <div class="section-title">Salary Progression by Role (US Market)</div>
+    <div class="salary-legend">
+      <span><span class="legend-dot" style="background:#3b82d4"></span>Base Salary</span>
+      <span><span class="legend-dot" style="background:rgba(124,92,216,0.5)"></span>Total Comp (with bonus &amp; equity)</span>
+    </div>
+    <div class="salary-table">
+      <div class="salary-row">
+        <div class="salary-role">Junior UX Designer</div>
+        <div class="salary-bar-wrap">
+          <div class="salary-bar-total" style="width:25%"></div>
+          <div class="salary-bar-base" style="width:22%"></div>
+        </div>
+        <div class="salary-val">$75K / $85K</div>
+      </div>
+      <div class="salary-row">
+        <div class="salary-role">UX Designer</div>
+        <div class="salary-bar-wrap">
+          <div class="salary-bar-total" style="width:32%"></div>
+          <div class="salary-bar-base" style="width:27%"></div>
+        </div>
+        <div class="salary-val">$90K / $108K</div>
+      </div>
+      <div class="salary-row">
+        <div class="salary-role">Product Designer</div>
+        <div class="salary-bar-wrap">
+          <div class="salary-bar-total" style="width:41%"></div>
+          <div class="salary-bar-base" style="width:34%"></div>
+        </div>
+        <div class="salary-val">$115K / $138K</div>
+      </div>
+      <div class="salary-row">
+        <div class="salary-role">Senior UX Lead</div>
+        <div class="salary-bar-wrap">
+          <div class="salary-bar-total" style="width:52%"></div>
+          <div class="salary-bar-base" style="width:43%"></div>
+        </div>
+        <div class="salary-val">$145K / $175K</div>
+      </div>
+      <div class="salary-row">
+        <div class="salary-role">Head of Design</div>
+        <div class="salary-bar-wrap">
+          <div class="salary-bar-total" style="width:63%"></div>
+          <div class="salary-bar-base" style="width:51%"></div>
+        </div>
+        <div class="salary-val">$170K / $210K</div>
+      </div>
+      <div class="salary-row">
+        <div class="salary-role">VP of Design</div>
+        <div class="salary-bar-wrap">
+          <div class="salary-bar-total" style="width:77%"></div>
+          <div class="salary-bar-base" style="width:61%"></div>
+        </div>
+        <div class="salary-val">$205K / $260K</div>
+      </div>
+      <div class="salary-row">
+        <div class="salary-role">Chief Design Officer</div>
+        <div class="salary-bar-wrap">
+          <div class="salary-bar-total" style="width:100%"></div>
+          <div class="salary-bar-base" style="width:77%"></div>
+        </div>
+        <div class="salary-val">$260K / $340K</div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="section">
+    <div class="section-title">Key Takeaways</div>
+    <ul class="takeaway-list">
+      <li><div class="num">1</div>Designers who use AI tools will replace designers who don't — embrace it as a collaborator, not a threat.</li>
+      <li><div class="num">2</div>Systems thinking and strategic vision overtake pixel craft as the most valued senior skill.</li>
+      <li><div class="num">3</div>AI/Conversational UX and Spatial Design are the fastest-growing specialisations through 2030.</li>
+      <li><div class="num">4</div>AI literacy is already commanding 20–30% salary premiums in product design roles.</li>
+      <li><div class="num">5</div>UX Research remains resilient and high-value — human empathy and ethical judgment cannot be automated.</li>
+      <li><div class="num">6</div>Design-to-code fluency (React, tokens, design systems) separates top earners from the rest.</li>
+    </ul>
+  </div>
+
+  <div class="footer">Made with IBM Bob</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>IBM Content Design Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet" />
+
+<style>
+  /* ══════════════════════════════════════════════════════
+     IBM CARBON DESIGN SYSTEM TOKENS & BASE STYLING
+  ══════════════════════════════════════════════════════ */
+  :root {
+    --cds-background:          #ffffff;
+    --cds-layer-01:            #f4f4f4;
+    --cds-layer-02:            #e0e0e0;
+    --cds-border-subtle:       #e0e0e0;
+    --cds-border-strong:       #8d8d8d;
+    --cds-text-primary:        #161616;
+    --cds-text-secondary:      #525252;
+    --cds-text-helper:         #6f6f6f;
+    --cds-text-on-color:       #ffffff;
+    --cds-interactive:         #0f62fe;
+    --cds-interactive-hover:   #0353e9;
+    --cds-link-primary:        #0f62fe;
+    --cds-background-inverse:  #161616;
+    --cds-text-inverse:        #ffffff;
+    --cds-support-error:       #da1e28;
+    --cds-support-success:     #24a148;
+    --cds-support-warning:     #f1c21b;
+    --cds-support-info:        #0043ce;
+
+    --cds-tag-blue-bg:         #edf5ff;
+    --cds-tag-blue-text:       #0043ce;
+    --cds-tag-blue-border:     #d0e2ff;
+    --cds-tag-green-bg:        #defbe6;
+    --cds-tag-green-text:      #0e6027;
+    --cds-tag-green-border:    #a7f0ba;
+    --cds-tag-teal-bg:         #d9fbfb;
+    --cds-tag-teal-text:       #005d5d;
+    --cds-tag-teal-border:     #9ef0f0;
+    --cds-tag-purple-bg:       #f6f2ff;
+    --cds-tag-purple-text:     #6929c4;
+    --cds-tag-purple-border:   #e8daff;
+    --cds-tag-warm-gray-bg:    #f4f4f4;
+    --cds-tag-warm-gray-text:  #393939;
+    --cds-tag-warm-gray-border:#e0e0e0;
+    --cds-tag-red-bg:          #fff1f1;
+    --cds-tag-red-text:        #da1e28;
+    --cds-tag-red-border:      #ffd7d9;
+    --cds-tag-yellow-bg:       #fcf4d6;
+    --cds-tag-yellow-text:     #8e6a00;
+    --cds-tag-yellow-border:   #fddc69;
+
+    --cds-spacing-01: 0.125rem;
+    --cds-spacing-02: 0.25rem;
+    --cds-spacing-03: 0.5rem;
+    --cds-spacing-04: 0.75rem;
+    --cds-spacing-05: 1rem;
+    --cds-spacing-06: 1.5rem;
+    --cds-spacing-07: 2rem;
+    --cds-spacing-08: 2.5rem;
+    --cds-spacing-09: 3rem;
+    --cds-spacing-10: 4rem;
+
+    --cds-font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --cds-font-mono: 'IBM Plex Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+  }
+
+  body {
+    font-family: var(--cds-font-sans);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    background: var(--cds-background);
+    color: var(--cds-text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  a { color: var(--cds-link-primary); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ── CARBON UI SHELL HEADER ── */
+  .bx--header {
+    position: sticky; top: 0; z-index: 1000;
+    background: var(--cds-background-inverse);
+    height: 3rem; display: flex; align-items: center;
+    border-bottom: 1px solid #393939;
+  }
+  .bx--header__name {
+    display: flex; align-items: center; height: 100%;
+    padding: 0 var(--cds-spacing-05);
+    font-size: 0.875rem; font-weight: 600;
+    color: var(--cds-text-inverse); text-decoration: none;
+    gap: var(--cds-spacing-03);
+    border-right: 1px solid #393939; white-space: nowrap;
+  }
+  .bx--header__name:hover { background: #262626; text-decoration: none; }
+  .bx--header__name--prefix { font-weight: 400; color: rgba(255,255,255,0.7); }
+  .bx--header__global {
+    display: flex; align-items: center; margin-left: auto;
+    padding-right: var(--cds-spacing-05); gap: var(--cds-spacing-03);
+  }
+
+  /* ── CARBON HERO BANNER ── */
+  .carbon-hero {
+    background: var(--cds-background-inverse);
+    color: var(--cds-text-inverse);
+    padding: var(--cds-spacing-09) var(--cds-spacing-07) var(--cds-spacing-08);
+    border-bottom: 1px solid #393939;
+  }
+  .carbon-hero-inner { max-width: 1080px; margin: 0 auto; }
+  .carbon-hero-eyebrow {
+    font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.1em; color: #74b1ff; margin-bottom: var(--cds-spacing-04);
+    display: flex; align-items: center; gap: var(--cds-spacing-03);
+  }
+  .carbon-hero-title {
+    font-size: 2.5rem; font-weight: 300; line-height: 1.15;
+    margin-bottom: var(--cds-spacing-04); letter-spacing: -0.02em; color: #ffffff;
+  }
+  .carbon-hero-title strong { font-weight: 600; color: #ffffff; }
+  .carbon-hero-desc {
+    font-size: 1.0625rem; font-weight: 300; color: #c6c6c6;
+    max-width: 860px; line-height: 1.55;
+  }
+
+  /* ── PAGE LAYOUT ── */
+  .page { max-width: 1080px; margin: 0 auto; padding: var(--cds-spacing-08) var(--cds-spacing-07) var(--cds-spacing-10); }
+
+  /* ── SECTION HEADER ── */
+  .section-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: var(--cds-spacing-06) 0 var(--cds-spacing-03);
+    border-bottom: 1px solid var(--cds-border-subtle); margin-bottom: var(--cds-spacing-06);
+    flex-wrap: wrap; gap: var(--cds-spacing-03);
+  }
+  .section-title { font-size: 1.5rem; font-weight: 300; color: var(--cds-text-primary); letter-spacing: -0.01em; }
+  .section-title strong { font-weight: 600; }
+  .section-sub { font-size: 0.875rem; color: var(--cds-text-secondary); width: 100%; margin-top: var(--cds-spacing-01); }
+
+  /* ── VERDICT BANNER (Carbon Callout) ── */
+  .verdict-tile {
+    display: flex; align-items: flex-start; gap: var(--cds-spacing-05);
+    background: var(--cds-tag-yellow-bg); border: 1px solid var(--cds-tag-yellow-border);
+    border-left: 4px solid var(--cds-support-warning);
+    padding: var(--cds-spacing-05) var(--cds-spacing-06); margin-bottom: var(--cds-spacing-07);
+  }
+  .verdict-label { font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; color: var(--cds-tag-yellow-text); margin-bottom: var(--cds-spacing-01); }
+  .verdict-text  { font-size: 0.9375rem; font-weight: 500; color: var(--cds-text-primary); line-height: 1.5; }
+
+  /* ── SCORES ROW (Carbon Tiles) ── */
+  .scores-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--cds-spacing-04); margin-bottom: var(--cds-spacing-08); }
+  @media (max-width: 800px) { .scores-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 500px) { .scores-grid { grid-template-columns: repeat(2, 1fr); } }
+  .score-tile {
+    background: var(--cds-layer-01); border: 1px solid var(--cds-border-subtle);
+    padding: var(--cds-spacing-05); display: flex; flex-direction: column;
+  }
+  .score-num { font-family: var(--cds-font-mono); font-size: 1.75rem; font-weight: 600; line-height: 1; }
+  .score-num.lvl2 { color: var(--cds-interactive); }
+  .score-num.lvl1 { color: #8e6a00; }
+  .score-label { font-size: 0.75rem; color: var(--cds-text-secondary); margin-top: var(--cds-spacing-02); font-weight: 500; }
+
+  /* ── CARBON TAG SYSTEM ── */
+  .bx--tag {
+    display: inline-flex; align-items: center; padding: 0 0.5rem;
+    height: 1.5rem; font-size: 0.75rem; font-weight: 400; line-height: 1;
+    border-radius: 0.9375rem; border: 1px solid transparent; white-space: nowrap;
+  }
+  .bx--tag--blue { background: var(--cds-tag-blue-bg); color: var(--cds-tag-blue-text); border-color: var(--cds-tag-blue-border); }
+  .bx--tag--green { background: var(--cds-tag-green-bg); color: var(--cds-tag-green-text); border-color: var(--cds-tag-green-border); }
+  .bx--tag--teal { background: var(--cds-tag-teal-bg); color: var(--cds-tag-teal-text); border-color: var(--cds-tag-teal-border); }
+  .bx--tag--purple { background: var(--cds-tag-purple-bg); color: var(--cds-tag-purple-text); border-color: var(--cds-tag-purple-border); }
+  .bx--tag--warm-gray { background: var(--cds-tag-warm-gray-bg); color: var(--cds-tag-warm-gray-text); border-color: var(--cds-tag-warm-gray-border); }
+  .bx--tag--red { background: var(--cds-tag-red-bg); color: var(--cds-tag-red-text); border-color: var(--cds-tag-red-border); }
+  .bx--tag--yellow { background: var(--cds-tag-yellow-bg); color: var(--cds-tag-yellow-text); border-color: var(--cds-tag-yellow-border); }
+
+  /* ── CARBON TABLES ── */
+  .cs-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; margin: var(--cds-spacing-05) 0 var(--cds-spacing-08); border: 1px solid var(--cds-border-subtle); }
+  .cs-table th { background: var(--cds-layer-01); font-weight: 600; color: var(--cds-text-primary); padding: var(--cds-spacing-04) var(--cds-spacing-05); text-align: left; border-bottom: 1px solid var(--cds-border-strong); font-size: 0.75rem; letter-spacing: 0.05em; text-transform: uppercase; }
+  .cs-table td { padding: var(--cds-spacing-04) var(--cds-spacing-05); border-bottom: 1px solid var(--cds-border-subtle); color: var(--cds-text-secondary); vertical-align: top; line-height: 1.5; }
+  .cs-table tr:last-child td { border-bottom: none; }
+  .cs-table tr:hover td { background: var(--cds-tag-blue-bg); }
+
+  code { font-family: var(--cds-font-mono); font-size: 0.8125rem; background: var(--cds-layer-01); border: 1px solid var(--cds-border-subtle); padding: 0.1rem 0.35rem; }
+
+  .pass-section { background: var(--cds-tag-green-bg); border-left: 4px solid var(--cds-support-success); padding: var(--cds-spacing-04) var(--cds-spacing-05); margin-bottom: var(--cds-spacing-06); font-size: 0.875rem; color: var(--cds-tag-green-text); }
+  .pass-section strong { color: #0a461b; font-weight: 600; }
+
+  .copy-tile {
+    background: var(--cds-background); border: 1px solid var(--cds-border-subtle);
+    padding: var(--cds-spacing-04) var(--cds-spacing-05); margin-bottom: var(--cds-spacing-04); font-size: 0.875rem;
+  }
+  .copy-tile .copy-label { font-size: 0.6875rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--cds-interactive); margin-bottom: var(--cds-spacing-01); }
+  .copy-tile .copy-old  { color: var(--cds-text-helper); text-decoration: line-through; margin-bottom: 2px; }
+  .copy-tile .copy-new  { font-weight: 600; color: var(--cds-text-primary); }
+
+  /* ── FOOTER ── */
+  .carbon-footer {
+    background: var(--cds-background-inverse);
+    color: #8d8d8d;
+    padding: var(--cds-spacing-07) var(--cds-spacing-07);
+    border-top: 1px solid #393939;
+    font-size: 0.75rem;
+    margin-top: var(--cds-spacing-10);
+  }
+  .carbon-footer-inner {
+    max-width: 1080px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--cds-spacing-04);
+  }
+  .carbon-footer-links a { color: #c6c6c6; text-decoration: none; margin: 0 var(--cds-spacing-02); }
+  .carbon-footer-links a:hover { color: var(--cds-interactive); text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<!-- ═══ CARBON UI SHELL HEADER ═══ -->
+<header class="bx--header">
+  <a class="bx--header__name" href="hub.html">
+    <span class="bx--header__name--prefix">IBM</span>
+    Network Intelligence · Content Design Review
+  </a>
+  <div class="bx--header__global">
+    <a href="hub.html" class="bx--tag bx--tag--blue" style="text-decoration:none;cursor:pointer;">&larr; Back to Hub</a>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════
+     CARBON HERO COVER
+══════════════════════════════════════ -->
+<section class="carbon-hero">
+  <div class="carbon-hero-inner">
+    <div class="carbon-hero-eyebrow">
+      <span>IBM Content Design</span>
+      <span>/</span>
+      <span>Quality &amp; Standards Review</span>
+    </div>
+    <h1 class="carbon-hero-title">Content Design &amp; Voice Standards <strong>Audit</strong></h1>
+    <p class="carbon-hero-desc">Site: Designing for Invisible UI &middot; Scope: All 5 research panels, navigation, and footer &middot; Evaluated against the official IBM Content Design Guidelines.</p>
+  </div>
+</section>
+
+<div class="page">
+
+  <!-- ── VERDICT BANNER ── -->
+  <div class="verdict-tile">
+    <div style="font-size:1.5rem;line-height:1;">⚠️</div>
+    <div>
+      <div class="verdict-label">Overall Verdict</div>
+      <div class="verdict-text">Minor edits — Experience is clear and usable. No blocking issues. Targeted fixes to spelling, action labels, and tone will elevate to Level 3.</div>
+    </div>
+  </div>
+
+  <!-- ── SCORES GRID ── -->
+  <div class="scores-grid">
+    <div class="score-tile"><div class="score-num lvl2">2</div><div class="score-label">Content Hierarchy</div></div>
+    <div class="score-tile"><div class="score-num lvl2">2</div><div class="score-label">Terminology</div></div>
+    <div class="score-tile"><div class="score-num lvl2">2</div><div class="score-label">Content that Guides</div></div>
+    <div class="score-tile"><div class="score-num lvl1">1</div><div class="score-label">Helps When Stuck</div></div>
+    <div class="score-tile"><div class="score-num lvl1">1</div><div class="score-label">Formatting &amp; Style</div></div>
+  </div>
+
+  <p style="font-size:0.8125rem;color:var(--cds-text-helper);margin-bottom:var(--cds-spacing-07);">0 Inadequate &middot; 1 Minimal &middot; 2 Good &middot; 3 Excellent. Scores apply to the full flow, not individual strings.</p>
+
+  <!-- ══════════════════════════════════════
+       FINDINGS SECTION
+  ══════════════════════════════════════ -->
+  <div class="section-header">
+    <div>
+      <h2 class="section-title">01. <strong>Audit Findings</strong></h2>
+      <p class="section-sub">Categorized by priority level and actionability.</p>
+    </div>
+  </div>
+
+  <h3 style="font-size:0.875rem;font-weight:700;color:var(--cds-text-helper);text-transform:uppercase;letter-spacing:0.05em;margin:var(--cds-spacing-05) 0 var(--cds-spacing-02);">Blocking</h3>
+  <p style="font-size:0.875rem;color:var(--cds-text-helper);margin-bottom:var(--cds-spacing-06);font-style:italic;">No blocking findings — no issue prevents task completion or creates a critical accessibility barrier.</p>
+
+  <h3 style="font-size:0.875rem;font-weight:700;color:var(--cds-text-helper);text-transform:uppercase;letter-spacing:0.05em;margin:var(--cds-spacing-06) 0 var(--cds-spacing-02);">High Priority</h3>
+  <table class="cs-table">
+    <thead>
+      <tr>
+        <th>Priority</th><th>Panel / Element</th><th>Current Text</th><th>Finding</th><th>Suggested Text</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="bx--tag bx--tag--yellow">High</span></td>
+        <td>All panels<br /><em>CTA buttons</em></td>
+        <td><code>Move forward</code><br /><code>Go back</code></td>
+        <td><strong>Non-standard action labels.</strong> Carbon standard for stepped flows is <strong>Next</strong> (advance) and <strong>Back</strong> (return). "Move forward" is colloquial and not verb-first. "Go back" adds an unnecessary word.</td>
+        <td><code>Next</code> / <code>Back</code></td>
+      </tr>
+      <tr>
+        <td><span class="bx--tag bx--tag--yellow">High</span></td>
+        <td>Panel 0 — Overview<br /><em>Condition pill</em></td>
+        <td><code>Likely condition · Designing for Invisible UI</code></td>
+        <td><strong>Inconsistent label pattern.</strong> Other pills use <em>state · topic</em> (e.g. "Pattern named · What &amp; Why"). "Likely condition" reads as a diagnostic qualifier, not a state label. It creates a false impression the content is tentative or provisional.</td>
+        <td><code>Overview · Designing for Invisible UI</code></td>
+      </tr>
+      <tr>
+        <td><span class="bx--tag bx--tag--yellow">High</span></td>
+        <td>Footer<br /><em>Restart button</em></td>
+        <td><code>Start again</code></td>
+        <td><strong>Non-standard action label.</strong> Carbon standard for restarting a flow is <strong>Start over</strong> or simply <strong>Start</strong>. "Start again" is informal and inconsistent with product conventions.</td>
+        <td><code>Start over</code></td>
+      </tr>
+      <tr>
+        <td><span class="bx--tag bx--tag--yellow">High</span></td>
+        <td>Panel 2 — Characteristics<br /><em>Heading</em></td>
+        <td><code>Four Defining Behaviours</code></td>
+        <td><strong>UK English spelling.</strong> IBM Content Standard requires US English. "Behaviours" &rarr; "Behaviors". Same issue exists in body copy throughout.</td>
+        <td><code>Four Defining Behaviors</code></td>
+      </tr>
+      <tr>
+        <td><span class="bx--tag bx--tag--yellow">High</span></td>
+        <td>All panels<br /><em>Body copy (multiple)</em></td>
+        <td><code>behaviour / behaviours</code>, <code>artefact</code>, <code>authorise</code></td>
+        <td><strong>UK English throughout.</strong> IBM standard requires US English. All three spellings appear in the site. <code>artefact</code> &rarr; <code>artifact</code>, <code>authorise</code> &rarr; <code>authorize</code>.</td>
+        <td><code>behavior / behaviors</code>, <code>artifact</code>, <code>authorize</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 style="font-size:0.875rem;font-weight:700;color:var(--cds-text-helper);text-transform:uppercase;letter-spacing:0.05em;margin:var(--cds-spacing-06) 0 var(--cds-spacing-02);">Medium Priority</h3>
+  <table class="cs-table">
+    <thead>
+      <tr>
+        <th>Priority</th><th>Panel / Element</th><th>Current Text</th><th>Finding</th><th>Suggested Text</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="bx--tag bx--tag--blue">Medium</span></td>
+        <td>Panel 3 — Four Pillars<br /><em>Agent Identity quote</em></td>
+        <td><code>"Trust and accountability must surface. This answers the W's — who acted, what was the policy, when did it run, why was permission granted."</code></td>
+        <td><strong>Ambiguous label "the W's".</strong> This is informal jargon and opaque to non-native English readers. IBM voice is direct and factual — name the questions explicitly.</td>
+        <td><code>"Trust and accountability must be visible — every agent action should be traceable to who acted, what policy applied, when it ran, and why permission was granted."</code></td>
+      </tr>
+      <tr>
+        <td><span class="bx--tag bx--tag--blue">Medium</span></td>
+        <td>Panel 4 — Directions<br /><em>Direction 05 example label</em></td>
+        <td><code>Example Questions</code></td>
+        <td><strong>Inconsistent label across 5 cards.</strong> Directions 01–04 use <code>Example</code>; Direction 05 uses <code>Example Questions</code>. Use the same label throughout.</td>
+        <td><code>Example</code></td>
+      </tr>
+      <tr>
+        <td><span class="bx--tag bx--tag--blue">Medium</span></td>
+        <td>Panel 4 — Directions<br /><em>Direction card body text</em></td>
+        <td><code>These are not rules — they are orientations.</code></td>
+        <td><strong>Weak framing.</strong> Defining by what something is not ("not rules") weakens the opening. IBM voice leads with a positive, confident point of view.</td>
+        <td><code>Five shifts in how designers think when working with headless AI agents. Click any card to reveal the example.</code></td>
+      </tr>
+      <tr>
+        <td><span class="bx--tag bx--tag--blue">Medium</span></td>
+        <td>Top nav<br /><em>Step sub-labels</em></td>
+        <td><code>Canvas view</code>, <code>Pattern named</code>, <code>Useful words</code>, <code>Owner + follow-up</code>, <code>Evidence in work</code></td>
+        <td><strong>Sub-labels are opaque to first-time users.</strong> These appear to be internal design-process stage names, not descriptors of what a user will find in each step.</td>
+        <td>Remove, or replace with: <code>Introduction</code>, <code>Definition</code>, <code>Characteristics</code>, <code>Framework</code>, <code>Directions</code></td>
+      </tr>
+      <tr>
+        <td><span class="bx--tag bx--tag--blue">Medium</span></td>
+        <td>Panel 3 — Rail<br /><em>SVG diagram footer label</em></td>
+        <td><code>HEADLESS AI · FOUR PILLARS · ALWAYS ACTIVE</code></td>
+        <td><strong>ALL CAPS in body content.</strong> IBM Content Standard requires sentence case for all UI text.</td>
+        <td><code>Headless AI · Four pillars · Always active</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ══════════════════════════════════════
+       PASSED PATTERNS
+  ══════════════════════════════════════ -->
+  <div class="section-header" style="margin-top:var(--cds-spacing-08);">
+    <div>
+      <h2 class="section-title">02. <strong>Passed Patterns &amp; Strong Content Practices</strong></h2>
+      <p class="section-sub">Elements in the current design that successfully adhere to IBM Content and UX standards.</p>
+    </div>
+    <span class="bx--tag bx--tag--green">Compliant</span>
+  </div>
+
+  <div class="pass-section">
+    <strong>Strong Value Proposition (Panel 0):</strong> "Autonomous AI agents don't wait for humans to open a window. They act in the background — monitoring telemetry, correlating anomalies, executing remediation scripts. The interface disappears." Direct, active voice, problem-first.
+  </div>
+
+  <div class="pass-section">
+    <strong>Effective Analogy (Panel 1):</strong> "Think of headless AI like an immune system: constantly active, quiet by design, surfacing only when an anomaly requires elevated intervention." Anchors a novel paradigm in a familiar, intuitive mental model.
+  </div>
+
+  <div class="pass-section">
+    <strong>Concrete Design Directions (Panel 4):</strong> Each direction is actionable ("Design for ambient presence, not primary attention"), provides a real-world example, and gives designers practical criteria.
+  </div>
+
+</div><!-- /page -->
+
+<!-- ═══ CARBON FOOTER ═══ -->
+<footer class="carbon-footer">
+  <div class="carbon-footer-inner">
+    <div>IBM Content Design Review · Designing for Invisible UI · 2025</div>
+    <div class="carbon-footer-links">
+      <a href="index.html">Research Stepper</a> &middot;
+      <a href="headless-ai-case-study.html">Case Study</a> &middot;
+      <a href="hub.html">Project Hub</a>
+    </div>
+    <div style="color:#6f6f6f;">IBM Content Design Standard</div>
+  </div>
+</footer>
+
+</body>
+</html>

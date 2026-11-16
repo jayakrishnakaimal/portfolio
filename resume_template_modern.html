@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Modern Resume Template</title>
+<style>
+  @page { size: Letter; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #14213d;
+    --navy-2: #1d2f57;
+    --accent: #14b8a6;
+    --accent-dark: #0d9488;
+    --text: #1f2937;
+    --muted: #6b7280;
+    --line: #e5e7eb;
+  }
+  html, body { -webkit-print-color-adjust: exact; print-color-adjust: exact; margin: 0; }
+  body {
+    font-family: "Helvetica Neue", -apple-system, Arial, sans-serif;
+    font-size: 9.6pt;
+    line-height: 1.5;
+    color: var(--text);
+    width: 8.5in;
+    height: 10.98in;
+    display: grid;
+    grid-template-columns: 2.7in 1fr;
+    overflow: hidden;
+  }
+
+  /* ---------- Sidebar ---------- */
+  aside {
+    background: linear-gradient(180deg, var(--navy) 0%, var(--navy-2) 100%);
+    color: #e8edf7;
+    padding: 0.5in 0.3in;
+  }
+  .avatar {
+    width: 84px; height: 84px; border-radius: 50%;
+    border: 3px solid var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26pt; font-weight: 700; letter-spacing: 1px;
+    color: #fff; background: rgba(255,255,255,0.06);
+    margin-bottom: 26px;
+  }
+  aside h3 {
+    font-size: 8.5pt; text-transform: uppercase; letter-spacing: 2px;
+    color: var(--accent); margin: 18px 0 8px;
+    padding-bottom: 5px; border-bottom: 1px solid rgba(255,255,255,0.15);
+  }
+  aside h3:first-of-type { margin-top: 0; }
+  .contact li { list-style: none; margin-bottom: 8px; font-size: 9pt; word-break: break-word; }
+  .contact .lbl { display: block; font-size: 7.5pt; text-transform: uppercase; letter-spacing: 1px; color: #9fb0d0; }
+
+  .skill { margin-bottom: 10px; }
+  .skill .sk-name { display: flex; justify-content: space-between; font-size: 9pt; margin-bottom: 3px; }
+  .bar { height: 4px; border-radius: 2px; background: rgba(255,255,255,0.15); }
+  .bar span { display: block; height: 100%; border-radius: 2px; background: var(--accent); }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 5px; }
+  .chip {
+    font-size: 8pt; padding: 2px 8px; border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.25); color: #e8edf7;
+  }
+  .side-item { margin-bottom: 10px; font-size: 9pt; }
+  .side-item b { display: block; color: #fff; }
+  .side-item small { color: #9fb0d0; font-size: 8pt; }
+
+  /* ---------- Main ---------- */
+  main { padding: 0.55in 0.45in 0.4in 0.4in; }
+  .name { font-size: 29pt; font-weight: 800; color: var(--navy); line-height: 1.05; letter-spacing: -0.5px; }
+  .title {
+    font-size: 11.5pt; color: var(--accent-dark); font-weight: 600;
+    letter-spacing: 3px; text-transform: uppercase; margin-top: 6px;
+  }
+  .rule { width: 56px; height: 4px; background: var(--accent); border-radius: 2px; margin: 14px 0 4px; }
+
+  main h2 {
+    font-size: 10.5pt; text-transform: uppercase; letter-spacing: 2px;
+    color: var(--navy); margin: 20px 0 10px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  main h2::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+  main h2 .opt { font-size: 8pt; color: var(--muted); font-weight: 400; letter-spacing: 0; text-transform: none; }
+
+  .summary { color: #374151; }
+
+  /* Timeline */
+  .timeline { position: relative; padding-left: 18px; border-left: 2px solid var(--line); margin-left: 4px; }
+  .job { position: relative; margin-bottom: 14px; page-break-inside: avoid; }
+  .job::before {
+    content: ""; position: absolute; left: -25px; top: 4px;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: #fff; border: 2.5px solid var(--accent);
+  }
+  .job-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .role { font-weight: 700; font-size: 10.5pt; color: var(--navy); }
+  .date {
+    font-size: 8pt; font-weight: 600; color: var(--accent-dark);
+    background: #e6f7f5; padding: 1px 8px; border-radius: 10px; white-space: nowrap;
+  }
+  .company { color: var(--muted); font-size: 9.2pt; margin-bottom: 4px; }
+  .job ul { padding-left: 15px; }
+  .job li { margin-bottom: 3px; }
+  .job li::marker { color: var(--accent); }
+
+  .ph { color: #9ca3af; }
+  .project { margin-bottom: 8px; }
+  .project b { color: var(--navy); }
+  .project .stack { color: var(--accent-dark); font-size: 8.5pt; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<!-- ============ SIDEBAR ============ -->
+<aside>
+  <div class="avatar">YN</div>
+
+  <h3>Contact</h3>
+  <ul class="contact">
+    <li><span class="lbl">Location</span>[City, State]</li>
+    <li><span class="lbl">Phone</span>[+1 555 123 4567]</li>
+    <li><span class="lbl">Email</span>[email@example.com]</li>
+    <li><span class="lbl">LinkedIn</span>[linkedin.com/in/yourname]</li>
+    <li><span class="lbl">Portfolio</span>[github.com/yourname]</li>
+  </ul>
+
+  <h3>Skills</h3>
+  <div class="skill"><div class="sk-name"><span>[Skill One]</span></div><div class="bar"><span style="width:92%"></span></div></div>
+  <div class="skill"><div class="sk-name"><span>[Skill Two]</span></div><div class="bar"><span style="width:85%"></span></div></div>
+  <div class="skill"><div class="sk-name"><span>[Skill Three]</span></div><div class="bar"><span style="width:78%"></span></div></div>
+  <div class="skill"><div class="sk-name"><span>[Skill Four]</span></div><div class="bar"><span style="width:70%"></span></div></div>
+
+  <h3>Tools &amp; Tech</h3>
+  <div class="chips">
+    <span class="chip">[Python]</span><span class="chip">[React]</span><span class="chip">[AWS]</span>
+    <span class="chip">[Docker]</span><span class="chip">[SQL]</span><span class="chip">[Git]</span>
+  </div>
+
+  <h3>Education</h3>
+  <div class="side-item"><b>[Degree, Major]</b>[University Name]<br><small>[Year] · [GPA / Honors]</small></div>
+
+  <h3>Certifications</h3>
+  <div class="side-item"><b>[Certification Name]</b><small>[Issuer] · [Year]</small></div>
+  <div class="side-item"><b>[Certification Name]</b><small>[Issuer] · [Year]</small></div>
+
+  <h3>Languages</h3>
+  <div class="side-item">[Language] — [Fluent]<br>[Language] — [Conversational]</div>
+</aside>
+
+<!-- ============ MAIN ============ -->
+<main>
+  <div class="name">[Your Full Name]</div>
+  <div class="title">[Target Job Title]</div>
+  <div class="rule"></div>
+
+  <h2>Profile</h2>
+  <p class="summary">[2–3 sentences: your role, years of experience, top strengths and the impact you deliver. Example: <em>Product-minded engineer with 6+ years building scalable cloud applications. Led teams that cut deployment time by 40%. Passionate about clean design and mentoring.</em>]</p>
+
+  <h2>Experience</h2>
+  <div class="timeline">
+    <div class="job">
+      <div class="job-head"><span class="role">[Job Title]</span><span class="date">[Mon Year] – Present</span></div>
+      <div class="company">[Company Name] · [Location]</div>
+      <ul>
+        <li>[Action verb] + [what you did] + [measurable result], e.g. <em>cut API latency by 35%.</em></li>
+        <li>[Led / Built / Launched] [project] serving [number] users.</li>
+        <li>[Partnered with …] to deliver [outcome] [X weeks] ahead of schedule.</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="job-head"><span class="role">[Previous Job Title]</span><span class="date">[Mon Year] – [Mon Year]</span></div>
+      <div class="company">[Company Name] · [Location]</div>
+      <ul>
+        <li>[Achievement with metric]</li>
+        <li>[Achievement with metric]</li>
+        <li>[Achievement with metric]</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="job-head"><span class="role">[Earlier Job Title]</span><span class="date">[Mon Year] – [Mon Year]</span></div>
+      <div class="company">[Company Name] · [Location]</div>
+      <ul>
+        <li>[Achievement with metric]</li>
+        <li>[Achievement with metric]</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>Key Projects <span class="opt">(optional)</span></h2>
+  <div class="project"><b>[Project Name]</b> <span class="stack">[Tech stack]</span><br>[One line on what it does and the result it achieved.]</div>
+  <div class="project"><b>[Project Name]</b> <span class="stack">[Tech stack]</span><br>[One line on what it does and the result it achieved.]</div>
+
+  <h2>Awards &amp; Leadership <span class="opt">(optional)</span></h2>
+  <ul style="padding-left:15px">
+    <li>[Award, publication, talk, or volunteer role] — [Year]</li>
+  </ul>
+</main>
+
+</body>
+</html>

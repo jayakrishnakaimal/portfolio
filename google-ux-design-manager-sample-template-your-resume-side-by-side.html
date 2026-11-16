@@ -1,0 +1,530 @@
+
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Google UX Design Manager — Resume Comparison</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    background: #f3f4f6;
+    color: #1f2328;
+  }
+  .wrapper { max-width: 1200px; margin: 32px auto; padding: 0 20px 48px; }
+
+  /* ── Page Title ── */
+  .page-title { text-align: center; margin-bottom: 28px; }
+  .page-title h1 { font-size: 22px; font-weight: 800; color: #1f2328; }
+  .page-title p { font-size: 13px; color: #57606a; margin-top: 5px; }
+  .legend { display: flex; justify-content: center; gap: 24px; margin-top: 12px; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 7px; font-size: 12px; color: #57606a; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 3px; }
+
+  /* ── Google Signals Bar ── */
+  .signals { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; }
+  .signals-title { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.07em; color: #57606a; margin-bottom: 12px; }
+  .signal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+  .signal { background: #f0f4ff; border: 1px solid #c7d7fc; border-radius: 6px; padding: 8px 12px; }
+  .signal-name { font-size: 11.5px; font-weight: 700; color: #1d4ed8; }
+  .signal-desc { font-size: 11px; color: #374151; margin-top: 2px; }
+
+  /* ── Two-col grid ── */
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+  .col-label {
+    text-align: center; font-size: 11px; font-weight: 800;
+    text-transform: uppercase; letter-spacing: 0.07em;
+    padding: 8px 12px; border-radius: 6px; margin-bottom: 12px;
+  }
+  .label-sample { background: #fef3c7; color: #92400e; }
+  .label-yours  { background: #f0fdf4; color: #166534; }
+
+  /* ── Resume card ── */
+  .resume {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  /* ── Resume Header ── */
+  .r-header { padding: 24px 24px 18px; }
+  .r-header.sample-hdr { background: #1a1a2e; color: #fff; }
+  .r-header.yours-hdr  { background: #14532d; color: #fff; }
+  .r-header h2 { font-size: 20px; font-weight: 800; color: #fff; }
+  .r-title-pill {
+    display: inline-block; margin-top: 5px;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.09em;
+    text-transform: uppercase; padding: 3px 12px; border-radius: 99px;
+  }
+  .pill-sample { background: #4285f4; color: #fff; }
+  .pill-yours  { background: #22c55e; color: #fff; }
+  .r-contact { margin-top: 10px; font-size: 11px; color: #c9d1d9; display: flex; flex-wrap: wrap; gap: 4px 14px; }
+
+  /* ── Resume Body ── */
+  .r-body { padding: 20px 24px; }
+  .r-section { margin-bottom: 20px; }
+  .r-section-title {
+    font-size: 10px; font-weight: 800; text-transform: uppercase;
+    letter-spacing: 0.09em; border-bottom: 2px solid;
+    padding-bottom: 3px; margin-bottom: 10px;
+  }
+  .st-sample { color: #4285f4; border-color: #4285f4; }
+  .st-yours  { color: #16a34a; border-color: #16a34a; }
+
+  .r-summary { font-size: 12.5px; color: #374151; line-height: 1.65; }
+  .r-summary strong { color: #1f2328; }
+
+  /* skills */
+  .skill-wrap { display: flex; flex-wrap: wrap; gap: 6px; }
+  .skill-tag {
+    font-size: 11px; font-weight: 600; padding: 2px 10px;
+    border-radius: 99px; border: 1px solid;
+  }
+  .st-s { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
+  .st-y { background: #f0fdf4; color: #166534; border-color: #bbf7d0; }
+
+  /* job */
+  .job { margin-bottom: 16px; }
+  .job-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 2px; }
+  .job-company { font-size: 13px; font-weight: 800; color: #1f2328; }
+  .job-loc { font-size: 11px; color: #57606a; }
+  .job-title-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 2px; margin-bottom: 2px; }
+  .job-role { font-size: 12px; font-weight: 700; }
+  .role-s { color: #4285f4; }
+  .role-y { color: #16a34a; }
+  .job-dates { font-size: 11px; color: #57606a; }
+  .job-type { font-size: 11px; color: #6b7280; font-style: italic; margin-bottom: 5px; }
+  .job ul { list-style: none; padding: 0; }
+  .job ul li { padding: 2px 0 2px 14px; font-size: 12px; color: #374151; position: relative; line-height: 1.55; }
+  .job ul li::before { content: "▸"; position: absolute; left: 0; font-size: 9px; top: 5px; }
+  .li-s::before { color: #4285f4; }
+  .li-y::before { color: #16a34a; }
+
+  /* impact badge */
+  .imp {
+    display: inline-block; background: #f0fdf4; color: #166534;
+    font-weight: 700; font-size: 10.5px; padding: 1px 6px;
+    border-radius: 4px; border: 1px solid #bbf7d0; margin-left: 2px;
+  }
+  .imp-s { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
+
+  /* annotation */
+  .anno {
+    display: inline-block; background: #fef9c3; color: #854d0e;
+    font-size: 10px; font-weight: 700; padding: 1px 6px;
+    border-radius: 4px; border: 1px solid #fde68a; margin-left: 4px;
+    vertical-align: middle;
+  }
+
+  /* diff callout */
+  .diff {
+    background: #fffbeb; border: 1px solid #fde68a; border-left: 3px solid #f59e0b;
+    border-radius: 6px; padding: 10px 14px; margin: 14px 0 0;
+    font-size: 12px; color: #78350f;
+  }
+  .diff b { font-weight: 700; }
+
+  /* edu / cert */
+  .edu-item { margin-bottom: 8px; }
+  .edu-degree { font-weight: 700; font-size: 12.5px; color: #1f2328; }
+  .edu-school { font-size: 12px; color: #374151; }
+  .edu-date { font-size: 11px; color: #57606a; }
+  .cert-list { list-style: none; padding: 0; }
+  .cert-list li { padding: 2px 0 2px 13px; font-size: 12px; color: #374151; position: relative; }
+  .cert-list li::before { content: "✓"; position: absolute; left: 0; font-weight: 700; font-size: 10px; }
+  .cl-s li::before { color: #4285f4; }
+  .cl-y li::before { color: #16a34a; }
+
+  /* awards */
+  .award { margin-bottom: 8px; }
+  .award-name { font-size: 12.5px; font-weight: 700; color: #1f2328; }
+  .award-desc { font-size: 11.5px; color: #57606a; }
+
+  /* STAR callout */
+  .star-box {
+    background: #f0f4ff; border: 1px solid #c7d7fc; border-radius: 6px;
+    padding: 10px 14px; margin-bottom: 16px; font-size: 11.5px; color: #1e3a8a;
+  }
+  .star-box b { font-weight: 800; }
+
+  /* footer */
+  .page-footer { margin-top: 40px; padding-top: 14px; border-top: 1px solid #e5e7eb; text-align: center; font-size: 11.5px; color: #9ca3af; }
+
+  @media (max-width: 700px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  
+  <div class="page-title">
+    <h1>Google UX Design Manager — Resume Comparison</h1>
+    <p>Left: fictional Google-style sample template  ·  Right: your resume rewritten in Google's STAR format</p>
+    <div class="legend">
+      <div class="legend-item"><span class="legend-dot" style="background:#4285f4"></span>Google Sample (fictional reference)</div>
+      <div class="legend-item"><span class="legend-dot" style="background:#22c55e"></span>Your Resume — STAR rewritten</div>
+      <div class="legend-item"><span class="legend-dot" style="background:#f59e0b"></span>Key difference / tip</div>
+    </div>
+  </div>
+
+  
+  <div class="signals">
+    <div class="signals-title">What Google Looks for in a UX Design Manager</div>
+    <div class="signal-grid">
+      <div class="signal">
+        <div class="signal-name">Impact at Scale</div>
+        <div class="signal-desc">Quantified outcomes affecting thousands of users or multiple product lines</div>
+      </div>
+      <div class="signal">
+        <div class="signal-name">Cross-functional Leadership</div>
+        <div class="signal-desc">Influencing PMs, engineers, researchers without direct authority</div>
+      </div>
+      <div class="signal">
+        <div class="signal-name">Data-Informed Decisions</div>
+        <div class="signal-desc">Research, metrics, A/B testing driving design choices</div>
+      </div>
+      <div class="signal">
+        <div class="signal-name">Systems Thinking</div>
+        <div class="signal-desc">Design systems, scalable patterns, long-term architectural thinking</div>
+      </div>
+      <div class="signal">
+        <div class="signal-name">Team Development</div>
+        <div class="signal-desc">Growing designers' careers, performance management, hiring</div>
+      </div>
+      <div class="signal">
+        <div class="signal-name">Ambiguity Navigation</div>
+        <div class="signal-desc">Structuring 0→1 problems, setting direction in undefined spaces</div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="star-box">
+    <b>STAR Format Google Prefers:</b>  
+    <b>S</b>ituation (context/scale) → <b>T</b>ask (what you owned) → <b>A</b>ction (what you specifically did) → <b>R</b>esult (measurable outcome). Every bullet should answer: <em>"So what? How big? How many?"</em>
+  </div>
+
+  
+  <div class="grid">
+
+    
+    <div>
+      <div class="col-label label-sample">Google-Style Sample (Fictional Reference)</div>
+      <div class="resume">
+        <div class="r-header sample-hdr">
+          <h2>MORGAN LEE</h2>
+          <span class="r-title-pill pill-sample">UX Design Manager · Google</span>
+          <div class="r-contact">
+            <span>morgan.lee@gmail.com</span>
+            <span>+1 (650) 000-0000</span>
+            <span>San Francisco, CA</span>
+            <span>portfolio.morganlee.io</span>
+          </div>
+        </div>
+        <div class="r-body">
+
+          <div class="r-section">
+            <div class="r-section-title st-sample">Summary</div>
+            <p class="r-summary">UX Design Manager with <strong>12+ years</strong> leading design for consumer and enterprise products at scale. Expert in building high-velocity design teams, driving 0→1 product launches, and embedding research into every design decision. Passionate about <strong>AI-augmented design workflows</strong> and scaling design impact across organisations of 500+ people.</p>
+          </div>
+
+          <div class="r-section">
+            <div class="r-section-title st-sample">Core Skills</div>
+            <div class="skill-wrap">
+              <span class="skill-tag st-s">Design Leadership</span>
+              <span class="skill-tag st-s">0→1 Product Design</span>
+              <span class="skill-tag st-s">Design Systems</span>
+              <span class="skill-tag st-s">User Research</span>
+              <span class="skill-tag st-s">Data-Driven UX</span>
+              <span class="skill-tag st-s">Cross-functional Influence</span>
+              <span class="skill-tag st-s">Figma · Prototyping</span>
+              <span class="skill-tag st-s">Hiring &amp; Coaching</span>
+              <span class="skill-tag st-s">Agile / Lean UX</span>
+            </div>
+          </div>
+
+          <div class="r-section">
+            <div class="r-section-title st-sample">Experience</div>
+
+            <div class="job">
+              <div class="job-top">
+                <span class="job-company">Google</span>
+                <span class="job-loc">Mountain View, CA</span>
+              </div>
+              <div class="job-title-row">
+                <span class="job-role role-s">UX Design Manager — Google Workspace</span>
+                <span class="job-dates">2020 – Present</span>
+              </div>
+              <div class="job-type">Consumer &amp; enterprise productivity suite · 3B+ users</div>
+              <ul>
+                <li class="li-s">Led a team of <span class="imp imp-s">11 designers</span> across Google Docs, Sheets, and Meet, setting quarterly OKRs and running bi-weekly 1:1 coaching aligned to individual growth plans — resulting in <span class="imp imp-s">2 L5→L6 promotions</span> in 18 months.</li>
+                <li class="li-s">Partnered with PMs and engineers to redesign the Google Meet in-call experience for hybrid work — shipped to <span class="imp imp-s">300M+ active users</span>, with a <span class="imp imp-s">22% reduction in user-reported confusion</span> (CSAT +8 pts).</li>
+                <li class="li-s">Established a cross-product design system shared by <span class="imp imp-s">4 product teams</span>, reducing component duplication by <span class="imp imp-s">60%</span> and cutting design-to-dev handoff time from 3 weeks to 5 days.</li>
+                <li class="li-s">Drove quarterly design reviews with VP-level stakeholders, securing buy-in for a multi-quarter accessibility initiative that raised WCAG compliance from <span class="imp imp-s">61% → 94%</span> across Workspace.</li>
+                <li class="li-s">Hired and onboarded <span class="imp imp-s">6 senior designers</span> in 12 months by redesigning the hiring rubric and interview loop — reducing time-to-hire by <span class="imp imp-s">35%</span>.</li>
+              </ul>
+            </div>
+
+            <div class="job">
+              <div class="job-top">
+                <span class="job-company">Airbnb</span>
+                <span class="job-loc">San Francisco, CA</span>
+              </div>
+              <div class="job-title-row">
+                <span class="job-role role-s">Senior UX Designer → Lead UX Designer</span>
+                <span class="job-dates">2016 – 2020</span>
+              </div>
+              <div class="job-type">Global travel marketplace · 150M+ users</div>
+              <ul>
+                <li class="li-s">Led end-to-end redesign of the host onboarding flow — reduced drop-off by <span class="imp imp-s">38%</span> and increased new host activation by <span class="imp imp-s">27%</span> within 90 days of launch.</li>
+                <li class="li-s">Ran <span class="imp imp-s">12 moderated usability studies</span> per quarter, synthesising findings into design recommendations adopted by <span class="imp imp-s">3 product squads</span>.</li>
+                <li class="li-s">Co-authored Airbnb's mobile design system (DLS v2), used by <span class="imp imp-s">80+ designers</span> globally.</li>
+              </ul>
+            </div>
+
+            <div class="job">
+              <div class="job-top">
+                <span class="job-company">Microsoft</span>
+                <span class="job-loc">Redmond, WA</span>
+              </div>
+              <div class="job-title-row">
+                <span class="job-role role-s">UX Designer — Azure Portal</span>
+                <span class="job-dates">2013 – 2016</span>
+              </div>
+              <div class="job-type">Enterprise cloud platform</div>
+              <ul>
+                <li class="li-s">Designed the Azure resource management dashboard used by <span class="imp imp-s">2M+ enterprise admins</span>, reducing task completion time by <span class="imp imp-s">30%</span> in usability testing.</li>
+                <li class="li-s">Advocated for and implemented an accessibility-first design process, achieving WCAG 2.1 AA compliance across <span class="imp imp-s">15 Azure portal modules</span>.</li>
+              </ul>
+            </div>
+
+          </div>
+
+          <div class="r-section">
+            <div class="r-section-title st-sample">Education</div>
+            <div class="edu-item">
+              <div class="edu-degree">M.S. Human-Computer Interaction</div>
+              <div class="edu-school">Carnegie Mellon University</div>
+              <div class="edu-date">2011 – 2013</div>
+            </div>
+            <div class="edu-item">
+              <div class="edu-degree">B.A. Cognitive Science &amp; Visual Arts</div>
+              <div class="edu-school">UC Berkeley</div>
+              <div class="edu-date">2007 – 2011</div>
+            </div>
+          </div>
+
+          <div class="r-section">
+            <div class="r-section-title st-sample">Certifications</div>
+            <ul class="cert-list cl-s">
+              <li>Google UX Design Certificate</li>
+              <li>Interaction Design Foundation — UX Management</li>
+              <li>Nielsen Norman Group UX Certification</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div>
+      <div class="col-label label-yours">Your Resume — Rewritten in Google's STAR Format</div>
+      <div class="resume">
+        <div class="r-header yours-hdr">
+          <h2>JAYAKRISHNA KAIMAL</h2>
+          <span class="r-title-pill pill-yours">UX Design Manager · AI &amp; Enterprise</span>
+          <div class="r-contact">
+            <span>jk84in@gmail.com</span>
+            <span>+91-9495217394</span>
+            <span>Cochin, India</span>
+            <span>linkedin.com/in/jayakrishna-kaimal</span>
+          </div>
+        </div>
+        <div class="r-body">
+
+          <div class="r-section">
+            <div class="r-section-title st-yours">Summary</div>
+            <p class="r-summary">UX Design Manager with <strong>18 years</strong> leading design for enterprise AI, network intelligence, and cloud platforms. Built and scaled design teams at IBM, shaping product strategy across <strong>3+ major product lines</strong>. Pioneer in integrating <strong>AI and agentic design workflows</strong> into enterprise UX — driving measurable reductions in iteration cycles, design defects, and time-to-hire. IBM Manager Award 2025 recipient. <strong>Google Certified UX Foundation.</strong></p>
+            <div class="diff"><b>STAR tip:</b> Open with your biggest credential (IBM Manager Award 2025) and your most Google-relevant signal (AI workflow integration + measurable scale).</div>
+          </div>
+
+          <div class="r-section">
+            <div class="r-section-title st-yours">Core Skills</div>
+            <div class="skill-wrap">
+              <span class="skill-tag st-y">Design Leadership</span>
+              <span class="skill-tag st-y">AI &amp; Agentic UX</span>
+              <span class="skill-tag st-y">Design Systems (IBM Carbon)</span>
+              <span class="skill-tag st-y">DesignOps</span>
+              <span class="skill-tag st-y">Cross-functional Influence</span>
+              <span class="skill-tag st-y">User Research</span>
+              <span class="skill-tag st-y">Figma · Prototyping</span>
+              <span class="skill-tag st-y">Hiring &amp; Coaching</span>
+              <span class="skill-tag st-y">Enterprise Software</span>
+              <span class="skill-tag st-y">Stakeholder Management</span>
+            </div>
+          </div>
+
+          <div class="r-section">
+            <div class="r-section-title st-yours">Experience</div>
+
+            <div class="job">
+              <div class="job-top">
+                <span class="job-company">IBM India Pvt Ltd</span>
+                <span class="job-loc">Cochin, India</span>
+              </div>
+              <div class="job-title-row">
+                <span class="job-role role-y">UX Design Manager — Automation &amp; AI</span>
+                <span class="job-dates">Nov 2021 – Present</span>
+              </div>
+              <div class="job-type">Enterprise AI &amp; automation platform · global user base</div>
+              <ul>
+                <li class="li-y"><b>Leadership:</b> Built and scaled a design team from 0 to <span class="imp">8+ designers</span> — defined hiring rubric, ran interview loops, and delivered structured onboarding, reducing ramp-up time by <span class="imp">~50%</span>. <span class="anno">STAR ✓</span></li>
+                <li class="li-y"><b>Impact at scale:</b> Owned UX vision and execution across <span class="imp">3+ enterprise product lines</span> (Automation, AI, Network Intelligence), influencing product strategy at VP level. <span class="anno">STAR ✓</span></li>
+                <li class="li-y"><b>AI workflow innovation:</b> Pioneered generative &amp; agentic design workflows across the team — cutting prototype iteration cycles by <span class="imp">~40%</span> and accelerating design-to-dev handoff. <span class="anno">STAR ✓</span></li>
+                <li class="li-y"><b>Design systems:</b> Drove IBM Carbon Design System adoption across <span class="imp">3 product teams</span>, reducing UI inconsistency and rework by <span class="imp">~30%</span>. <span class="anno">STAR ✓</span></li>
+                <li class="li-y"><b>Quality:</b> Instituted bi-weekly design reviews and structured critique cycles — reducing post-launch UX defects by <span class="imp">~25%</span>. <span class="anno">STAR ✓</span></li>
+                <li class="li-y"><b>Recognition:</b> <span class="imp">IBM Manager Award 2025</span> · <span class="imp">IBM Cultural Catalyst Award 2023</span>. <span class="anno">Signal ✓</span></li>
+              </ul>
+              <div class="diff"><b>Add if true:</b> "Influenced roadmap decisions for [product] without direct PM authority" — Google heavily weights cross-functional influence without authority.</div>
+            </div>
+
+            <div class="job">
+              <div class="job-top">
+                <span class="job-company">Prevalent AI</span>
+                <span class="job-loc">Cochin, India</span>
+              </div>
+              <div class="job-title-row">
+                <span class="job-role role-y">Design Lead — Visual Analytics</span>
+                <span class="job-dates">May 2020 – Nov 2021</span>
+              </div>
+              <div class="job-type">AI-powered cybersecurity analytics platform</div>
+              <ul>
+                <li class="li-y">Led UX design for a cybersecurity analytics product — delivered <span class="imp">end-to-end design system</span> (components, style guides) reducing designer onboarding time by <span class="imp">~50%</span>.</li>
+                <li class="li-y">Recruited and mentored a team of <span class="imp">5 designers</span>; instituted regular critique and feedback culture improving cross-team design consistency.</li>
+                <li class="li-y">Partnered with engineering to ship AI-driven interfaces on schedule, translating complex ML outputs into intuitive visual analytics experiences. <span class="anno">AI signal ✓</span></li>
+              </ul>
+              <div class="diff"><b>Add if possible:</b> Any user research, A/B testing, or usability study results — Google values data-informed design decisions heavily.</div>
+            </div>
+
+            <div class="job">
+              <div class="job-top">
+                <span class="job-company">Orion Innovation Pvt. Ltd</span>
+                <span class="job-loc">Cochin, India</span>
+              </div>
+              <div class="job-title-row">
+                <span class="job-role role-y">UX/UI Lead Designer</span>
+                <span class="job-dates">Sep 2013 – Feb 2020</span>
+              </div>
+              <div class="job-type">Technology solutions firm · 6+ year engagement</div>
+              <ul>
+                <li class="li-y">Owned UI signoff and quality bar across all design work for a <span class="imp">6-year engagement</span> — maintaining consistency across web, mobile, and desktop platforms for multiple product lines.</li>
+                <li class="li-y">Mentored <span class="imp">4 UI designers</span>; introduced design excellence practices and peer review processes that elevated overall output quality.</li>
+                <li class="li-y">Collaborated across UX, Product, and Engineering to translate complex requirements into polished, accessible UI solutions. <span class="anno">Cross-functional ✓</span></li>
+              </ul>
+            </div>
+
+          </div>
+
+          <div class="r-section">
+            <div class="r-section-title st-yours">Education</div>
+            <div class="edu-item">
+              <div class="edu-degree">MBA — Marketing &amp; HR</div>
+              <div class="edu-school">Bharat Mata College, MG University</div>
+              <div class="edu-date">2011 – 2012</div>
+            </div>
+            <div class="edu-item">
+              <div class="edu-degree">BA LLB</div>
+              <div class="edu-school">Bangalore Institute of Legal Studies</div>
+              <div class="edu-date">2003 – 2008</div>
+            </div>
+          </div>
+
+          <div class="r-section">
+            <div class="r-section-title st-yours">Certifications (Selected)</div>
+            <ul class="cert-list cl-y">
+              <li>Google Certified UX Foundation <span class="anno">Google signal ✓</span></li>
+              <li>IBM Certified First-Line Manager</li>
+              <li>IBM Generative &amp; Agentic AI Foundation <span class="anno">AI signal ✓</span></li>
+              <li>IBM Certified Enterprise Design Thinking Practitioner</li>
+              <li>Interaction Design Foundation Certified Designer</li>
+              <li>HFI Certified Usability Analyst</li>
+            </ul>
+          </div>
+
+          <div class="r-section">
+            <div class="r-section-title st-yours">Awards</div>
+            <div class="award"><div class="award-name">🏆 IBM Manager Award 2025</div><div class="award-desc">High-impact design leadership &amp; team innovation</div></div>
+            <div class="award"><div class="award-name">🏆 IBM Cultural Catalyst Award 2023</div><div class="award-desc">Inclusive leadership &amp; culture building</div></div>
+            <div class="award"><div class="award-name">🏆 Prevalent AI Focussed Award 2022</div><div class="award-desc">AI-driven user-centric design delivery</div></div>
+            <div class="award"><div class="award-name">🏆 Baker Hughes Energize Award 2020</div><div class="award-desc">People-first team culture</div></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:20px 24px;margin-top:24px">
+    <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.07em;color:#57606a;margin-bottom:14px">Key Gaps to Close Before Applying to Google</div>
+    <table style="width:100%;border-collapse:collapse;font-size:12.5px">
+      <thead>
+        <tr>
+          <th style="text-align:left;padding:8px 12px;background:#f7f8fa;border:1px solid #e5e7eb;font-size:11px;font-weight:700;color:#57606a;text-transform:uppercase">Google Signal</th>
+          <th style="text-align:left;padding:8px 12px;background:#f7f8fa;border:1px solid #e5e7eb;font-size:11px;font-weight:700;color:#57606a;text-transform:uppercase">Sample Resume</th>
+          <th style="text-align:left;padding:8px 12px;background:#f7f8fa;border:1px solid #e5e7eb;font-size:11px;font-weight:700;color:#57606a;text-transform:uppercase">Your Resume</th>
+          <th style="text-align:left;padding:8px 12px;background:#f7f8fa;border:1px solid #e5e7eb;font-size:11px;font-weight:700;color:#57606a;text-transform:uppercase">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding:8px 12px;border:1px solid #e5e7eb">Impact at scale</td>
+          <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#166534;font-weight:600">300M users, 22% CSAT lift</td>
+          <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#166534;font-weight:600">3 product lines, 40% faster iterations</td>
+          <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#374151">✅ Strong — add user counts if available</td>
+        </tr>
+        <tr style="background:#fafafa">
+          <td style="padding:8px 12px;border:1px solid #e5e7eb">Data-informed decisions</td>
+          <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#166534;font-weight:600">12 usability studies/quarter, A/B results</td>
+          <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#9a3412;font-weight:600">Not mentioned</td>
+          <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#374151">⚠️ Add any research, usability tests, or data you've used</td>
+        </tr>
+        <tr>
+          <td style="padding:8px 12px;border:1px solid #e5e7eb">Cross-functional influence</td>
+          <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#166534;font-weight:600">VP-level buy-in for accessibility initiative</td>
+          <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#d97706;font-weight:600">Implied but not explicit</td>
+          <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#374151">⚠️ Add one bullet: "Influenced [outcome] without direct authority over [team]"</td>
+        </tr>
+        <tr style="background:#fafafa">
+          <td style="padding:8px 12px;border:1px solid #e5e7eb">Team development</td>
+          <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#166534;font-weight:600">2 L5→L6 promotions, 35% faster hiring</td>
+          <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#166534;font-weight:600">8 designers hired, 50% faster onboarding</td>
+          <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#374151">✅ Strong — add promotions you enabled if any</td>
+        </tr>
+        <tr>
+          <td style="padding:8px 12px;border:1px solid #e5e7eb">Accessibility / inclusion</td>
+          <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#166534;font-weight:600">61% → 94% WCAG compliance</td>
+          <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#9a3412;font-weight:600">Not mentioned</td>
+          <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#374151">⚠️ Google cares deeply — add any accessibility work</td>
+        </tr>
+        <tr style="background:#fafafa">
+          <td style="padding:8px 12px;border:1px solid #e5e7eb">AI / future of design</td>
+          <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#d97706;font-weight:600">Mentioned in summary only</td>
+          <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#166534;font-weight:600">IBM Agentic AI cert + 40% cycle reduction</td>
+          <td style="padding:8px 12px;border:1px solid #e5e7eb;color:#374151">✅ Strong differentiator — keep prominent</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="page-footer">Made with IBM Bob</div>
+</div>
+</body>
+</html>

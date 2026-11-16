@@ -1,0 +1,575 @@
+
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Scenario 2: Persistent Anomaly → Agentic Remediation</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+    font-size: 14px; line-height: 1.6;
+    background: #ffffff; color: #1f2328;
+    padding: 40px 20px 60px;
+  }
+  .page { max-width: 780px; margin: 0 auto; }
+
+  /* HEADER */
+  .header-block { padding-bottom: 16px; border-bottom: 2px solid #e5e7eb; margin-bottom: 6px; }
+  h1 { font-size: 20px; font-weight: 700; color: #1f2328; margin-bottom: 3px; }
+  .subtitle { font-size: 13px; color: #57606a; }
+
+  /* SECTION LABEL */
+  .section-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.07em; color: #57606a;
+    margin-top: 32px; margin-bottom: 8px;
+    padding-bottom: 5px; border-bottom: 1px solid #e5e7eb;
+  }
+
+  /* PERSONA BAR */
+  .persona-bar {
+    display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 0;
+  }
+  .persona {
+    display: flex; align-items: center; gap: 8px;
+    background: #f7f8fa; border: 1px solid #e5e7eb;
+    border-radius: 5px; padding: 8px 12px; flex: 1; min-width: 140px;
+  }
+  .persona-icon {
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700; color: #fff; flex-shrink: 0;
+  }
+  .persona-name { font-size: 12px; font-weight: 700; color: #1f2328; }
+  .persona-role { font-size: 11px; color: #57606a; }
+
+  /* PHASE HEADER */
+  .phase-header {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 0;
+    margin-top: 28px;
+  }
+  .phase-label {
+    padding: 10px 14px;
+    font-size: 12px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.05em;
+    color: #fff; border-radius: 5px 0 0 0;
+    display: flex; align-items: center;
+  }
+  .phase-label.p1 { background: #57606a; }
+  .phase-label.p2 { background: #b08800; }
+  .phase-label.p3 { background: #cf222e; }
+  .phase-label.p4 { background: #3b82d4; }
+  .phase-label.p5 { background: #7c5cd8; }
+  .phase-label.p6 { background: #22863a; }
+  .phase-title {
+    padding: 10px 14px;
+    font-size: 13px; font-weight: 700; color: #1f2328;
+    background: #f7f8fa;
+    border: 1px solid #e5e7eb; border-left: none;
+    border-radius: 0 5px 0 0;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .phase-time {
+    font-size: 11px; color: #57606a; font-weight: 400;
+    white-space: nowrap;
+  }
+
+  /* JOURNEY TABLE */
+  .journey-table {
+    width: 100%; border-collapse: collapse;
+    font-size: 12px;
+    border: 1px solid #e5e7eb; border-top: none;
+    border-radius: 0 0 5px 5px; overflow: hidden;
+    margin-bottom: 0;
+  }
+  .journey-table thead th {
+    background: #f7f8fa; padding: 7px 10px;
+    text-align: left; font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.05em; color: #57606a;
+    border: 1px solid #e5e7eb;
+  }
+  .journey-table tbody td {
+    padding: 9px 10px; border: 1px solid #e5e7eb;
+    vertical-align: top; font-size: 12px; color: #1f2328;
+  }
+  .journey-table tbody tr:nth-child(even) td { background: #fafbfc; }
+
+  /* TOOL BADGES */
+  .tb {
+    display: inline-block; font-size: 10px; padding: 1px 6px;
+    border-radius: 3px; border: 1px solid #e5e7eb;
+    margin: 1px 1px 1px 0; white-space: nowrap; font-weight: 600;
+  }
+  .tb.ini  { background: #dbeafe; border-color: #93c5fd; color: #1d4ed8; }
+  .tb.wxo  { background: #ede9fe; border-color: #c4b5fd; color: #5b21b6; }
+  .tb.sev  { background: #dcfce7; border-color: #86efac; color: #15803d; }
+  .tb.gov  { background: #fef9c3; border-color: #fde047; color: #854d0e; }
+  .tb.snow { background: #fce7f3; border-color: #f9a8d4; color: #9d174d; }
+  .tb.con  { background: #fef3c7; border-color: #fcd34d; color: #92400e; }
+  .tb.auto { background: #f1f3f5; border-color: #d0d7de; color: #1f2328; }
+
+  /* EMOTION ROW */
+  .emotion { font-size: 13px; }
+  .e-high   { color: #cf222e; font-weight: 700; }
+  .e-med    { color: #b08800; font-weight: 700; }
+  .e-low    { color: #22863a; font-weight: 700; }
+  .e-neutral { color: #57606a; }
+
+  /* OPPORTUNITY CALLOUT */
+  .opp {
+    background: #f0f9ff; border-left: 3px solid #3b82d4;
+    padding: 7px 11px; border-radius: 0 4px 4px 0;
+    font-size: 11px; color: #1f2328; margin-top: 6px;
+  }
+  .opp strong { color: #1d4ed8; }
+
+  /* PAIN CALLOUT */
+  .pain {
+    background: #fff5f5; border-left: 3px solid #cf222e;
+    padding: 7px 11px; border-radius: 0 4px 4px 0;
+    font-size: 11px; color: #1f2328; margin-top: 6px;
+  }
+  .pain strong { color: #cf222e; }
+
+  /* ACTOR INDICATOR */
+  .actor-dot {
+    display: inline-block; width: 8px; height: 8px;
+    border-radius: 50%; margin-right: 4px; flex-shrink: 0;
+    vertical-align: middle;
+  }
+
+  /* EMOTION JOURNEY SVG */
+  .emotion-chart-wrap {
+    background: #f7f8fa; border: 1px solid #e5e7eb;
+    border-radius: 6px; padding: 16px 18px; margin-bottom: 0;
+  }
+  .emotion-chart-wrap h3 {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.05em; color: #57606a; margin-bottom: 12px;
+  }
+
+  /* LEGEND */
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 10px; }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #57606a; }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  /* SUMMARY TABLE */
+  .summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .sum-card { border: 1px solid #e5e7eb; border-radius: 5px; overflow: hidden; }
+  .sum-head { padding: 8px 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+  .sum-head.red    { background: #ffeef0; color: #cf222e; }
+  .sum-head.yellow { background: #fff8c5; color: #735c0f; }
+  .sum-head.green  { background: #dcffe4; color: #22863a; }
+  .sum-body { padding: 10px 12px; font-size: 12px; color: #57606a; }
+  .sum-body ul { padding-left: 14px; }
+  .sum-body li { margin-bottom: 4px; }
+
+  /* FOOTER */
+  .footer { margin-top: 48px; padding-top: 14px; border-top: 1px solid #e5e7eb; text-align: center; font-size: 12px; color: #57606a; }
+
+  @media (max-width: 580px) {
+    .summary-grid { grid-template-columns: 1fr; }
+    .phase-header { grid-template-columns: 90px 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  
+  <div class="header-block">
+    <h1>Scenario 2: Persistent Anomaly → Agentic Remediation</h1>
+    <p class="subtitle">User journey map — DNS resolution failures escalate over 48 hours, triggering a WxO agent that remediates stale DHCP leases and flushes DNS cache, closing the incident automatically.</p>
+  </div>
+
+  
+  <div class="section-label">Actors</div>
+  <div class="persona-bar">
+    <div class="persona">
+      <div class="persona-icon" style="background:#57606a">NO</div>
+      <div>
+        <div class="persona-name">Network Ops Engineer</div>
+        <div class="persona-role">Monitors SevOne alerts, investigates issues</div>
+      </div>
+    </div>
+    <div class="persona">
+      <div class="persona-icon" style="background:#3b82d4">NE</div>
+      <div>
+        <div class="persona-name">Network Engineer</div>
+        <div class="persona-role">Owns INI — DNS/DHCP/IPAM configuration</div>
+      </div>
+    </div>
+    <div class="persona">
+      <div class="persona-icon" style="background:#cf222e">IM</div>
+      <div>
+        <div class="persona-name">Incident Manager</div>
+        <div class="persona-role">Owns Concert — incident priority &amp; SLA</div>
+      </div>
+    </div>
+    <div class="persona">
+      <div class="persona-icon" style="background:#7c5cd8">AI</div>
+      <div>
+        <div class="persona-name">WxO Agent</div>
+        <div class="persona-role">Autonomous — no human actor; governed by watsonx.gov</div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="phase-header">
+    <div class="phase-label p1">Phase 1</div>
+    <div class="phase-title">Signal Detection <span class="phase-time">Hour 0 – 12</span></div>
+  </div>
+  <table class="journey-table">
+    <thead>
+      <tr>
+        <th style="width:18%">Actor</th>
+        <th style="width:28%">Action / Experience</th>
+        <th style="width:22%">Touchpoint</th>
+        <th style="width:16%">Emotion</th>
+        <th style="width:16%">Pain / Opportunity</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="actor-dot" style="background:#57606a"></span>Network Ops</td>
+        <td>Receives low-priority SevOne alert: DNS resolution failure rate slightly elevated on subnet 10.4.x.x. Notes it but does not escalate — within noise threshold.</td>
+        <td><span class="tb sev">SevOne</span> Alert dashboard</td>
+        <td><span class="e-neutral">😐 Neutral</span></td>
+        <td><div class="pain"><strong>Pain:</strong> Alert is below escalation threshold — easy to dismiss. No cross-correlation yet.</div></td>
+      </tr>
+      <tr>
+        <td><span class="actor-dot" style="background:#3b82d4"></span>Network Eng</td>
+        <td>No action taken. Not yet notified. Unaware of the issue.</td>
+        <td>—</td>
+        <td><span class="e-neutral">😐 Unaware</span></td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><span class="actor-dot" style="background:#7c5cd8"></span>WxO Agent</td>
+        <td>SevOne telemetry begins flowing into INI. No agent trigger yet — threshold not met.</td>
+        <td><span class="tb sev">SevOne</span> <span class="tb ini">INI</span></td>
+        <td>—</td>
+        <td><div class="opp"><strong>Opportunity:</strong> Pre-configure a lower "watchlist" threshold in INI that starts correlating before SevOne escalates.</div></td>
+      </tr>
+    </tbody>
+  </table>
+
+  
+  <div class="phase-header">
+    <div class="phase-label p2">Phase 2</div>
+    <div class="phase-title">Escalating Pattern <span class="phase-time">Hour 12 – 36</span></div>
+  </div>
+  <table class="journey-table">
+    <thead>
+      <tr>
+        <th style="width:18%">Actor</th>
+        <th style="width:28%">Action / Experience</th>
+        <th style="width:22%">Touchpoint</th>
+        <th style="width:16%">Emotion</th>
+        <th style="width:16%">Pain / Opportunity</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="actor-dot" style="background:#57606a"></span>Network Ops</td>
+        <td>Second SevOne alert fires — failure rate now 18% on same subnet, persisting for 12+ hours. Ops engineer begins investigation, reviews SevOne dashboard. Pattern is now undeniable.</td>
+        <td><span class="tb sev">SevOne</span> Performance charts</td>
+        <td><span class="e-med">😟 Concerned</span></td>
+        <td><div class="pain"><strong>Pain:</strong> Must manually correlate SevOne data with INI DHCP/DNS records — no automatic cross-tool view.</div></td>
+      </tr>
+      <tr>
+        <td><span class="actor-dot" style="background:#3b82d4"></span>Network Eng</td>
+        <td>Ops engineer pings Network Engineer. NE logs into INI, queries DHCP lease table for 10.4.x.x — confirms stale leases present for ~40 devices. DNS records pointing to expired IPs.</td>
+        <td><span class="tb ini">INI</span> DHCP console</td>
+        <td><span class="e-med">😟 Frustrated</span></td>
+        <td><div class="pain"><strong>Pain:</strong> Manual log-in and query required. No proactive INI alert for DHCP staleness correlating with SevOne DNS failures.</div></td>
+      </tr>
+      <tr>
+        <td><span class="actor-dot" style="background:#cf222e"></span>Incident Mgr</td>
+        <td>Not yet notified. Application team starts reporting slowness — tickets begin arriving in Concert from end users.</td>
+        <td><span class="tb con">Concert</span> Incoming tickets</td>
+        <td><span class="e-med">😟 Reactive</span></td>
+        <td><div class="pain"><strong>Pain:</strong> Incident manager learns about the network issue from application complaints, not from proactive network monitoring.</div></td>
+      </tr>
+    </tbody>
+  </table>
+
+  
+  <div class="phase-header">
+    <div class="phase-label p3">Phase 3</div>
+    <div class="phase-title">Threshold Breach &amp; Incident Open <span class="phase-time">Hour 36 – 48</span></div>
+  </div>
+  <table class="journey-table">
+    <thead>
+      <tr>
+        <th style="width:18%">Actor</th>
+        <th style="width:28%">Action / Experience</th>
+        <th style="width:22%">Touchpoint</th>
+        <th style="width:16%">Emotion</th>
+        <th style="width:16%">Pain / Opportunity</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="actor-dot" style="background:#57606a"></span>Network Ops</td>
+        <td>SevOne crosses the 48-hour persistence threshold configured in INI. INI automatically correlates: persistent DNS failures + stale DHCP leases confirmed. Escalation trigger fires.</td>
+        <td><span class="tb sev">SevOne</span> <span class="tb ini">INI</span> Correlation engine</td>
+        <td><span class="e-high">😰 High stress</span></td>
+        <td><div class="opp"><strong>Opportunity:</strong> This is the automated trigger point — INI + SevOne hand off to Concert and WxO without waiting for human escalation.</div></td>
+      </tr>
+      <tr>
+        <td><span class="actor-dot" style="background:#cf222e"></span>Incident Mgr</td>
+        <td>Concert auto-creates a P2 incident. Incident is pre-populated with: SevOne performance charts, INI DHCP staleness data, affected subnet, device count (40), and upstream application impact. No manual data gathering needed.</td>
+        <td><span class="tb con">Concert</span> Incident record</td>
+        <td><span class="e-med">😤 Urgent but informed</span></td>
+        <td><div class="opp"><strong>Opportunity:</strong> Pre-populated context dramatically reduces MTTR. Incident manager can immediately assess scope without calling network team.</div></td>
+      </tr>
+      <tr>
+        <td><span class="actor-dot" style="background:#7c5cd8"></span>WxO Agent</td>
+        <td>Concert incident triggers WxO agent. Agent reviews INI DHCP lease data, confirms stale leases are the root cause, checks watsonx.gov policy to confirm it has authorization to act on this subnet and action type.</td>
+        <td><span class="tb wxo">WxO</span> <span class="tb ini">INI</span> <span class="tb gov">watsonx.gov</span></td>
+        <td>—</td>
+        <td><div class="opp"><strong>Opportunity:</strong> watsonx.gov policy check is the guardrail — agent only acts within pre-approved scope. Regulated environments require this audit step.</div></td>
+      </tr>
+    </tbody>
+  </table>
+
+  
+  <div class="phase-header">
+    <div class="phase-label p4">Phase 4</div>
+    <div class="phase-title">Agentic Remediation <span class="phase-time">Hour 48 – 48:15</span></div>
+  </div>
+  <table class="journey-table">
+    <thead>
+      <tr>
+        <th style="width:18%">Actor</th>
+        <th style="width:28%">Action / Experience</th>
+        <th style="width:22%">Touchpoint</th>
+        <th style="width:16%">Emotion</th>
+        <th style="width:16%">Pain / Opportunity</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="actor-dot" style="background:#7c5cd8"></span>WxO Agent</td>
+        <td>Agent executes two actions in INI: (1) Refresh DHCP scope on subnet 10.4.x.x — forces lease renewal for all 40 stale devices. (2) Flush DNS cache for affected records. Both actions logged with full parameters to watsonx.gov audit trail.</td>
+        <td><span class="tb wxo">WxO</span> <span class="tb ini">INI</span> API</td>
+        <td>—</td>
+        <td><div class="opp"><strong>Opportunity:</strong> 15-minute remediation window replaces what would have been a 2–4 hour manual triage and fix cycle.</div></td>
+      </tr>
+      <tr>
+        <td><span class="actor-dot" style="background:#3b82d4"></span>Network Eng</td>
+        <td>Receives a notification that the WxO agent has acted on their behalf in INI. Can review the exact API calls made, parameters used, and watsonx.gov authorization token. Can roll back if needed.</td>
+        <td><span class="tb ini">INI</span> Action log, <span class="tb gov">watsonx.gov</span></td>
+        <td><span class="e-low">😌 Relieved, cautious</span></td>
+        <td><div class="pain"><strong>Pain:</strong> Engineers need visibility and rollback capability — trust in autonomous action requires a clear audit trail and override path.</div></td>
+      </tr>
+      <tr>
+        <td><span class="actor-dot" style="background:#57606a"></span>Network Ops</td>
+        <td>SevOne shows DNS failure rate dropping in real time as devices renew leases. Ops engineer watches the recovery curve without needing to take manual action.</td>
+        <td><span class="tb sev">SevOne</span> Live dashboard</td>
+        <td><span class="e-low">😌 Relieved</span></td>
+        <td><div class="opp"><strong>Opportunity:</strong> This is the "invisible UI" moment — the engineer observes recovery without performing it. The agent is the interface.</div></td>
+      </tr>
+    </tbody>
+  </table>
+
+  
+  <div class="phase-header">
+    <div class="phase-label p5">Phase 5</div>
+    <div class="phase-title">Validation &amp; Closed-Loop Confirmation <span class="phase-time">Hour 48:15 – 49</span></div>
+  </div>
+  <table class="journey-table">
+    <thead>
+      <tr>
+        <th style="width:18%">Actor</th>
+        <th style="width:28%">Action / Experience</th>
+        <th style="width:22%">Touchpoint</th>
+        <th style="width:16%">Emotion</th>
+        <th style="width:16%">Pain / Opportunity</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="actor-dot" style="background:#7c5cd8"></span>WxO Agent</td>
+        <td>Agent queries SevOne after 15 minutes: DNS failure rate returned to baseline (&lt;0.5%). Validation passed. Agent writes resolved network state back to INI — DHCP leases fresh, DNS records valid.</td>
+        <td><span class="tb sev">SevOne</span> <span class="tb ini">INI</span> <span class="tb wxo">WxO</span></td>
+        <td>—</td>
+        <td><div class="opp"><strong>Opportunity:</strong> Automated validation loop — agent confirms its own work succeeded before declaring done. No human check-back required.</div></td>
+      </tr>
+      <tr>
+        <td><span class="actor-dot" style="background:#cf222e"></span>Incident Mgr</td>
+        <td>Concert incident automatically updated with remediation steps, validation result, and resolution timestamp. Incident closed as P2 → Resolved. Full audit trail attached. SLA timer stopped.</td>
+        <td><span class="tb con">Concert</span> Incident timeline</td>
+        <td><span class="e-low">😌 Satisfied</span></td>
+        <td><div class="opp"><strong>Opportunity:</strong> MTTR drops from hours to under 1 hour. SLA compliance maintained. Post-incident report auto-generated from Concert audit data.</div></td>
+      </tr>
+      <tr>
+        <td><span class="actor-dot" style="background:#57606a"></span>Network Ops</td>
+        <td>SevOne alert clears. Ops engineer reviews the closed incident in Concert and confirms recovery. No further manual action needed.</td>
+        <td><span class="tb sev">SevOne</span> <span class="tb con">Concert</span></td>
+        <td><span class="e-low">😊 Confident</span></td>
+        <td>—</td>
+      </tr>
+    </tbody>
+  </table>
+
+  
+  <div class="phase-header">
+    <div class="phase-label p6">Phase 6</div>
+    <div class="phase-title">Learning &amp; Prevention <span class="phase-time">Post-incident</span></div>
+  </div>
+  <table class="journey-table">
+    <thead>
+      <tr>
+        <th style="width:18%">Actor</th>
+        <th style="width:28%">Action / Experience</th>
+        <th style="width:22%">Touchpoint</th>
+        <th style="width:16%">Emotion</th>
+        <th style="width:16%">Pain / Opportunity</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="actor-dot" style="background:#3b82d4"></span>Network Eng</td>
+        <td>Reviews watsonx.gov audit trail and INI action log. Confirms agent acted correctly. Updates DHCP lease duration policy in INI to reduce staleness window from 8 days to 3 days — preventing recurrence.</td>
+        <td><span class="tb ini">INI</span> Policy config, <span class="tb gov">watsonx.gov</span></td>
+        <td><span class="e-low">😊 Empowered</span></td>
+        <td><div class="opp"><strong>Opportunity:</strong> Human-in-the-loop at the learning stage — engineer improves the system after the agent demonstrated the failure mode.</div></td>
+      </tr>
+      <tr>
+        <td><span class="actor-dot" style="background:#7c5cd8"></span>WxO Agent</td>
+        <td>Agent pattern (DHCP staleness → DNS failure → flush + renew) is promoted to a persistent skill in the WxO catalog. Next occurrence will trigger remediation at hour 12, not hour 48.</td>
+        <td><span class="tb wxo">WxO</span> Skill catalog</td>
+        <td>—</td>
+        <td><div class="opp"><strong>Opportunity:</strong> The loop shortens with each cycle. The system gets faster at recognizing and resolving this pattern class.</div></td>
+      </tr>
+      <tr>
+        <td><span class="actor-dot" style="background:#cf222e"></span>Incident Mgr</td>
+        <td>Concert generates a post-incident summary: time to detect, time to remediate, SLA impact, root cause, and prevention action taken. Shared with stakeholders automatically.</td>
+        <td><span class="tb con">Concert</span> Report</td>
+        <td><span class="e-low">😊 Confident</span></td>
+        <td><div class="opp"><strong>Opportunity:</strong> Automated post-incident reports replace manual write-ups — freeing the incident manager for higher-value work.</div></td>
+      </tr>
+    </tbody>
+  </table>
+
+  
+  <div class="section-label" style="margin-top:36px">Emotion Journey</div>
+  <div class="emotion-chart-wrap">
+    <h3>Stress / Effort Level Across Phases — by Actor</h3>
+    <svg width="100%" style="display:block">
+      
+      <line x1="80" y1="20" x2="80" y2="160" stroke="#e5e7eb" stroke-width="1"></line>
+      <line x1="80" y1="160" x2="680" y2="160" stroke="#e5e7eb" stroke-width="1"></line>
+      <line x1="80" y1="110" x2="680" y2="110" stroke="#f0f0f0" stroke-width="1"></line>
+      <line x1="80" y1="60" x2="680" y2="60" stroke="#f0f0f0" stroke-width="1"></line>
+
+      
+      <text x="72" y="24" text-anchor="end" font-size="9" fill="#57606a">High</text>
+      <text x="72" y="114" text-anchor="end" font-size="9" fill="#57606a">Med</text>
+      <text x="72" y="164" text-anchor="end" font-size="9" fill="#57606a">Low</text>
+
+      
+      <text x="130" y="178" text-anchor="middle" font-size="9" fill="#57606a">Ph1</text>
+      <text x="230" y="178" text-anchor="middle" font-size="9" fill="#57606a">Ph2</text>
+      <text x="330" y="178" text-anchor="middle" font-size="9" fill="#57606a">Ph3</text>
+      <text x="430" y="178" text-anchor="middle" font-size="9" fill="#57606a">Ph4</text>
+      <text x="530" y="178" text-anchor="middle" font-size="9" fill="#57606a">Ph5</text>
+      <text x="630" y="178" text-anchor="middle" font-size="9" fill="#57606a">Ph6</text>
+
+      
+      <polyline points="130,140 230,90 330,40 430,50 530,145 630,145" fill="none" stroke="#57606a" stroke-width="2" stroke-linejoin="round"></polyline>
+      <circle cx="130" cy="140" r="4" fill="#57606a"></circle>
+      <circle cx="230" cy="90" r="4" fill="#57606a"></circle>
+      <circle cx="330" cy="40" r="4" fill="#57606a"></circle>
+      <circle cx="430" cy="50" r="4" fill="#57606a"></circle>
+      <circle cx="530" cy="145" r="4" fill="#57606a"></circle>
+      <circle cx="630" cy="145" r="4" fill="#57606a"></circle>
+
+      
+      <polyline points="130,155 230,95 330,80 430,100 530,145 630,140" fill="none" stroke="#3b82d4" stroke-width="2" stroke-linejoin="round"></polyline>
+      <circle cx="130" cy="155" r="4" fill="#3b82d4"></circle>
+      <circle cx="230" cy="95" r="4" fill="#3b82d4"></circle>
+      <circle cx="330" cy="80" r="4" fill="#3b82d4"></circle>
+      <circle cx="430" cy="100" r="4" fill="#3b82d4"></circle>
+      <circle cx="530" cy="145" r="4" fill="#3b82d4"></circle>
+      <circle cx="630" cy="140" r="4" fill="#3b82d4"></circle>
+
+      
+      <polyline points="130,158 230,155 330,85 430,90 530,145 630,145" fill="none" stroke="#cf222e" stroke-width="2" stroke-linejoin="round"></polyline>
+      <circle cx="130" cy="158" r="4" fill="#cf222e"></circle>
+      <circle cx="230" cy="155" r="4" fill="#cf222e"></circle>
+      <circle cx="330" cy="85" r="4" fill="#cf222e"></circle>
+      <circle cx="430" cy="90" r="4" fill="#cf222e"></circle>
+      <circle cx="530" cy="145" r="4" fill="#cf222e"></circle>
+      <circle cx="630" cy="145" r="4" fill="#cf222e"></circle>
+
+      
+      <polyline points="130,155 230,155 330,100 430,35 530,145 630,145" fill="none" stroke="#7c5cd8" stroke-width="2" stroke-linejoin="round"></polyline>
+      <circle cx="130" cy="155" r="4" fill="#7c5cd8"></circle>
+      <circle cx="230" cy="155" r="4" fill="#7c5cd8"></circle>
+      <circle cx="330" cy="100" r="4" fill="#7c5cd8"></circle>
+      <circle cx="430" cy="35" r="4" fill="#7c5cd8"></circle>
+      <circle cx="530" cy="145" r="4" fill="#7c5cd8"></circle>
+      <circle cx="630" cy="145" r="4" fill="#7c5cd8"></circle>
+
+      
+      <text x="335" y="33" font-size="9" fill="#cf222e" text-anchor="middle">Peak stress</text>
+      <text x="435" y="28" font-size="9" fill="#7c5cd8" text-anchor="middle">Agent peaks here</text>
+    </svg>
+
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#57606a"></div> Network Ops</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#3b82d4"></div> Network Engineer</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#cf222e"></div> Incident Manager</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#7c5cd8"></div> WxO Agent (effort, not stress)</div>
+    </div>
+  </div>
+
+  
+  <div class="section-label" style="margin-top:32px">Journey Summary</div>
+  <div class="summary-grid">
+    <div class="sum-card">
+      <div class="sum-head red">Pain Points</div>
+      <div class="sum-body">
+        <ul>
+          <li>No proactive cross-tool correlation in Phase 1–2</li>
+          <li>Manual log-in to INI required to confirm DHCP staleness</li>
+          <li>Incident manager learns about network issue from app complaints, not monitoring</li>
+          <li>Engineers need visible rollback path to trust agent actions</li>
+        </ul>
+      </div>
+    </div>
+    <div class="sum-card">
+      <div class="sum-head yellow">Design Opportunities</div>
+      <div class="sum-body">
+        <ul>
+          <li>Lower "watchlist" threshold in INI before SevOne escalates</li>
+          <li>Auto-correlate SevOne DNS failures with INI DHCP lease state</li>
+          <li>Pre-populate Concert incidents with full cross-tool context</li>
+          <li>Expose agent audit trail and one-click rollback in INI UI</li>
+        </ul>
+      </div>
+    </div>
+    <div class="sum-card">
+      <div class="sum-head green">Value Delivered</div>
+      <div class="sum-body">
+        <ul>
+          <li>MTTR: ~4 hrs manual → ~1 hr automated</li>
+          <li>Zero manual remediation steps for network team</li>
+          <li>Full audit trail for compliance and post-incident review</li>
+          <li>Pattern promoted to WxO skill — future incidents resolve at hour 12</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">Made with IBM Bob</div>
+</div>
+</body>
+</html>

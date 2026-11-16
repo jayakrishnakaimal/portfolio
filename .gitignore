@@ -1,0 +1,18 @@
+# local tooling / scratch
+.bob/
+.tmp-shots/
+.DS_Store
+.f*.html
+.f*.png
+.w.png
+
+# test screenshots in project root
+screen_*.png
+test_*.png
+verify_*.png
+t_p*.png
+t_p.html
+ini[0-9].png
+
+# someone else's resume - not part of this portfolio
+princy_resume/

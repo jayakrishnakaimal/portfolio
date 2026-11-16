@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Design Gallery — Jayakrishna Kaimal | UX Design Manager</title>
+<meta name="description" content="A gallery of dashboard, web application and mobile designs by Jayakrishna Kaimal." />
+<meta name="theme-color" content="#02030a" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#02030a;--text:#f1f3ff;--muted:#8e94b3;
+    --a1:#8b5cf6;--a2:#00e5ff;--a3:#ff2e93;--ibm-blue:#0f62fe;
+    --display:'Sora',system-ui,sans-serif;--body:'Manrope',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;
+    --ease:cubic-bezier(.2,.7,.2,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:96px}
+  body{font-family:var(--body);background:var(--bg);color:var(--text);line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased;font-weight:300;font-size:16px}
+  a{color:inherit;text-decoration:none}
+  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+  ::selection{background:var(--a1);color:#fff}
+  :focus-visible{outline:2px solid var(--a2);outline-offset:3px}
+
+  /* Scroll progress */
+  .progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:3000;transform-origin:0 50%;transform:scaleX(var(--p,0));
+    background:linear-gradient(90deg,var(--ibm-blue),var(--a2),var(--a1),var(--a3))}
+
+  /* Ambient background */
+  .bg{position:fixed;inset:0;z-index:-2;overflow:hidden}
+  .orb{position:absolute;border-radius:50%;filter:blur(130px);opacity:.3;animation:float 24s ease-in-out infinite}
+  .orb.o1{width:600px;height:600px;background:var(--ibm-blue);top:-180px;left:-140px}
+  .orb.o2{width:520px;height:520px;background:var(--a3);top:40%;right:-200px;animation-delay:-8s;opacity:.16}
+  .orb.o3{width:560px;height:560px;background:var(--a1);bottom:-220px;left:20%;animation-delay:-16s;opacity:.2}
+  @keyframes float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(60px,-40px) scale(1.08)}66%{transform:translate(-50px,50px) scale(.94)}}
+  .grid-bg{position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+    background-size:64px 64px;mask-image:radial-gradient(ellipse at center,#000 30%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse at center,#000 30%,transparent 75%)}
+
+  .wrap{max-width:1240px;margin:0 auto;padding:0 28px}
+
+  /* Nav */
+  nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:1000;display:flex;align-items:center;justify-content:space-between;gap:12px;
+    padding:6px 8px 6px 20px;border-radius:999px;width:min(1160px,calc(100% - 28px));white-space:nowrap;
+    background:rgba(8,8,16,.94);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);
+    border:1px solid rgba(255,255,255,.14);box-shadow:0 16px 44px -8px rgba(0,0,0,.95),0 0 35px -10px rgba(15,98,254,.35),inset 0 1px 0 rgba(255,255,255,.2)}
+  .logo{display:inline-flex;align-items:baseline;font-family:var(--display);font-weight:700;font-size:17px;letter-spacing:-.02em;color:#fff}
+  .logo i{font-style:normal;color:var(--a2)}
+  .logo small{font-size:11px;font-weight:500;color:var(--muted);margin-left:6px;font-family:var(--mono)}
+  .nav-links{display:flex;gap:4px}
+  .nav-links a{padding:7px 14px;border-radius:999px;font-size:13px;color:var(--muted);transition:.2s;font-weight:400}
+  .nav-links a:hover{color:#fff;background:rgba(255,255,255,.08)}
+  .nav-links a.active{color:var(--a2);font-weight:600;box-shadow:inset 0 0 0 1px rgba(0,229,255,.3)}
+
+  /* Hero */
+  .hero{position:relative;padding:150px 0 0;text-align:center}
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--a2);
+    background:rgba(0,229,255,.08);padding:5px 16px;border-radius:999px;border:1px solid rgba(0,229,255,.25);margin-bottom:28px;
+    animation:fadeUp .8s var(--ease) both}
+  .eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--a2);box-shadow:0 0 0 0 rgba(0,229,255,.7);animation:pulse 2s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(0,229,255,.6)}100%{box-shadow:0 0 0 10px rgba(0,229,255,0)}}
+  h1{font-family:var(--display);font-size:clamp(46px,9.2vw,132px);line-height:.98;letter-spacing:-.05em;font-weight:800}
+  h1 .line{display:block;overflow:hidden;padding:.06em .1em .1em;margin:-.06em -.1em -.1em}
+  h1 .line>span{display:inline-block;animation:rise 1.1s var(--ease) both}
+  h1 .line:nth-child(2)>span{animation-delay:.12s}
+  @keyframes rise{from{transform:translateY(110%) rotate(3deg)}to{transform:none}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+  .grad{background:linear-gradient(110deg,#4589ff,var(--a2) 35%,#a56eff 65%,var(--a3));background-size:240% 100%;animation:gshift 9s linear infinite;-webkit-background-clip:text;background-clip:text;color:transparent}
+  @keyframes gshift{0%{background-position:0 0}100%{background-position:240% 0}}
+  .hero p.lead{font-size:19px;color:rgba(255,255,255,.72);max-width:620px;margin:28px auto 0;animation:fadeUp .9s .35s var(--ease) both}
+
+  /* 3D screen fan */
+  .fan{position:relative;left:50%;width:100vw;margin-left:-50vw;height:clamp(240px,34vw,450px);margin-top:48px;perspective:1800px;overflow:hidden;
+    mask-image:linear-gradient(#000 72%,transparent);-webkit-mask-image:linear-gradient(#000 72%,transparent)}
+  .fan-inner{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .25s ease-out;
+    transform:rotateX(calc(var(--py,0)*-4deg)) rotateY(calc(var(--px,0)*6deg))}
+  .fan figure{position:absolute;top:6%;left:50%;width:38%;margin-left:-19%;aspect-ratio:16/9;border-radius:16px;overflow:hidden;
+    border:1px solid rgba(255,255,255,.2);background:#0b0d1a;
+    transform:translateX(calc(var(--i)*58%)) translateZ(calc(var(--z)*-130px)) rotateY(calc(var(--i)*-16deg));
+    box-shadow:0 40px 80px -20px rgba(0,0,0,.9),0 0 70px -12px var(--c);
+    animation:fanin 1.2s calc(.45s + var(--z)*-.0s + var(--d)*.12s) var(--ease) both,bob 7s calc(var(--d)*-1.3s) ease-in-out infinite}
+  .fan figure.c{z-index:3;width:42%;margin-left:-21%}
+  .fan img{display:block;width:100%;height:100%;object-fit:cover}
+  @keyframes fanin{from{opacity:0;transform:translateX(0) translateZ(-500px) scale(.7)}}
+  @keyframes bob{0%,100%{translate:0 0}50%{translate:0 -14px}}
+
+  /* Filters */
+  .toolbar{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap;margin:64px 0 28px}
+  .toolbar h2{font-family:var(--display);font-size:clamp(30px,4vw,52px);font-weight:800;letter-spacing:-.04em;line-height:1.05}
+  .toolbar h2 small{display:block;font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:8px}
+  .filters{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{font-family:var(--mono);font-size:12px;font-weight:600;padding:9px 18px;border-radius:999px;color:var(--muted);
+    border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.03);transition:.25s var(--ease)}
+  .chip:hover{color:#fff;border-color:rgba(255,255,255,.3);transform:translateY(-2px)}
+  .chip[aria-pressed="true"]{color:#02030a;background:linear-gradient(120deg,var(--ibm-blue),var(--a2));border-color:transparent;box-shadow:0 0 22px rgba(0,229,255,.4)}
+
+  /* Bento gallery */
+  .gallery{display:grid;grid-template-columns:repeat(12,1fr);gap:24px;grid-auto-flow:dense;padding-bottom:40px}
+  .card{position:relative;grid-column:span 4;aspect-ratio:16/9;border-radius:22px;overflow:hidden;isolation:isolate;cursor:zoom-in;
+    background:#0b0d1a;border:1px solid rgba(255,255,255,.1);
+    transition:transform .3s ease-out,border-color .3s,box-shadow .4s,opacity .8s var(--ease),translate .8s var(--ease),scale .8s var(--ease);
+    opacity:0;translate:0 60px;scale:.95}
+  .card.in{opacity:1;translate:0 0;scale:1}
+  .card.big{aspect-ratio:auto;grid-row:span 2;grid-column:span 8}
+  .card.big.l{grid-column:1/span 8}
+  .card.big.r{grid-column:5/span 8}
+  .card.half{grid-column:span 6}
+  .card[hidden]{display:none}
+  .card:hover,.card:focus-visible{border-color:var(--c);box-shadow:0 34px 70px -22px rgba(0,0,0,.95),0 0 60px -12px var(--c)}
+  .frame{position:absolute;inset:0;z-index:-1}
+  .frame img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s var(--ease),filter .5s}
+  .card:hover .frame img{transform:scale(1.07)}
+  /* spotlight */
+  .card::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0;transition:opacity .3s;
+    background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),color-mix(in srgb,var(--c) 28%,transparent),transparent 60%)}
+  .card:hover::before{opacity:1}
+  /* caption gradient */
+  .card::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;transition:opacity .4s;
+    background:linear-gradient(to top,rgba(2,3,10,.96) 0%,rgba(2,3,10,.7) 28%,rgba(2,3,10,0) 58%)}
+  .card:hover::after{background:linear-gradient(to top,rgba(2,3,10,.97) 0%,rgba(2,3,10,.85) 45%,rgba(2,3,10,.1) 80%)}
+  .num{position:absolute;z-index:2;top:14px;right:14px;font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.1em;color:#fff;
+    padding:4px 11px;border-radius:999px;background:rgba(2,3,10,.72);border:1px solid color-mix(in srgb,var(--c) 70%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+  .zoom{position:absolute;z-index:2;bottom:16px;right:16px;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;
+    background:rgba(2,3,10,.8);border:1px solid rgba(255,255,255,.25);opacity:0;transform:scale(.7) rotate(-45deg);transition:.35s var(--ease)}
+  .card:hover .zoom,.card:focus-visible .zoom{opacity:1;transform:none}
+  .info{position:absolute;z-index:2;left:0;right:0;bottom:0;padding:0 22px 20px}
+  .tag{display:block;margin-bottom:4px;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--c)}
+  .info h3{font-family:var(--display);font-size:19px;font-weight:700;letter-spacing:-.02em;line-height:1.25;color:#fff;transition:translate .4s var(--ease)}
+  .info p{font-size:13.5px;color:rgba(255,255,255,.78);line-height:1.55;max-height:0;opacity:0;overflow:hidden;transition:max-height .45s var(--ease),opacity .4s,margin .4s;margin-top:0}
+  .card:hover .info p,.card:focus-visible .info p,.card.big .info p{max-height:90px;opacity:1;margin-top:6px}
+  .card.big .info{padding:0 30px 28px}
+  .card.big .info h3{font-size:clamp(22px,2.4vw,30px)}
+  .card.big .info p{max-width:520px;font-size:14.5px}
+  /* filtered view: even 3-column grid */
+  .gallery.filtered .card,.gallery.filtered .card.big,.gallery.filtered .card.half{grid-column:span 4;grid-row:auto;aspect-ratio:16/9}
+
+  /* Lightbox */
+  .lb{position:fixed;inset:0;z-index:2000;display:none;align-items:center;justify-content:center;padding:28px;background:rgba(2,3,10,.92);backdrop-filter:blur(14px)}
+  .lb.open{display:flex;animation:fadeIn .3s both}
+  @keyframes fadeIn{from{opacity:0}}
+  .lb-inner{position:relative;max-width:min(1280px,100%);width:100%;display:flex;flex-direction:column;align-items:center;gap:16px}
+  .lb img{max-width:100%;max-height:72vh;border-radius:14px;border:1px solid rgba(255,255,255,.2);box-shadow:0 40px 100px rgba(0,0,0,.8);background:#fff}
+  .lb img.swap{animation:swap .5s var(--ease)}
+  @keyframes swap{from{opacity:0;transform:scale(.96) translateY(10px)}}
+  .lb-cap{text-align:center;max-width:760px}
+  .lb-cap b{font-family:var(--display);font-size:20px;display:block;color:#fff}
+  .lb-cap span{font-size:14px;color:rgba(255,255,255,.7)}
+  .lb-count{font-family:var(--mono);font-size:12px;color:var(--a2);letter-spacing:.14em}
+  .lb-btn{position:absolute;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-size:22px;
+    background:rgba(12,14,32,.9);border:1px solid rgba(255,255,255,.28);transition:.2s;z-index:2}
+  .lb-btn:hover{background:rgba(0,229,255,.2);border-color:var(--a2)}
+  .lb-close{top:-8px;right:-8px}
+  .lb-prev{left:-8px;top:40%}
+  .lb-next{right:-8px;top:40%}
+
+  footer{padding:50px 0 40px;border-top:1px solid rgba(255,255,255,.08);text-align:center;color:var(--muted);font-size:13px;margin-top:30px}
+  footer .links{display:flex;gap:22px;justify-content:center;margin-bottom:14px;flex-wrap:wrap}
+  footer a:hover{color:var(--a2)}
+
+  @media(max-width:1000px){
+    .hero{padding-top:130px}
+    .gallery{grid-template-columns:repeat(2,1fr)}
+    .card,.card.half,.gallery.filtered .card{grid-column:span 1}
+    .card.big,.card.big.l,.card.big.r{grid-column:span 2;grid-row:auto;aspect-ratio:16/9}
+    .nav-links a:not(.active):not(:first-child){display:none}
+    .nav-links a:first-child{font-weight:600;color:#fff;background:rgba(255,255,255,.08);box-shadow:inset 0 0 0 1px rgba(25,240,255,.4)}
+    .nav-links a.active{display:none}
+    .fan figure{width:46%;margin-left:-23%}
+    .fan figure.c{width:50%;margin-left:-25%}
+    .fan figure[data-far]{display:none}
+  }
+  @media(max-width:640px){
+    .gallery{grid-template-columns:1fr}
+    .card,.card.big,.card.big.l,.card.big.r,.card.half,.gallery.filtered .card{grid-column:span 1}
+    .info p{max-height:90px;opacity:1;margin-top:6px}
+    .lb-prev{left:4px}.lb-next{right:4px}.lb-close{right:4px;top:-52px}
+  }
+  @media(hover:none){.info p{max-height:90px;opacity:1;margin-top:6px}}
+
+  /* ================= WOW LAYER (matches portfolio) ================= */
+  ::selection{background:rgba(157,107,255,.55);color:#fff}
+  ::-webkit-scrollbar{width:10px}::-webkit-scrollbar-track{background:#000}
+  ::-webkit-scrollbar-thumb{background:linear-gradient(#8a5cf0,#14d6e6);border-radius:10px;border:2px solid #000}
+  body::before{content:"";position:fixed;inset:0;z-index:100;pointer-events:none;opacity:.07;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>")}
+  .progress{box-shadow:0 0 14px var(--a2)}
+  .orb{mix-blend-mode:screen}
+  #wow-bg{position:fixed;inset:0;width:100%;height:100%;z-index:-2;pointer-events:none}
+  .aurora{position:fixed;inset:-20%;z-index:-2;pointer-events:none;opacity:.55;filter:blur(70px);
+    background:
+      radial-gradient(38% 32% at 20% 25%,rgba(124,92,255,.38),transparent 70%),
+      radial-gradient(34% 30% at 82% 18%,rgba(20,214,230,.26),transparent 70%),
+      radial-gradient(40% 34% at 70% 80%,rgba(255,47,160,.20),transparent 70%);
+    animation:aur 22s ease-in-out infinite alternate}
+  @keyframes aur{to{transform:translate3d(4%,3%,0) rotate(6deg) scale(1.08)}}
+  .cursor-glow{position:fixed;width:520px;height:520px;border-radius:50%;left:0;top:0;z-index:-1;pointer-events:none;
+    background:radial-gradient(circle,rgba(157,107,255,.28),rgba(25,240,255,.09) 45%,transparent 70%);transform:translate(-50%,-50%)}
+
+  /* cinematic hero entrance: blur-in */
+  @keyframes fadeUp{from{opacity:0;transform:translateY(26px);filter:blur(10px)}to{opacity:1;transform:none;filter:blur(0)}}
+  .hero h1{text-shadow:0 0 60px rgba(124,92,255,.25)}
+  .hero h1 .grad{filter:drop-shadow(0 0 22px rgba(25,240,255,.35))}
+  .fan{opacity:0;animation:fadeUp 1.2s .5s var(--ease) forwards}
+
+  /* animated accent bar on section title + shimmer line under toolbar */
+  .toolbar h2{position:relative;padding-left:0}
+  .toolbar h2::before{content:"";display:block;width:44px;height:2px;border-radius:2px;margin-bottom:14px;
+    background:linear-gradient(90deg,#9d6bff,#19f0ff);box-shadow:0 0 12px #19f0ff;transform-origin:left;animation:eb 3.2s ease-in-out infinite}
+  @keyframes eb{0%,100%{transform:scaleX(.45)}50%{transform:scaleX(1)}}
+  .toolbar{position:relative;padding-bottom:22px;overflow:hidden}
+  .toolbar::after{content:"";position:absolute;left:-30%;bottom:0;width:30%;height:2px;
+    background:linear-gradient(90deg,transparent,#19f0ff,#9d6bff,transparent);animation:sweep 4.5s linear infinite}
+  @keyframes sweep{to{left:110%}}
+
+  /* nav links: neon underline */
+  .nav-links a{position:relative}
+  .nav-links a::after{content:"";position:absolute;left:14%;right:14%;bottom:2px;height:2px;border-radius:2px;
+    background:linear-gradient(90deg,#9d6bff,#19f0ff);transform:scaleX(0);transition:transform .3s;box-shadow:0 0 10px #19f0ff}
+  .nav-links a:hover::after{transform:scaleX(1)}
+  .nav-links a.active{box-shadow:none}.nav-links a.active::after{transform:scaleX(1)}
+
+  /* cards: neon edge + rotating sheen border on hover */
+  .card:hover,.card:focus-visible{box-shadow:0 34px 70px -22px rgba(0,0,0,.95),0 0 60px -12px var(--c),0 0 0 1px rgba(25,240,255,.2)}
+  .chip{will-change:transform}
+  .frame img{filter:saturate(1.05)}
+  .card:hover .frame img{filter:saturate(1.2) contrast(1.04)}
+  @media(prefers-reduced-motion:reduce){.aurora,.toolbar h2::before,.toolbar::after{animation:none!important}.fan{opacity:1}}
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+    .card{opacity:1;translate:0 0;scale:1}
+    h1 .line>span{transform:none}
+    html{scroll-behavior:auto}
+  }
+</style>
+<script src="theme.js"></script>
+</head>
+<body>
+
+<div class="progress" id="progress" aria-hidden="true"></div>
+<div class="bg" aria-hidden="true"><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div></div>
+<div class="grid-bg" aria-hidden="true"></div>
+<div class="aurora" aria-hidden="true"></div>
+<canvas id="wow-bg" aria-hidden="true"></canvas>
+<div class="cursor-glow" aria-hidden="true"></div>
+
+<nav>
+  <a href="portfolio.html#top" class="logo" aria-label="Home">JK<i>.</i><small>gallery</small></a>
+  <div class="nav-links">
+    <a href="portfolio.html">← Portfolio</a>
+    <a href="casestudy.html">Case Study</a>
+    <a href="#work" class="active">Gallery</a>
+  </div>
+</nav>
+
+<main class="wrap">
+  <header class="hero">
+    <div class="eyebrow">Design Gallery · Dashboards &amp; Apps</div>
+    <h1><span class="line"><span>Dashboards,</span></span><span class="line"><span>data &amp; <span class="grad">interfaces</span></span></span></h1>
+    <p class="lead">A look at the dashboards, web applications and mobile apps I have designed, from analytics for cybersecurity to enterprise portals.</p>
+
+    <div class="fan" id="fan" aria-hidden="true">
+      <div class="fan-inner">
+        <figure data-far style="--i:-2;--z:2;--d:0;--c:rgba(255,122,69,.55)"><img src="designs/s10.png" alt="" /></figure>
+        <figure style="--i:-1;--z:1;--d:1;--c:rgba(69,137,255,.6)"><img src="designs/s03.png" alt="" /></figure>
+        <figure class="c" style="--i:0;--z:0;--d:2;--c:rgba(0,229,255,.55)"><img src="designs/s07.png" alt="" /></figure>
+        <figure style="--i:1;--z:1;--d:3;--c:rgba(139,92,246,.6)"><img src="designs/s04.png" alt="" /></figure>
+        <figure data-far style="--i:2;--z:2;--d:4;--c:rgba(255,46,147,.5)"><img src="designs/s06.png" alt="" /></figure>
+      </div>
+    </div>
+  </header>
+
+  <section id="work">
+    <div class="toolbar">
+      <h2>Selected work<small id="count">16 designs</small></h2>
+      <div class="filters" role="group" aria-label="Filter designs">
+        <button class="chip" data-f="all" aria-pressed="true">All</button>
+        <button class="chip" data-f="web" aria-pressed="false">Web Apps</button>
+        <button class="chip" data-f="viz" aria-pressed="false">Data Viz</button>
+        <button class="chip" data-f="product" aria-pressed="false">Product &amp; Mobile</button>
+      </div>
+    </div>
+
+    <div class="gallery" id="gallery">
+      <figure class="card big l" data-cat="web" style="--c:#a56eff" tabindex="0" role="button" data-full="designs/s02.png" data-title="Paysafe POV Dashboard" data-desc="Shows a large payments company where its digital footprint sits, from remote access appliances to users and hosts.">
+        <div class="frame"><img src="designs/s02.png" alt="Paysafe POV Dashboard on a desktop monitor" loading="lazy" /></div><span class="num">01</span><span class="zoom" aria-hidden="true">⤢</span>
+        <figcaption class="info"><span class="tag">Visual Design · Web Application</span><h3>Paysafe POV Dashboard</h3><p>Gives Paysafe an end-to-end view of its digital footprint after years of acquisitions.</p></figcaption>
+      </figure>
+
+      <figure class="card" data-cat="viz" style="--c:#4589ff" tabindex="0" role="button" data-full="designs/s03.png" data-title="BlueVoyant Dashboard" data-desc="A compliance workbench for a cybersecurity company, with risk score, trends, control families and recent activity.">
+        <div class="frame"><img src="designs/s03.png" alt="BlueVoyant compliance dashboard in Tableau" loading="lazy" /></div><span class="num">02</span><span class="zoom" aria-hidden="true">⤢</span>
+        <figcaption class="info"><span class="tag">Visual Design · Tableau</span><h3>BlueVoyant Dashboard</h3><p>An overall view of a company's risk level, with risk score and recent activity.</p></figcaption>
+      </figure>
+
+      <figure class="card" data-cat="web" style="--c:#8b5cf6" tabindex="0" role="button" data-full="designs/s04.png" data-title="RNA Dashboard" data-desc="Remote network access insights, so users can understand RNA risk and take action.">
+        <div class="frame"><img src="designs/s04.png" alt="Prevalent AI remote network analytics dashboard, dark theme" loading="lazy" /></div><span class="num">03</span><span class="zoom" aria-hidden="true">⤢</span>
+        <figcaption class="info"><span class="tag">Visual Design · Web Application</span><h3>RNA Dashboard</h3><p>Usage insights on remote network access, in a dark theme.</p></figcaption>
+      </figure>
+
+      <figure class="card" data-cat="web" style="--c:#ff2e93" tabindex="0" role="button" data-full="designs/s05.png" data-title="RNA Dashboard (Light Theme)" data-desc="The same remote network access insights, in a light theme with risk and insight panels.">
+        <div class="frame"><img src="designs/s05.png" alt="Prevalent AI remote network analytics dashboard, light theme" loading="lazy" /></div><span class="num">04</span><span class="zoom" aria-hidden="true">⤢</span>
+        <figcaption class="info"><span class="tag">Visual Design · Web Application</span><h3>RNA Dashboard · Light Theme</h3><p>A light take on the same data, with radial charts for failed events, locations and logins.</p></figcaption>
+      </figure>
+
+      <figure class="card" data-cat="viz" style="--c:#f5a623" tabindex="0" role="button" data-full="designs/s06.png" data-title="Orion UX Resource Dashboard" data-desc="A Power BI dashboard that helps managers and leads track resources, work items and hours spent on each project.">
+        <div class="frame"><img src="designs/s06.png" alt="Orion UX resource dashboard in Power BI" loading="lazy" /></div><span class="num">05</span><span class="zoom" aria-hidden="true">⤢</span>
+        <figcaption class="info"><span class="tag">Visual Design · Power BI</span><h3>Orion UX Resource Dashboard</h3><p>High-level view of resources and hours spent on projects.</p></figcaption>
+      </figure>
+
+      <figure class="card" data-cat="web" style="--c:#00e5ff" tabindex="0" role="button" data-full="designs/s07.png" data-title="Congero Dashboard" data-desc="An analytics platform that brings together data from many sources to give deeper, faster business insights.">
+        <div class="frame"><img src="designs/s07.png" alt="Congero analytics dashboard" loading="lazy" /></div><span class="num">06</span><span class="zoom" aria-hidden="true">⤢</span>
+        <figcaption class="info"><span class="tag">Visual Design · Web Application</span><h3>Congero Dashboard</h3><p>Insights in days, not months, with a modular, cloud-based approach.</p></figcaption>
+      </figure>
+
+      <figure class="card big r" data-cat="web" style="--c:#10b981" tabindex="0" role="button" data-full="designs/s11.png" data-title="GDC Dashboard" data-desc="Orion's Global Delivery Center web application: resource dashboard, training portal, news, program management and more.">
+        <div class="frame"><img src="designs/s11.png" alt="Orion Global Delivery Center web application on two desktop monitors" loading="lazy" /></div><span class="num">07</span><span class="zoom" aria-hidden="true">⤢</span>
+        <figcaption class="info"><span class="tag">Dashboard Design · Web Application</span><h3>GDC Dashboard</h3><p>One place for resources, training, news and projects.</p></figcaption>
+      </figure>
+
+      <figure class="card" data-cat="web" style="--c:#4589ff" tabindex="0" role="button" data-full="designs/s08.png" data-title="KPMG Project Victor POC Dashboard" data-desc="A proof of concept for a global audit strategy delivered through the KPMG Clara platform.">
+        <div class="frame"><img src="designs/s08.png" alt="KPMG Project Victor engagement dashboard" loading="lazy" /></div><span class="num">08</span><span class="zoom" aria-hidden="true">⤢</span>
+        <figcaption class="info"><span class="tag">Visual Design · Web Application</span><h3>KPMG Project Victor</h3><p>Process map and controls for audit teams across member firms.</p></figcaption>
+      </figure>
+
+      <figure class="card" data-cat="web" style="--c:#ff7a45" tabindex="0" role="button" data-full="designs/s10.png" data-title="Scana Budget Billing Application" data-desc="A payment plan that lets customers pay an average amount each month, avoiding bill spikes from seasonal changes in energy use.">
+        <div class="frame"><img src="designs/s10.png" alt="Scana budget billing web application" loading="lazy" /></div><span class="num">09</span><span class="zoom" aria-hidden="true">⤢</span>
+        <figcaption class="info"><span class="tag">Visual Design · Web Application</span><h3>Scana Budget Billing</h3><p>A steady monthly bill, with clear paths to pay, report and manage service.</p></figcaption>
+      </figure>
+
+      <figure class="card half" data-cat="product" style="--c:#f59e0b" tabindex="0" role="button" data-full="designs/s09.png" data-title="OPM Dashboard" data-desc="Orion Program Management works with Team Foundation Server so managers can watch the health of portfolios and programs and drill down.">
+        <div class="frame"><img src="designs/s09.png" alt="Orion Program Management hexagon home screen" loading="lazy" /></div><span class="num">10</span><span class="zoom" aria-hidden="true">⤢</span>
+        <figcaption class="info"><span class="tag">Product Design · Web Application</span><h3>OPM Dashboard</h3><p>A hexagon launcher into program dashboards and reports.</p></figcaption>
+      </figure>
+
+      <figure class="card half" data-cat="product" style="--c:#19f0ff" tabindex="0" role="button" data-full="designs/s13.png" data-title="Windows Phone 7 Apps" data-desc="Mobile app designs for Windows Phone 7: a Nike Kinect training app and a Redbox movie rental app.">
+        <div class="frame"><img src="designs/s13.png" alt="Nike Kinect Training and Redbox app designs on Windows Phone 7" loading="lazy" /></div><span class="num">11</span><span class="zoom" aria-hidden="true">⤢</span>
+        <figcaption class="info"><span class="tag">Mobile App Design · Windows Phone 7</span><h3>Nike Kinect Training &amp; Redbox</h3><p>Two mobile apps, from workout sessions and profiles to browsing new movie releases.</p></figcaption>
+      </figure>
+
+      <figure class="card big l" data-cat="web" style="--c:#0f62fe" tabindex="0" role="button" data-full="designs/s14_ini_map.png" data-title="IBM Network Intelligence · 3D Global Map &amp; Remediation" data-desc="Autonomous network topology with real-time 3D telemetry globe, agent confidence scoring, and staged blast-radius remediation controls.">
+        <div class="frame"><img src="designs/s14_ini_map.png" alt="IBM Network Intelligence 3D global network map and autonomous remediation panel" loading="lazy" /></div><span class="num">12</span><span class="zoom" aria-hidden="true">⤢</span>
+        <figcaption class="info"><span class="tag">Agentic AI · Network Intelligence</span><h3>INI Global Map &amp; Remediation</h3><p>Real-time 3D telemetry globe, confidence scoring, and staged remediation actions.</p></figcaption>
+      </figure>
+
+      <figure class="card" data-cat="web" style="--c:#00e5ff" tabindex="0" role="button" data-full="designs/s15_ini_trace_light.png" data-title="IBM Network Intelligence · Agentic Reasoning Trace" data-desc="Five-step explainable agent workflow (Observe, Correlate, Plan, Act, Verify) providing transparent telemetry and human-in-the-loop rollback checkpoints in Light Theme.">
+        <div class="frame"><img src="designs/s15_ini_trace_light.png" alt="IBM Network Intelligence agentic reasoning trace in light theme" loading="lazy" /></div><span class="num">13</span><span class="zoom" aria-hidden="true">⤢</span>
+        <figcaption class="info"><span class="tag">Human-in-the-Loop · Light Theme</span><h3>INI Agentic Reasoning Trace</h3><p>Five-step explainable agent workflow with staged execution checkpoints.</p></figcaption>
+      </figure>
+
+      <figure class="card" data-cat="viz" style="--c:#8b5cf6" tabindex="0" role="button" data-full="designs/s16_ini_command.png" data-title="IBM Network Intelligence · Conversational Command Center" data-desc="AI-augmented NOC command interface pairing natural language prompt orchestration with real-time anomaly step charts and CRC error monitors.">
+        <div class="frame"><img src="designs/s16_ini_command.png" alt="IBM Network Intelligence conversational AI command center and telemetry canvas" loading="lazy" /></div><span class="num">14</span><span class="zoom" aria-hidden="true">⤢</span>
+        <figcaption class="info"><span class="tag">Natural Language UX · Telemetry Canvas</span><h3>INI Conversational Command Center</h3><p>Natural language prompt bar paired with multi-card real-time anomaly step charts.</p></figcaption>
+      </figure>
+
+      <figure class="card half" data-cat="web" style="--c:#10b981" tabindex="0" role="button" data-full="designs/s17_ibm_saas_console.png" data-title="IBM SaaS Console · Subscriptions &amp; Multicloud Fleet" data-desc="A unified multi-tenant SaaS management portal for enterprise cloud subscriptions (AWS, IBM Cloud), instance provisioning, quota allocation, and real-time usage telemetry.">
+        <div class="frame"><img src="designs/s17_ibm_saas_console.png" alt="IBM SaaS Console subscriptions and multicloud usage management dashboard" loading="lazy" /></div><span class="num">15</span><span class="zoom" aria-hidden="true">⤢</span>
+        <figcaption class="info"><span class="tag">Multicloud SaaS · Enterprise Portal</span><h3>IBM SaaS Console</h3><p>Unified subscription management, quota metering, and multi-tenant cloud fleet provisioning.</p></figcaption>
+      </figure>
+
+      <figure class="card half" data-cat="viz" style="--c:#4589ff" tabindex="0" role="button" data-full="designs/s18_watsonx_telecom.png" data-title="IBM Network Intelligence Dashboard" data-desc="An enterprise network observability dashboard featuring real-time RAN and IP router anomaly classification, priority breakdown, and an integrated watsonx AI assistant for root cause investigation.">
+        <div class="frame"><img src="designs/s18_watsonx_telecom.png" alt="IBM Network Intelligence overview dashboard with RAN and IP router anomaly classification" loading="lazy" /></div><span class="num">16</span><span class="zoom" aria-hidden="true">⤢</span>
+        <figcaption class="info"><span class="tag">Observability · Network Intelligence</span><h3>IBM Network Intelligence Dashboard</h3><p>Real-time RAN and IP router anomaly analytics with integrated watsonx AI assistance.</p></figcaption>
+      </figure>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="links"><a href="portfolio.html">← Back to Portfolio</a><a href="casestudy.html">Case Study</a><a href="#top" onclick="window.scrollTo({top:0})">Back to top ↑</a></div>
+    <div>© Jayakrishna Kaimal · UX Design Manager</div>
+  </div>
+</footer>
+
+<!-- Lightbox -->
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Image viewer">
+  <div class="lb-inner">
+    <button class="lb-btn lb-close" id="lbClose" aria-label="Close">✕</button>
+    <button class="lb-btn lb-prev" id="lbPrev" aria-label="Previous design">‹</button>
+    <img id="lbImg" src="" alt="" />
+    <button class="lb-btn lb-next" id="lbNext" aria-label="Next design">›</button>
+    <div class="lb-cap"><span class="lb-count" id="lbCount"></span><b id="lbTitle"></b><span id="lbDesc"></span></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var gallery=document.getElementById('gallery');
+  var cards=[].slice.call(gallery.querySelectorAll('.card'));
+  var chips=[].slice.call(document.querySelectorAll('.chip'));
+  var countEl=document.getElementById('count');
+  var lb=document.getElementById('lb'),lbImg=document.getElementById('lbImg'),lbTitle=document.getElementById('lbTitle'),
+      lbDesc=document.getElementById('lbDesc'),lbCount=document.getElementById('lbCount');
+  var current=0,lastFocus=null;
+  var fine=window.matchMedia&&window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  function visible(){return cards.filter(function(c){return !c.hidden;});}
+
+  /* Scroll reveal (stagger by column position) */
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.1});
+    cards.forEach(function(c,i){c.style.transitionDelay=(i%3)*90+'ms';io.observe(c);});
+  } else {cards.forEach(function(c){c.classList.add('in');});}
+
+  /* Scroll progress */
+  var bar=document.getElementById('progress');
+  function prog(){var h=document.documentElement.scrollHeight-window.innerHeight;bar.style.setProperty('--p',h>0?Math.min(1,window.scrollY/h):0);}
+  window.addEventListener('scroll',prog,{passive:true});prog();
+
+  /* Hero fan parallax */
+  var fan=document.getElementById('fan');
+  if(fine&&!reduce){
+    window.addEventListener('pointermove',function(e){
+      fan.style.setProperty('--px',((e.clientX/window.innerWidth)-.5)*2);
+      fan.style.setProperty('--py',((e.clientY/window.innerHeight)-.5)*2);
+    });
+  }
+
+  /* WOW: cursor glow */
+  var glow=document.querySelector('.cursor-glow');
+  addEventListener('pointermove',function(e){glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px';},{passive:true});
+
+  /* WOW: particle network */
+  var cv=document.getElementById('wow-bg');
+  if(cv&&!reduce){
+    var cx=cv.getContext('2d'),W,H,pts=[],mx=-999,my=-999,dpr=Math.min(window.devicePixelRatio||1,2);
+    var size=function(){W=innerWidth;H=innerHeight;cv.width=W*dpr;cv.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0);
+      var n=Math.round(Math.min(90,W*H/16000));
+      pts=Array.from({length:n},function(){return{x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.28,vy:(Math.random()-.5)*.28,r:Math.random()*1.4+.4,h:Math.random()<.5?270:185};});};
+    size();addEventListener('resize',size);
+    addEventListener('pointermove',function(e){mx=e.clientX;my=e.clientY;},{passive:true});
+    (function tick(){
+      cx.clearRect(0,0,W,H);
+      pts.forEach(function(a){
+        a.x+=a.vx;a.y+=a.vy;if(a.x<0||a.x>W)a.vx*=-1;if(a.y<0||a.y>H)a.vy*=-1;
+        var dx=a.x-mx,dy=a.y-my,d=Math.hypot(dx,dy);
+        if(d<140){a.x+=dx/d*.9;a.y+=dy/d*.9;}
+        cx.beginPath();cx.arc(a.x,a.y,a.r,0,6.283);cx.fillStyle='hsla('+a.h+',100%,75%,.75)';cx.shadowBlur=8;cx.shadowColor='hsl('+a.h+',100%,65%)';cx.fill();
+      });
+      cx.shadowBlur=0;
+      for(var i=0;i<pts.length;i++)for(var j=i+1;j<pts.length;j++){
+        var a=pts[i],b=pts[j],d=Math.hypot(a.x-b.x,a.y-b.y);
+        if(d<120){cx.strokeStyle='hsla('+((a.h+b.h)/2)+',100%,70%,'+((1-d/120)*.22)+')';cx.lineWidth=.7;cx.beginPath();cx.moveTo(a.x,a.y);cx.lineTo(b.x,b.y);cx.stroke();}
+      }
+      if(mx>0){pts.forEach(function(a){var d=Math.hypot(a.x-mx,a.y-my);if(d<150){cx.strokeStyle='rgba(25,240,255,'+((1-d/150)*.4)+')';cx.lineWidth=.8;cx.beginPath();cx.moveTo(a.x,a.y);cx.lineTo(mx,my);cx.stroke();}});}
+      requestAnimationFrame(tick);
+    })();
+  }
+
+  /* WOW: magnetic filter chips */
+  if(fine&&!reduce){
+    chips.forEach(function(b){
+      b.addEventListener('pointermove',function(e){var r=b.getBoundingClientRect();b.style.transform='translate('+((e.clientX-r.left-r.width/2)*.22)+'px,'+((e.clientY-r.top-r.height/2)*.35)+'px)';});
+      b.addEventListener('pointerleave',function(){b.style.transform='';});
+    });
+  }
+
+  /* Filters (re-reveal cards on change) */
+  chips.forEach(function(chip){
+    chip.addEventListener('click',function(){
+      var f=chip.getAttribute('data-f'),n=0;
+      chips.forEach(function(x){x.setAttribute('aria-pressed',x===chip?'true':'false');});
+      cards.forEach(function(c){
+        var show=f==='all'||c.getAttribute('data-cat')===f;
+        c.hidden=!show;
+        if(show){
+          c.classList.remove('in');c.style.transitionDelay='0ms';
+          (function(card,d){setTimeout(function(){card.style.transitionDelay='';card.classList.add('in');},60+d*70);})(c,n++);
+        }
+      });
+      gallery.classList.toggle('filtered',f!=='all');
+      countEl.textContent=n+(n===1?' design':' designs');
+    });
+  });
+
+  /* Tilt + spotlight (mouse only) */
+  cards.forEach(function(c){
+    c.addEventListener('pointermove',function(e){
+      if(!fine||e.pointerType!=='mouse')return;
+      var r=c.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
+      c.style.setProperty('--mx',x+'px');c.style.setProperty('--my',y+'px');
+      if(reduce)return;
+      var rx=((y/r.height)-.5)*-5,ry=((x/r.width)-.5)*6;
+      c.style.transform='perspective(1000px) rotateX('+rx+'deg) rotateY('+ry+'deg) translateY(-4px)';
+    });
+    c.addEventListener('pointerleave',function(){c.style.transform='';});
+  });
+
+  /* Lightbox */
+  function show(i){
+    var list=visible();
+    current=(i+list.length)%list.length;
+    var c=list[current];
+    lbImg.classList.remove('swap');void lbImg.offsetWidth;lbImg.classList.add('swap');
+    lbImg.src=c.getAttribute('data-full');
+    lbImg.alt=c.querySelector('img').alt;
+    lbTitle.textContent=c.getAttribute('data-title');
+    lbDesc.textContent=c.getAttribute('data-desc');
+    lbCount.textContent=String(current+1).padStart(2,'0')+' / '+String(list.length).padStart(2,'0');
+  }
+  function open(c){
+    lastFocus=document.activeElement;
+    show(visible().indexOf(c));
+    lb.classList.add('open');
+    document.body.style.overflow='hidden';
+    document.getElementById('lbClose').focus();
+  }
+  function close(){
+    lb.classList.remove('open');
+    document.body.style.overflow='';
+    if(lastFocus)lastFocus.focus();
+  }
+  cards.forEach(function(c){
+    c.addEventListener('click',function(){open(c);});
+    c.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();open(c);}});
+  });
+  document.getElementById('lbClose').addEventListener('click',close);
+  document.getElementById('lbPrev').addEventListener('click',function(){show(current-1);});
+  document.getElementById('lbNext').addEventListener('click',function(){show(current+1);});
+  lb.addEventListener('click',function(e){if(e.target===lb)close();});
+  document.addEventListener('keydown',function(e){
+    if(!lb.classList.contains('open'))return;
+    if(e.key==='Escape')close();
+    else if(e.key==='ArrowLeft')show(current-1);
+    else if(e.key==='ArrowRight')show(current+1);
+  });
+})();
+</script>
+</body>
+</html>

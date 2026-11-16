@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Incident Storyboard — Slack to Investigation &amp; Approval | IBM Network Intelligence</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230f62fe'/><circle cx='16' cy='16' r='5' fill='none' stroke='%23fff' stroke-width='2' opacity='0.9'/><circle cx='16' cy='16' r='1.5' fill='%23fff'/><circle cx='16' cy='7' r='1.8' fill='%23fff' opacity='0.6'/><circle cx='16' cy='25' r='1.8' fill='%23fff' opacity='0.6'/><circle cx='7' cy='16' r='1.8' fill='%23fff' opacity='0.6'/><circle cx='25' cy='16' r='1.8' fill='%23fff' opacity='0.6'/></svg>"/>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet" />
+
+<style>
+  /* ══════════════════════════════════════════════════════
+     IBM CARBON DESIGN SYSTEM TOKENS & BASE STYLING (v11)
+  ══════════════════════════════════════════════════════ */
+  :root {
+    --cds-background:          #ffffff;
+    --cds-layer-01:            #f4f4f4;
+    --cds-layer-02:            #e0e0e0;
+    --cds-field-01:            #f4f4f4;
+    --cds-border-subtle:       #e0e0e0;
+    --cds-border-strong:       #8d8d8d;
+    --cds-text-primary:        #161616;
+    --cds-text-secondary:      #525252;
+    --cds-text-helper:         #6f6f6f;
+    --cds-text-on-color:       #ffffff;
+    --cds-interactive:         #0f62fe;
+    --cds-interactive-hover:   #0353e9;
+    --cds-link-primary:        #0f62fe;
+    --cds-focus:               #0f62fe;
+    --cds-background-inverse:  #161616;
+    --cds-text-inverse:        #ffffff;
+    --cds-support-error:       #da1e28;
+    --cds-support-success:     #24a148;
+    --cds-support-warning:     #f1c21b;
+    --cds-support-info:        #0043ce;
+
+    --cds-tag-blue-bg:         #edf5ff;
+    --cds-tag-blue-text:       #0043ce;
+    --cds-tag-blue-border:     #d0e2ff;
+    --cds-tag-green-bg:        #defbe6;
+    --cds-tag-green-text:      #0e6027;
+    --cds-tag-green-border:    #a7f0ba;
+    --cds-tag-teal-bg:         #d9fbfb;
+    --cds-tag-teal-text:       #005d5d;
+    --cds-tag-teal-border:     #9ef0f0;
+    --cds-tag-purple-bg:       #f6f2ff;
+    --cds-tag-purple-text:     #6929c4;
+    --cds-tag-purple-border:   #e8daff;
+    --cds-tag-warm-gray-bg:    #f4f4f4;
+    --cds-tag-warm-gray-text:  #393939;
+    --cds-tag-warm-gray-border:#e0e0e0;
+    --cds-tag-red-bg:          #fff1f1;
+    --cds-tag-red-text:        #da1e28;
+    --cds-tag-red-border:      #ffd7d9;
+    --cds-tag-yellow-bg:       #fcf4d6;
+    --cds-tag-yellow-text:     #8e6a00;
+    --cds-tag-yellow-border:   #fddc69;
+
+    --cds-spacing-01: 0.125rem;
+    --cds-spacing-02: 0.25rem;
+    --cds-spacing-03: 0.5rem;
+    --cds-spacing-04: 0.75rem;
+    --cds-spacing-05: 1rem;
+    --cds-spacing-06: 1.5rem;
+    --cds-spacing-07: 2rem;
+    --cds-spacing-08: 2.5rem;
+    --cds-spacing-09: 3rem;
+    --cds-spacing-10: 4rem;
+
+    --cds-font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --cds-font-mono: 'IBM Plex Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+  }
+
+  body {
+    font-family: var(--cds-font-sans);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--cds-text-primary);
+    background: var(--cds-background);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  a { color: var(--cds-link-primary); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ── CARBON UI SHELL HEADER ── */
+  .bx--header {
+    position: sticky; top: 0; z-index: 1000;
+    background: var(--cds-background-inverse);
+    height: 3rem; display: flex; align-items: center;
+    border-bottom: 1px solid #393939;
+  }
+  .bx--header__name {
+    display: flex; align-items: center; height: 100%;
+    padding: 0 var(--cds-spacing-05);
+    font-size: 0.875rem; font-weight: 600;
+    color: var(--cds-text-inverse); text-decoration: none;
+    gap: var(--cds-spacing-03);
+    border-right: 1px solid #393939; white-space: nowrap;
+  }
+  .bx--header__name:hover { background: #262626; text-decoration: none; }
+  .bx--header__name--prefix { font-weight: 400; color: rgba(255,255,255,0.7); }
+  .bx--header__global {
+    display: flex; align-items: center; margin-left: auto;
+    padding-right: var(--cds-spacing-05); gap: var(--cds-spacing-03);
+  }
+
+  /* ── CARBON HERO BANNER ── */
+  .carbon-hero {
+    background: var(--cds-background-inverse);
+    color: var(--cds-text-inverse);
+    padding: var(--cds-spacing-09) var(--cds-spacing-07) var(--cds-spacing-08);
+    border-bottom: 1px solid #393939;
+  }
+  .carbon-hero-inner {
+    max-width: 1200px; margin: 0 auto;
+  }
+  .carbon-hero-eyebrow {
+    font-family: var(--cds-font-mono);
+    font-size: 0.75rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: #78a9ff; margin-bottom: var(--cds-spacing-03);
+    display: flex; align-items: center; gap: var(--cds-spacing-03);
+  }
+  .carbon-hero-title {
+    font-size: 2.25rem; font-weight: 300; line-height: 1.2;
+    margin-bottom: var(--cds-spacing-04); letter-spacing: -0.01em;
+  }
+  .carbon-hero-title strong { font-weight: 600; }
+  .carbon-hero-desc {
+    font-size: 1rem; font-weight: 300; line-height: 1.6;
+    color: #c6c6c6; max-width: 860px; margin-bottom: var(--cds-spacing-07);
+  }
+
+  /* Stat & Meta Row */
+  .carbon-meta-row {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1px; background: #393939; border: 1px solid #393939;
+  }
+  .carbon-meta-card {
+    background: #161616; padding: var(--cds-spacing-05);
+    display: flex; flex-direction: column; gap: var(--cds-spacing-01);
+  }
+  .carbon-meta-lbl {
+    font-family: var(--cds-font-mono); font-size: 0.6875rem;
+    text-transform: uppercase; letter-spacing: 0.08em; color: #8d8d8d;
+  }
+  .carbon-meta-val {
+    font-size: 0.9375rem; font-weight: 600; color: #ffffff;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .status-dot {
+    width: 8px; height: 8px; border-radius: 50%; display: inline-block;
+  }
+  .status-dot--blue { background: #0f62fe; }
+  .status-dot--green { background: #24a148; }
+  .status-dot--purple { background: #a56eff; }
+  .status-dot--yellow { background: #f1c21b; }
+  .status-dot--red { background: #da1e28; }
+
+  /* ── CARBON TAGS & BADGES ── */
+  .bx--tag {
+    display: inline-flex; align-items: center;
+    font-family: var(--cds-font-sans);
+    font-size: 0.75rem; font-weight: 400; line-height: 1;
+    padding: 0.25rem 0.5rem; border-radius: 0.9375rem;
+    border: 1px solid transparent; width: fit-content;
+  }
+  .bx--tag--blue { background: var(--cds-tag-blue-bg); color: var(--cds-tag-blue-text); border-color: var(--cds-tag-blue-border); }
+  .bx--tag--green { background: var(--cds-tag-green-bg); color: var(--cds-tag-green-text); border-color: var(--cds-tag-green-border); }
+  .bx--tag--teal { background: var(--cds-tag-teal-bg); color: var(--cds-tag-teal-text); border-color: var(--cds-tag-teal-border); }
+  .bx--tag--purple { background: var(--cds-tag-purple-bg); color: var(--cds-tag-purple-text); border-color: var(--cds-tag-purple-border); }
+  .bx--tag--warm-gray { background: var(--cds-tag-warm-gray-bg); color: var(--cds-tag-warm-gray-text); border-color: var(--cds-tag-warm-gray-border); }
+  .bx--tag--red { background: var(--cds-tag-red-bg); color: var(--cds-tag-red-text); border-color: var(--cds-tag-red-border); }
+  .bx--tag--yellow { background: var(--cds-tag-yellow-bg); color: var(--cds-tag-yellow-text); border-color: var(--cds-tag-yellow-border); }
+
+  /* ── CONTAINER ── */
+  .carbon-container {
+    max-width: 1200px; margin: 0 auto; padding: var(--cds-spacing-08) var(--cds-spacing-07);
+  }
+
+  /* ── ACTOR ROSTER ── */
+  .actor-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+    margin-bottom: var(--cds-spacing-08);
+  }
+  @media (max-width: 900px) { .actor-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 550px) { .actor-grid { grid-template-columns: 1fr; } }
+
+  .actor-card {
+    background: var(--cds-layer-01); border: 1px solid var(--cds-border-subtle);
+    padding: var(--cds-spacing-05); display: flex; align-items: center; gap: var(--cds-spacing-04);
+  }
+  .actor-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--cds-font-mono); font-size: 0.75rem; font-weight: 700;
+    color: #ffffff; flex-shrink: 0;
+  }
+  .actor-info { min-width: 0; }
+  .actor-name { font-size: 0.875rem; font-weight: 600; color: var(--cds-text-primary); }
+  .actor-role { font-size: 0.75rem; color: var(--cds-text-secondary); margin-top: 1px; }
+
+  /* ── JOURNEY RAIL / SEQUENCE ── */
+  .journey-rail-wrap {
+    background: var(--cds-layer-01); border: 1px solid var(--cds-border-subtle);
+    padding: var(--cds-spacing-05) var(--cds-spacing-06); margin-bottom: var(--cds-spacing-09);
+  }
+  .journey-rail-title {
+    font-family: var(--cds-font-mono); font-size: 0.6875rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.08em; color: var(--cds-text-secondary);
+    margin-bottom: var(--cds-spacing-04); display: flex; justify-content: space-between;
+  }
+  .journey-rail {
+    display: flex; align-items: center; justify-content: space-between;
+    overflow-x: auto; padding-bottom: 4px; gap: 8px;
+  }
+  .jn {
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    min-width: 84px; flex-shrink: 0; text-align: center;
+  }
+  .jn-icon {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--cds-font-mono); font-size: 0.75rem; font-weight: 700; color: #fff;
+  }
+  .jn-label { font-size: 0.75rem; font-weight: 600; color: var(--cds-text-primary); }
+  .jn-time { font-family: var(--cds-font-mono); font-size: 0.6875rem; color: var(--cds-text-helper); }
+  .jn-arrow { color: #8d8d8d; font-size: 1rem; padding-bottom: 16px; flex-shrink: 0; }
+
+  /* ── PHASE HEADERS ── */
+  .phase-header {
+    display: flex; align-items: center; gap: var(--cds-spacing-04);
+    margin: var(--cds-spacing-08) 0 var(--cds-spacing-06);
+  }
+  .phase-header::after { content: ''; flex: 1; height: 1px; background: var(--cds-border-subtle); }
+  .phase-title {
+    font-size: 1.125rem; font-weight: 600; color: var(--cds-text-primary);
+    display: flex; align-items: center; gap: var(--cds-spacing-03);
+  }
+
+  /* ── STORYBOARD FRAME CARDS ── */
+  .timeline { display: flex; flex-direction: column; gap: 0; }
+  .tl-connector { display: flex; justify-content: center; height: 28px; position: relative; }
+  .tl-connector-line {
+    width: 2px; height: 100%; background: var(--cds-border-strong);
+    position: relative;
+  }
+  .tl-connector-line::after {
+    content: ''; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%);
+    border-left: 4px solid transparent; border-right: 4px solid transparent;
+    border-top: 5px solid var(--cds-border-strong);
+  }
+
+  .frame {
+    display: grid; grid-template-columns: 48px 1fr 340px; gap: 0;
+    background: #ffffff; border: 1px solid var(--cds-border-subtle);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  @media (max-width: 980px) {
+    .frame { grid-template-columns: 48px 1fr; }
+    .frame-screen { display: none; }
+  }
+
+  /* Step bar */
+  .frame-step {
+    background: var(--cds-layer-01); border-right: 1px solid var(--cds-border-subtle);
+    display: flex; flex-direction: column; align-items: center; padding-top: var(--cds-spacing-05);
+    gap: var(--cds-spacing-02);
+  }
+  .step-num {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--cds-font-mono); font-size: 0.75rem; font-weight: 700; color: #ffffff;
+  }
+  .step-line { flex: 1; width: 2px; background: var(--cds-border-subtle); }
+
+  /* Frame Main */
+  .frame-main {
+    padding: var(--cds-spacing-06); display: flex; flex-direction: column; gap: var(--cds-spacing-03);
+  }
+  .frame-eyebrow {
+    font-family: var(--cds-font-mono); font-size: 0.6875rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .frame-title {
+    font-size: 1.125rem; font-weight: 600; color: var(--cds-text-primary); line-height: 1.35;
+  }
+  .frame-desc {
+    font-size: 0.875rem; color: var(--cds-text-secondary); line-height: 1.6;
+  }
+  .frame-desc strong { color: var(--cds-text-primary); font-weight: 600; }
+
+  .tag-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+
+  .emotion-row {
+    display: flex; align-items: flex-start; gap: var(--cds-spacing-03);
+    background: var(--cds-layer-01); border-left: 3px solid var(--cds-interactive);
+    padding: var(--cds-spacing-03) var(--cds-spacing-04); margin-top: auto;
+  }
+  .emotion-icon { font-size: 1.125rem; flex-shrink: 0; line-height: 1.2; }
+  .emotion-text { font-size: 0.8125rem; color: var(--cds-text-primary); font-style: italic; line-height: 1.5; }
+
+  /* Right Screen Mockup Panel */
+  .frame-screen {
+    border-left: 1px solid var(--cds-border-subtle); background: #fafafa;
+    display: flex; flex-direction: column; min-width: 0;
+  }
+  .screen-label {
+    padding: var(--cds-spacing-03) var(--cds-spacing-04);
+    font-family: var(--cds-font-mono); font-size: 0.6875rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.08em; color: var(--cds-text-secondary);
+    border-bottom: 1px solid var(--cds-border-subtle); background: var(--cds-layer-01);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .screen-body { flex: 1; padding: var(--cds-spacing-04); display: flex; flex-direction: column; gap: 8px; justify-content: center; }
+
+  /* ── MOCKUP COMPONENTS ── */
+  .mini-slack {
+    background: #ffffff; border: 1px solid var(--cds-border-subtle); border-radius: 4px; overflow: hidden;
+  }
+  .mini-slack-bar {
+    background: #3f0e40; padding: 6px 10px; display: flex; align-items: center; gap: 6px;
+  }
+  .mini-slack-dots { display: flex; gap: 4px; }
+  .mini-slack-dot { width: 6px; height: 6px; border-radius: 50%; }
+  .mini-slack-body { padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+  .mini-msg { display: flex; gap: 8px; align-items: flex-start; }
+  .mini-avatar {
+    width: 22px; height: 22px; border-radius: 4px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 700; color: #fff;
+  }
+  .mini-bubble { font-size: 0.6875rem; color: #161616; line-height: 1.45; }
+  .mini-bubble b { font-weight: 600; }
+  .mini-card {
+    border: 1px solid #ffd7d9; border-left: 3px solid var(--cds-support-error);
+    border-radius: 2px; padding: 8px; margin-top: 4px; background: #ffffff;
+  }
+  .mini-card-title { font-size: 0.6875rem; font-weight: 600; color: #161616; margin-bottom: 4px; }
+  .mini-card-row { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 6px; }
+  .mini-btn-row { display: flex; gap: 6px; margin-top: 6px; }
+  .mini-btn {
+    font-size: 0.6875rem; padding: 3px 8px; font-weight: 600; cursor: default;
+    display: inline-flex; align-items: center; border-radius: 2px;
+  }
+  .mini-btn-primary { background: var(--cds-interactive); color: #ffffff; }
+  .mini-btn-secondary { background: var(--cds-layer-01); color: var(--cds-text-primary); border: 1px solid var(--cds-border-subtle); }
+
+  .mini-product {
+    background: #ffffff; border: 1px solid var(--cds-border-subtle); border-radius: 4px; overflow: hidden;
+  }
+  .mini-topbar {
+    background: var(--cds-background-inverse); color: #ffffff;
+    padding: 6px 10px; display: flex; align-items: center; justify-content: space-between;
+  }
+  .mini-topbar-logo { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.05em; }
+  .mini-tab-row { display: flex; gap: 4px; }
+  .mini-tab { font-size: 0.625rem; padding: 2px 6px; color: #c6c6c6; }
+  .mini-tab.active { background: var(--cds-interactive); color: #ffffff; font-weight: 600; border-radius: 2px; }
+
+  .mini-banner {
+    background: #edf5ff; border-bottom: 1px solid #d0e2ff;
+    padding: 5px 10px; font-size: 0.6875rem; color: #0043ce; font-weight: 500;
+  }
+  .mini-decision-card {
+    border: 1px solid var(--cds-border-subtle); padding: 8px 10px; background: #ffffff;
+  }
+  .mini-slo-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: #fff1f1; border: 1px solid #ffd7d9;
+    padding: 2px 6px; font-size: 0.625rem; font-weight: 600; color: #da1e28;
+    margin-bottom: 6px; font-family: var(--cds-font-mono);
+  }
+  .mini-slo-dot {
+    width: 6px; height: 6px; border-radius: 50%; background: #da1e28;
+    animation: pulseRed 1.4s infinite;
+  }
+  @keyframes pulseRed { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+
+  .mini-field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 8px; margin-bottom: 8px; }
+  .mini-field-lbl { font-family: var(--cds-font-mono); font-size: 0.5625rem; text-transform: uppercase; color: var(--cds-text-helper); }
+  .mini-field-val { font-size: 0.6875rem; font-weight: 600; color: var(--cds-text-primary); }
+  .mini-field-val.red { color: var(--cds-support-error); }
+  .mini-field-val.green { color: var(--cds-support-success); }
+  .mini-field-val.yellow { color: #8e6a00; }
+
+  .mini-options { display: flex; flex-direction: column; gap: 4px; }
+  .mini-option {
+    font-size: 0.625rem; padding: 4px 6px; border: 1px solid var(--cds-border-subtle);
+    background: var(--cds-layer-01); color: var(--cds-text-secondary);
+  }
+  .mini-option.rec {
+    border-color: #a7c7ff; background: #edf5ff; color: #0043ce; font-weight: 600;
+  }
+
+  .mini-tl { display: flex; flex-direction: column; gap: 4px; margin-top: 4px; }
+  .mini-tl-item { display: flex; gap: 6px; align-items: flex-start; }
+  .mini-tl-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
+  .mini-tl-text { font-size: 0.625rem; color: var(--cds-text-secondary); line-height: 1.4; }
+  .mini-tl-text b { color: var(--cds-text-primary); }
+
+  .mini-conf-box { margin-top: 6px; display: flex; align-items: center; gap: 6px; }
+  .mini-conf-lbl { font-size: 0.625rem; color: var(--cds-text-helper); }
+  .mini-conf-bar { flex: 1; height: 4px; background: var(--cds-border-subtle); overflow: hidden; }
+  .mini-conf-fill { height: 100%; background: var(--cds-support-success); }
+  .mini-conf-val { font-family: var(--cds-font-mono); font-size: 0.625rem; font-weight: 600; color: var(--cds-support-success); }
+
+  .mini-stepper { display: flex; gap: 2px; margin-bottom: 6px; }
+  .mini-step { font-family: var(--cds-font-mono); font-size: 0.5625rem; padding: 2px 4px; background: var(--cds-layer-01); color: var(--cds-text-helper); }
+  .mini-step.done { background: #defbe6; color: #0e6027; font-weight: 600; }
+  .mini-step.active { background: #edf5ff; color: #0043ce; font-weight: 600; }
+
+  /* ── OUTCOME IMPACT SECTION ── */
+  .carbon-outcome-wrap {
+    margin-top: var(--cds-spacing-09); background: var(--cds-background-inverse);
+    color: var(--cds-text-inverse); border: 1px solid #393939; padding: var(--cds-spacing-07);
+  }
+  .carbon-outcome-eyebrow {
+    font-family: var(--cds-font-mono); font-size: 0.6875rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.08em; color: #78a9ff; margin-bottom: var(--cds-spacing-03);
+  }
+  .carbon-outcome-title {
+    font-size: 1.5rem; font-weight: 300; margin-bottom: var(--cds-spacing-06);
+  }
+  .carbon-outcome-title strong { font-weight: 600; }
+  .carbon-outcome-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+    background: #393939; border: 1px solid #393939; margin-bottom: var(--cds-spacing-06);
+  }
+  @media (max-width: 768px) { .carbon-outcome-grid { grid-template-columns: 1fr; } }
+  .carbon-outcome-cell {
+    background: #161616; padding: var(--cds-spacing-06); text-align: left;
+  }
+  .carbon-outcome-stat {
+    font-size: 2.25rem; font-weight: 300; line-height: 1; margin-bottom: var(--cds-spacing-02);
+  }
+  .carbon-outcome-stat.blue { color: #78a9ff; font-weight: 600; }
+  .carbon-outcome-stat.green { color: #42be65; font-weight: 600; }
+  .carbon-outcome-stat-lbl {
+    font-size: 0.8125rem; color: #c6c6c6; font-weight: 400;
+  }
+
+  .carbon-outcome-subgrid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--cds-spacing-05);
+    border-top: 1px solid #393939; padding-top: var(--cds-spacing-06);
+  }
+  @media (max-width: 768px) { .carbon-outcome-subgrid { grid-template-columns: 1fr; } }
+  .carbon-outcome-subitem { display: flex; flex-direction: column; gap: 2px; }
+  .carbon-outcome-subval { font-size: 1.125rem; font-weight: 600; color: #ffffff; }
+  .carbon-outcome-subdesc { font-size: 0.8125rem; color: #8d8d8d; }
+
+  /* ── CARBON FOOTER ── */
+  .dark-footer {
+    background: var(--cds-background-inverse); color: #c6c6c6;
+    padding: var(--cds-spacing-07) var(--cds-spacing-07);
+    border-top: 1px solid #393939; display: flex; flex-wrap: wrap;
+    align-items: center; justify-content: space-between; gap: var(--cds-spacing-05);
+  }
+  .df-brand { font-size: 0.875rem; font-weight: 600; color: #ffffff; letter-spacing: 0.05em; }
+  .df-flow { font-size: 0.8125rem; color: #8d8d8d; }
+  .df-flow span { color: #78a9ff; margin: 0 4px; }
+  .df-credit { font-size: 0.75rem; color: #6f6f6f; }
+  .df-credit strong { color: #f4f4f4; }
+</style>
+</head>
+<body>
+
+  <!-- ═══ CARBON UI SHELL HEADER ═══ -->
+  <header class="bx--header">
+    <a class="bx--header__name" href="hub.html">
+      <span class="bx--header__name--prefix">IBM</span>
+      Network Intelligence · Storyboard
+    </a>
+    <div class="bx--header__global">
+      <a href="hub.html" class="bx--tag bx--tag--blue" style="text-decoration:none;cursor:pointer;">&larr; Back to Hub</a>
+    </div>
+  </header>
+
+  <!-- ═══ CARBON HERO BANNER ═══ -->
+  <section class="carbon-hero">
+    <div class="carbon-hero-inner">
+      <div class="carbon-hero-eyebrow">
+        <span>Operational Workflow</span>
+        <span>/</span>
+        <span>End-to-End User Journey</span>
+      </div>
+      <h1 class="carbon-hero-title">From Slack Alert to Approved Fix — <strong>in 4 Minutes</strong></h1>
+      <p class="carbon-hero-desc">
+        A step-by-step storyboard tracking how Headless AI detects a database exhaustion anomaly, enforces policy guardrails, delivers a structured decision card directly into Slack, and completes an authorized zero-downtime remediation.
+      </p>
+
+      <div class="carbon-meta-row">
+        <div class="carbon-meta-card">
+          <div class="carbon-meta-lbl">Primary Operator</div>
+          <div class="carbon-meta-val"><span class="status-dot status-dot--purple"></span> Jamie Park (On-Call SRE)</div>
+        </div>
+        <div class="carbon-meta-card">
+          <div class="carbon-meta-lbl">Autonomous Actor</div>
+          <div class="carbon-meta-val"><span class="status-dot status-dot--blue"></span> IBM NI Headless Agent</div>
+        </div>
+        <div class="carbon-meta-card">
+          <div class="carbon-meta-lbl">Target Incident</div>
+          <div class="carbon-meta-val"><span class="status-dot status-dot--red"></span> INC-8841 · DB Pool Leak</div>
+        </div>
+        <div class="carbon-meta-card">
+          <div class="carbon-meta-lbl">Enforced Boundary</div>
+          <div class="carbon-meta-val"><span class="status-dot status-dot--yellow"></span> Guardrail G-01 (Peak Window)</div>
+        </div>
+        <div class="carbon-meta-card">
+          <div class="carbon-meta-lbl">Service Outcome</div>
+          <div class="carbon-meta-val"><span class="status-dot status-dot--green"></span> 100% SLO Maintained · 0 Impact</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ MAIN CONTENT ═══ -->
+  <main class="carbon-container">
+
+    <!-- ── ACTOR ROSTER ── -->
+    <div class="actor-grid">
+      <div class="actor-card">
+        <div class="actor-avatar" style="background: #6929c4;">JP</div>
+        <div class="actor-info">
+          <div class="actor-name">Jamie Park</div>
+          <div class="actor-role">On-call SRE · Laptop / Mobile</div>
+        </div>
+      </div>
+      <div class="actor-card">
+        <div class="actor-avatar" style="background: #0f62fe;">AI</div>
+        <div class="actor-info">
+          <div class="actor-name">IBM NI Agent</div>
+          <div class="actor-role">Headless AI · 24/7 Telemetry</div>
+        </div>
+      </div>
+      <div class="actor-card">
+        <div class="actor-avatar" style="background: #0e6027;">SL</div>
+        <div class="actor-info">
+          <div class="actor-name">Slack Bot</div>
+          <div class="actor-role">Actionable Block Kit Channel</div>
+        </div>
+      </div>
+      <div class="actor-card">
+        <div class="actor-avatar" style="background: #393939;">SN</div>
+        <div class="actor-info">
+          <div class="actor-name">ServiceNow</div>
+          <div class="actor-role">Automated Audit &amp; CR Sync</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── JOURNEY RAIL ── -->
+    <div class="journey-rail-wrap">
+      <div class="journey-rail-title">
+        <span>Incident Sequence Timeline</span>
+        <span>Total Elapsed Time: 4m 02s</span>
+      </div>
+      <div class="journey-rail">
+        <div class="jn">
+          <div class="jn-icon" style="background:#0f62fe;">01</div>
+          <div class="jn-label">AI Detects</div>
+          <div class="jn-time">14:03 UTC</div>
+        </div>
+        <div class="jn-arrow">&rarr;</div>
+        <div class="jn">
+          <div class="jn-icon" style="background:#da1e28;">02</div>
+          <div class="jn-label">G-01 Blocks</div>
+          <div class="jn-time">14:04 UTC</div>
+        </div>
+        <div class="jn-arrow">&rarr;</div>
+        <div class="jn">
+          <div class="jn-icon" style="background:#0e6027;">03</div>
+          <div class="jn-label">Slack Alert</div>
+          <div class="jn-time">14:05 UTC</div>
+        </div>
+        <div class="jn-arrow">&rarr;</div>
+        <div class="jn">
+          <div class="jn-icon" style="background:#6929c4;">04</div>
+          <div class="jn-label">Jamie Reads</div>
+          <div class="jn-time">14:05 UTC</div>
+        </div>
+        <div class="jn-arrow">&rarr;</div>
+        <div class="jn">
+          <div class="jn-icon" style="background:#0f62fe;">05</div>
+          <div class="jn-label">Opens NI</div>
+          <div class="jn-time">14:06 UTC</div>
+        </div>
+        <div class="jn-arrow">&rarr;</div>
+        <div class="jn">
+          <div class="jn-icon" style="background:#0043ce;">06</div>
+          <div class="jn-label">Reviews Trace</div>
+          <div class="jn-time">14:06 UTC</div>
+        </div>
+        <div class="jn-arrow">&rarr;</div>
+        <div class="jn">
+          <div class="jn-icon" style="background:#24a148;">07</div>
+          <div class="jn-label">Approves Fix</div>
+          <div class="jn-time">14:07 UTC</div>
+        </div>
+        <div class="jn-arrow">&rarr;</div>
+        <div class="jn">
+          <div class="jn-icon" style="background:#24a148;">08</div>
+          <div class="jn-label">AI Deploys</div>
+          <div class="jn-time">14:07 UTC</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ PHASE 1: SLACK & ESCALATION ═══════════════ -->
+    <div class="phase-header">
+      <div class="phase-title">
+        <span class="bx--tag bx--tag--purple">Phase 1</span>
+        <span>Detection, Policy Evaluation &amp; Contextual Chat</span>
+      </div>
+    </div>
+
+    <div class="timeline">
+
+      <!-- STEP 1 -->
+      <div class="frame">
+        <div class="frame-step">
+          <div class="step-num" style="background:#0f62fe;">1</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="frame-main">
+          <div class="frame-eyebrow" style="color:#0f62fe;">
+            <span class="status-dot status-dot--blue"></span> IBM NI Agent · 14:03 UTC
+          </div>
+          <h2 class="frame-title">AI detects DB connection pool nearing exhaustion</h2>
+          <p class="frame-desc">
+            The headless agent continuously monitors <strong>payment-service</strong> in us-east-1. At 14:03, it observes connections rising at <strong>+12/min</strong>, reaching 92% of the hard cap (500 max). Pattern-matching correlates this with 14 historical incidents with <strong>91% confidence</strong>.
+          </p>
+          <div class="tag-row">
+            <span class="bx--tag bx--tag--blue">AI Telemetry</span>
+            <span class="bx--tag bx--tag--teal">Pattern Match 91%</span>
+            <span class="bx--tag bx--tag--warm-gray">14 Historic Cases</span>
+          </div>
+          <div class="emotion-row">
+            <div class="emotion-icon">🤖</div>
+            <div class="emotion-text">AI Agent: "Connection pool at 92% and accelerating. Proposed action: pod restart. Evaluating active policy guardrails before execution."</div>
+          </div>
+        </div>
+        <div class="frame-screen">
+          <div class="screen-label">
+            <span class="status-dot status-dot--blue"></span> IBM NI · Pulse Stream
+          </div>
+          <div class="screen-body">
+            <div class="mini-product">
+              <div class="mini-topbar">
+                <span class="mini-topbar-logo">IBM Network Intelligence</span>
+                <div class="mini-tab-row">
+                  <span class="mini-tab">Guardrails</span>
+                  <span class="mini-tab active">Pulse</span>
+                  <span class="mini-tab">Inbox</span>
+                </div>
+              </div>
+              <div style="padding:10px;">
+                <div style="font-size:0.625rem;font-weight:600;color:var(--cds-text-secondary);margin-bottom:6px;text-transform:uppercase;">Live Activity Stream</div>
+                <div class="mini-tl">
+                  <div class="mini-tl-item"><div class="mini-tl-dot" style="background:#24a148;"></div><div class="mini-tl-text"><b>Silent:</b> BGP flap NY-RTR-02 resolved (43s)</div></div>
+                  <div class="mini-tl-item"><div class="mini-tl-dot" style="background:#24a148;"></div><div class="mini-tl-text"><b>Silent:</b> Pod restart logging-svc (0 impact)</div></div>
+                  <div class="mini-tl-item"><div class="mini-tl-dot" style="background:#f1c21b;"></div><div class="mini-tl-text"><b>Alert:</b> payment-svc pool 92% and rising</div></div>
+                </div>
+                <div class="mini-conf-box">
+                  <span class="mini-conf-lbl">Confidence</span>
+                  <div class="mini-conf-bar"><div class="mini-conf-fill" style="width:91%;"></div></div>
+                  <span class="mini-conf-val">91%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-connector"><div class="tl-connector-line"></div></div>
+
+      <!-- STEP 2 -->
+      <div class="frame">
+        <div class="frame-step">
+          <div class="step-num" style="background:#da1e28;">2</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="frame-main">
+          <div class="frame-eyebrow" style="color:#da1e28;">
+            <span class="status-dot status-dot--red"></span> Guardrail Evaluation · 14:04 UTC
+          </div>
+          <h2 class="frame-title">Hard guardrail G-01 blocks autonomous restart</h2>
+          <p class="frame-desc">
+            The AI evaluates its action policy to restart payment-service. Guardrail <strong>G-01</strong> immediately blocks execution: <em>"No hard production restarts allowed on weekdays 14:00–16:00 UTC"</em> during peak customer checkout traffic.
+            <br/><br/>
+            Rather than halting, the agent automatically pivots: it constructs an alternative bounded remediation plan (temporary connection pool expansion) and escalates for human supervisor approval.
+          </p>
+          <div class="tag-row">
+            <span class="bx--tag bx--tag--red">Hard Guardrail G-01</span>
+            <span class="bx--tag bx--tag--yellow">Peak Window Active</span>
+            <span class="bx--tag bx--tag--blue">Auto-Escalation</span>
+          </div>
+          <div class="emotion-row">
+            <div class="emotion-icon">🚧</div>
+            <div class="emotion-text">AI Agent: "Hard limit triggered. Autonomous restart blocked. Formulating non-disruptive +50 pool expansion and escalating to Jamie with full telemetry."</div>
+          </div>
+        </div>
+        <div class="frame-screen">
+          <div class="screen-label">
+            <span class="status-dot status-dot--red"></span> Policy Guardrail Trigger
+          </div>
+          <div class="screen-body">
+            <div class="mini-product">
+              <div class="mini-topbar">
+                <span class="mini-topbar-logo">IBM NI · Guardrail Engine</span>
+              </div>
+              <div style="padding:10px;">
+                <div style="border:1px solid #ffd7d9;border-left:3px solid #da1e28;padding:8px;background:#fff1f1;">
+                  <div style="font-size:0.6875rem;font-weight:600;color:#da1e28;margin-bottom:2px;">⛔ G-01 · Hard Boundary Hit</div>
+                  <div style="font-size:0.625rem;color:var(--cds-text-secondary);line-height:1.4;">"No prod restarts weekdays 14:00–16:00 UTC"</div>
+                  <div style="display:flex;gap:4px;margin-top:6px;flex-wrap:wrap;">
+                    <span class="bx--tag bx--tag--red" style="font-size:0.5625rem;padding:1px 4px;">Hard Limit</span>
+                    <span class="bx--tag bx--tag--green" style="font-size:0.5625rem;padding:1px 4px;">Alternative Staged</span>
+                  </div>
+                </div>
+                <div style="margin-top:8px;font-size:0.625rem;color:var(--cds-text-helper);font-style:italic;">Dispatching Slack decision block…</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-connector"><div class="tl-connector-line"></div></div>
+
+      <!-- STEP 3 -->
+      <div class="frame">
+        <div class="frame-step">
+          <div class="step-num" style="background:#0e6027;">3</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="frame-main">
+          <div class="frame-eyebrow" style="color:#0e6027;">
+            <span class="status-dot status-dot--green"></span> Slack Channel · #ops-alerts · 14:05 UTC
+          </div>
+          <h2 class="frame-title">Jamie receives structured decision card in Slack</h2>
+          <p class="frame-desc">
+            IBM Network Intelligence posts an actionable <strong>Block Kit decision card</strong> directly into Jamie's existing Slack workflow. The card summarizes the root cause, shows the active guardrail constraint, provides an SLO countdown (11m remaining), and offers one-click action options.
+            <br/><br/>
+            Previous silent auto-resolutions are visible above, proving the system only interrupts human attention when policy bounds require authorization.
+          </p>
+          <div class="tag-row">
+            <span class="bx--tag bx--tag--green">Zero Context-Switch</span>
+            <span class="bx--tag bx--tag--purple">Block Kit Card</span>
+            <span class="bx--tag bx--tag--red">11m SLO Window</span>
+          </div>
+          <div class="emotion-row">
+            <div class="emotion-icon">👀</div>
+            <div class="emotion-text">Jamie Park: "Notification in #ops-alerts. The card is clear: high confidence, clear root cause, and explains why G-01 prevented auto-restart."</div>
+          </div>
+        </div>
+        <div class="frame-screen">
+          <div class="screen-label">
+            <span class="status-dot status-dot--green"></span> Slack · #ops-alerts
+          </div>
+          <div class="screen-body">
+            <div class="mini-slack">
+              <div class="mini-slack-bar">
+                <div class="mini-slack-dots">
+                  <div class="mini-slack-dot" style="background:#ff5f57;"></div>
+                  <div class="mini-slack-dot" style="background:#febc2e;"></div>
+                  <div class="mini-slack-dot" style="background:#28c840;"></div>
+                </div>
+                <span style="font-size:0.625rem;color:rgba(255,255,255,0.7);margin-left:6px;font-family:var(--cds-font-mono);">#ops-alerts</span>
+              </div>
+              <div class="mini-slack-body">
+                <div class="mini-msg"><div class="mini-avatar" style="background:#24a148;">NI</div><div class="mini-bubble"><b>IBM NI Bot</b> · 14:01<br/>✅ Auto-resolved — BGP flap NY-RTR-02</div></div>
+                <div class="mini-msg">
+                  <div class="mini-avatar" style="background:#da1e28;">NI</div>
+                  <div style="flex:1;">
+                    <div class="mini-bubble"><b>IBM NI Bot</b> · 14:05 <span class="bx--tag bx--tag--red" style="font-size:0.5625rem;padding:0 4px;">Action Required</span></div>
+                    <div class="mini-card">
+                      <div class="mini-slo-badge"><span class="mini-slo-dot"></span>SLO breach in 11m</div>
+                      <div class="mini-card-title">DB connection pool exhausted · G-01 blocks restart</div>
+                      <div class="mini-card-row">
+                        <span class="bx--tag bx--tag--red" style="font-size:0.5625rem;padding:0 4px;">498/500 (99.6%)</span>
+                        <span class="bx--tag bx--tag--green" style="font-size:0.5625rem;padding:0 4px;">94% Conf.</span>
+                      </div>
+                      <div class="mini-btn-row">
+                        <span class="mini-btn mini-btn-primary">✓ Approve</span>
+                        <span class="mini-btn mini-btn-secondary">Open in NI &rarr;</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-connector"><div class="tl-connector-line"></div></div>
+
+      <!-- STEP 4 -->
+      <div class="frame">
+        <div class="frame-step">
+          <div class="step-num" style="background:#6929c4;">4</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="frame-main">
+          <div class="frame-eyebrow" style="color:#6929c4;">
+            <span class="status-dot status-dot--purple"></span> Deep-Link Handoff · 14:05 UTC
+          </div>
+          <h2 class="frame-title">Jamie opens deep link to examine reasoning</h2>
+          <p class="frame-desc">
+            Jamie desires full transparency before committing production changes. Clicking <strong>"Open in IBM NI"</strong> triggers a contextual deep link, instantly landing on DEC-001 inside the console with pre-filtered telemetry.
+            <br/><br/>
+            An explicit <em>"Opened from Slack #ops-alerts"</em> breadcrumb maintains mental continuity with zero navigation overhead.
+          </p>
+          <div class="tag-row">
+            <span class="bx--tag bx--tag--purple">Deep Link Routing</span>
+            <span class="bx--tag bx--tag--blue">Context Preservation</span>
+            <span class="bx--tag bx--tag--warm-gray">Zero Click Waste</span>
+          </div>
+          <div class="emotion-row">
+            <div class="emotion-icon">🖱️</div>
+            <div class="emotion-text">Jamie Park: "One click opens the exact decision workspace with all evidence pre-loaded. No manual searching through alert consoles."</div>
+          </div>
+        </div>
+        <div class="frame-screen">
+          <div class="screen-label">
+            <span class="status-dot status-dot--purple"></span> Frictionless Handoff
+          </div>
+          <div class="screen-body">
+            <div class="mini-product">
+              <div class="mini-topbar"><span class="mini-topbar-logo">IBM Network Intelligence</span></div>
+              <div class="mini-banner">🔗 Deep-linked from Slack · #ops-alerts (DEC-001)</div>
+              <div style="padding:10px;text-align:center;">
+                <div style="font-size:0.6875rem;font-weight:600;color:var(--cds-text-primary);">Pre-loaded Decision Workspace</div>
+                <div style="font-size:0.625rem;color:var(--cds-text-secondary);margin-top:2px;">Telemetry, logs &amp; blast radius synchronized</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ═══════════════ PHASE 2: PRODUCT INVESTIGATION ═══════════════ -->
+    <div class="phase-header">
+      <div class="phase-title">
+        <span class="bx--tag bx--tag--blue">Phase 2</span>
+        <span>Decision Evaluation, Trace View &amp; Evidence Audit</span>
+      </div>
+    </div>
+
+    <div class="timeline">
+
+      <!-- STEP 5 -->
+      <div class="frame">
+        <div class="frame-step">
+          <div class="step-num" style="background:#0f62fe;">5</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="frame-main">
+          <div class="frame-eyebrow" style="color:#0f62fe;">
+            <span class="status-dot status-dot--blue"></span> Decision Inbox · 14:06 UTC
+          </div>
+          <h2 class="frame-title">Decision Inbox surfaces ranked options &amp; blast radius</h2>
+          <p class="frame-desc">
+            Inside the Decision Inbox, Jamie is presented with three ranked remediation paths generated by the AI:
+            <br/><br/>
+            <strong>Option 1 (Recommended):</strong> Increase connection pool by +50 connections temporarily with an 8-minute auto-revert timer. 0 downtime, 0 restart, 94% rollback confidence.
+            <br/>
+            <strong>Option 2:</strong> Force pod restart with manual guardrail override (High risk of dropped in-flight transactions).
+            <br/>
+            <strong>Option 3:</strong> Reject proposal and assume manual command-line remediation.
+          </p>
+          <div class="tag-row">
+            <span class="bx--tag bx--tag--blue">Ranked Options</span>
+            <span class="bx--tag bx--tag--teal">94% Confidence</span>
+            <span class="bx--tag bx--tag--green">Auto-Revert Guard</span>
+          </div>
+          <div class="emotion-row">
+            <div class="emotion-icon">🧠</div>
+            <div class="emotion-text">Jamie Park: "Option 1 is clearly optimal: temporary pool expansion buys time without dropping live customer shopping carts."</div>
+          </div>
+        </div>
+        <div class="frame-screen">
+          <div class="screen-label">
+            <span class="status-dot status-dot--blue"></span> Decision Workspace
+          </div>
+          <div class="screen-body">
+            <div class="mini-product">
+              <div class="mini-topbar">
+                <span class="mini-topbar-logo">IBM NI</span>
+                <div class="mini-tab-row">
+                  <span class="mini-tab">Health</span>
+                  <span class="mini-tab active">Inbox (1)</span>
+                  <span class="mini-tab">Remediate</span>
+                </div>
+              </div>
+              <div class="mini-decision-card">
+                <div class="mini-slo-badge"><span class="mini-slo-dot"></span>Breach in 10:42</div>
+                <div style="font-size:0.6875rem;font-weight:600;margin-bottom:4px;">INC-8841 · DB Pool Saturation</div>
+                <div class="mini-field-grid">
+                  <div><div class="mini-field-lbl">Peak Load</div><div class="mini-field-val red">498/500</div></div>
+                  <div><div class="mini-field-lbl">Guardrail</div><div class="mini-field-val yellow">G-01 Active</div></div>
+                  <div><div class="mini-field-lbl">Blast Radius</div><div class="mini-field-val">1 microservice</div></div>
+                  <div><div class="mini-field-lbl">Confidence</div><div class="mini-field-val green">94%</div></div>
+                </div>
+                <div class="mini-options">
+                  <div class="mini-option rec">① Pool bump +50 (8m auto-revert) · Rec ✓</div>
+                  <div class="mini-option">② Override G-01 &amp; restart · High risk</div>
+                  <div class="mini-option">③ Reject · Manual CLI</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-connector"><div class="tl-connector-line"></div></div>
+
+      <!-- STEP 6 -->
+      <div class="frame">
+        <div class="frame-step">
+          <div class="step-num" style="background:#0043ce;">6</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="frame-main">
+          <div class="frame-eyebrow" style="color:#0043ce;">
+            <span class="status-dot status-dot--blue"></span> Remediation Trace · 14:06 UTC
+          </div>
+          <h2 class="frame-title">Jamie verifies root cause in the Trace View</h2>
+          <p class="frame-desc">
+            Jamie navigates to the <strong>Trace View</strong> to inspect the causal chain. The AI has pinpointed the specific software regression: <em>ORM connection leak in payment-service v2.3.9 where connection handles were not released upon client timeout.</em>
+            <br/><br/>
+            The trace confirms the blast radius is strictly isolated to payment-service (affecting 2,300 active checkout sessions) and verifies that a canary patch to v2.4.0 is already packaged and ready for scheduled low-traffic deployment.
+          </p>
+          <div class="tag-row">
+            <span class="bx--tag bx--tag--blue">Trace View</span>
+            <span class="bx--tag bx--tag--teal">Root Cause: ORM Leak</span>
+            <span class="bx--tag bx--tag--warm-gray">2,300 Sessions Scoped</span>
+          </div>
+          <div class="emotion-row">
+            <div class="emotion-icon">🔍</div>
+            <div class="emotion-text">Jamie Park: "The trace leaves no doubt. The ORM timeout leak explains why connections piled up. Diagnosis is solid."</div>
+          </div>
+        </div>
+        <div class="frame-screen">
+          <div class="screen-label">
+            <span class="status-dot status-dot--blue"></span> Root Cause Trace
+          </div>
+          <div class="screen-body">
+            <div class="mini-product">
+              <div class="mini-topbar">
+                <span class="mini-topbar-logo">IBM NI · Trace</span>
+                <div class="mini-tab-row">
+                  <span class="mini-tab active">Trace</span>
+                  <span class="mini-tab">Timeline</span>
+                </div>
+              </div>
+              <div style="padding:8px;">
+                <div class="mini-stepper">
+                  <span class="mini-step done">✓ Anomaly</span>
+                  <span class="mini-step done">✓ Pattern</span>
+                  <span class="mini-step done">✓ G-01 Check</span>
+                  <span class="mini-step active">▶ Staged Fix</span>
+                </div>
+                <div style="background:#ffffff;border:1px solid var(--cds-border-subtle);padding:6px;font-size:0.625rem;">
+                  <div style="font-weight:600;color:var(--cds-text-primary);margin-bottom:2px;">Causal Diagnostics:</div>
+                  <div style="color:var(--cds-text-secondary);font-style:italic;">"ORM handle leak in v2.3.9 on client connection abort"</div>
+                  <div class="mini-tl" style="margin-top:4px;">
+                    <div class="mini-tl-item"><div class="mini-tl-dot" style="background:#da1e28;"></div><div class="mini-tl-text">14:03 · 92% Pool Capacity</div></div>
+                    <div class="mini-tl-item"><div class="mini-tl-dot" style="background:#0f62fe;"></div><div class="mini-tl-text">14:04 · Matched Incident INC-7102</div></div>
+                    <div class="mini-tl-item"><div class="mini-tl-dot" style="background:#24a148;"></div><div class="mini-tl-text">14:06 · Pool expansion staged</div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ═══════════════ PHASE 3: APPROVAL & CLOSURE ═══════════════ -->
+    <div class="phase-header">
+      <div class="phase-title">
+        <span class="bx--tag bx--tag--green">Phase 3</span>
+        <span>Human Sign-Off, Autonomous Execution &amp; Ticket Audit</span>
+      </div>
+    </div>
+
+    <div class="timeline">
+
+      <!-- STEP 7 -->
+      <div class="frame">
+        <div class="frame-step">
+          <div class="step-num" style="background:#24a148;">7</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="frame-main">
+          <div class="frame-eyebrow" style="color:#24a148;">
+            <span class="status-dot status-dot--green"></span> Supervisor Authorization · 14:07 UTC
+          </div>
+          <h2 class="frame-title">Jamie approves recommended pool expansion</h2>
+          <p class="frame-desc">
+            With complete confidence in the AI's diagnostic reasoning, Jamie clicks <strong>"✓ Approve Recommended Action"</strong>. A confirmation modal provides explicit execution parameters: capacity increases +50 slots, auto-reverts at 8 minutes or when connections drop below 300, and zero pod restarts.
+            <br/><br/>
+            Jamie confirms. Total time elapsed from initial Slack alert to authorized fix: <strong>2 minutes flat</strong>.
+          </p>
+          <div class="tag-row">
+            <span class="bx--tag bx--tag--green">Human Authorization</span>
+            <span class="bx--tag bx--tag--blue">Guaranteed Bounds</span>
+            <span class="bx--tag bx--tag--teal">2m Total Decision Time</span>
+          </div>
+          <div class="emotion-row">
+            <div class="emotion-icon">🎯</div>
+            <div class="emotion-text">Jamie Park: "Approved. The system safeguards production during peak traffic while giving me full control."</div>
+          </div>
+        </div>
+        <div class="frame-screen">
+          <div class="screen-label">
+            <span class="status-dot status-dot--green"></span> Execution Confirmation
+          </div>
+          <div class="screen-body">
+            <div class="mini-product">
+              <div class="mini-topbar"><span class="mini-topbar-logo">IBM NI · Action Dispatch</span></div>
+              <div style="padding:10px;">
+                <div style="border:1px solid #a7f0ba;border-left:3px solid #24a148;background:#defbe6;padding:8px;">
+                  <div style="font-size:0.6875rem;font-weight:600;color:#0e6027;margin-bottom:2px;">✓ Execution Authorized</div>
+                  <div style="font-size:0.625rem;color:#0e6027;line-height:1.4;">Pool bump +50 dispatched. Auto-revert timer initialized (8m).</div>
+                </div>
+                <div style="margin-top:6px;font-size:0.625rem;color:var(--cds-text-helper);font-style:italic;">Logging cryptographically signed CR…</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-connector"><div class="tl-connector-line"></div></div>
+
+      <!-- STEP 8 -->
+      <div class="frame">
+        <div class="frame-step">
+          <div class="step-num" style="background:#24a148;">8</div>
+          <div class="step-line" style="background:transparent;"></div>
+        </div>
+        <div class="frame-main">
+          <div class="frame-eyebrow" style="color:#24a148;">
+            <span class="status-dot status-dot--green"></span> Autonomous Orchestration · 14:07–22:00 UTC
+          </div>
+          <h2 class="frame-title">AI applies fix, synchronizes tickets &amp; completes canary deploy</h2>
+          <p class="frame-desc">
+            Upon authorization, the AI executes instantly: connection headroom expands, traffic stabilizes at 340 connections, and the SLO breach is averted. 
+            <br/><br/>
+            The agent automatically creates a ServiceNow ticket (<strong>NOC-4421</strong>) and Change Request (<strong>CR-2024-0147</strong>). Later during the scheduled 22:00 UTC low-traffic window, it runs a progressive canary deployment of v2.4.0 (5% &rarr; 25% &rarr; 100%) with 0.0% error rate. Jamie receives a final resolution recap in Slack.
+          </p>
+          <div class="tag-row">
+            <span class="bx--tag bx--tag--green">ServiceNow Synced</span>
+            <span class="bx--tag bx--tag--teal">Canary Deploy v2.4.0</span>
+            <span class="bx--tag bx--tag--purple">Incident INC-8841 Closed</span>
+          </div>
+          <div class="emotion-row">
+            <div class="emotion-icon">🚀</div>
+            <div class="emotion-text">Jamie Park: "Incident closed before breakfast. No customer shopping carts failed, no manual ticket paperwork, and zero 3 AM pages."</div>
+          </div>
+        </div>
+        <div class="frame-screen">
+          <div class="screen-label">
+            <span class="status-dot status-dot--green"></span> Incident Resolution
+          </div>
+          <div class="screen-body">
+            <div class="mini-product">
+              <div class="mini-topbar"><span class="mini-topbar-logo">IBM NI · Incident Closure</span></div>
+              <div style="padding:8px;">
+                <div class="mini-stepper">
+                  <span class="mini-step done">✓ Invest</span>
+                  <span class="mini-step done">✓ Ticket</span>
+                  <span class="mini-step done">✓ CR</span>
+                  <span class="mini-step done">✓ Deploy</span>
+                </div>
+                <div style="background:#ffffff;border:1px solid var(--cds-border-subtle);padding:6px;font-size:0.625rem;">
+                  <div style="font-weight:600;color:#0e6027;">INC-8841 · Fully Resolved</div>
+                  <div class="mini-tl" style="margin-top:4px;">
+                    <div class="mini-tl-item"><div class="mini-tl-dot" style="background:#24a148;"></div><div class="mini-tl-text">14:07 · Connections healthy (340)</div></div>
+                    <div class="mini-tl-item"><div class="mini-tl-dot" style="background:#24a148;"></div><div class="mini-tl-text">14:08 · NOC-4421 &amp; CR-0147 updated</div></div>
+                    <div class="mini-tl-item"><div class="mini-tl-dot" style="background:#24a148;"></div><div class="mini-tl-text">22:00 · Canary v2.4.0 (100% healthy)</div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ═══ OUTCOME IMPACT SECTION ═══ -->
+    <div class="carbon-outcome-wrap">
+      <div class="carbon-outcome-eyebrow">Measurable Impact</div>
+      <h2 class="carbon-outcome-title">Quantified Incident <strong>Efficiency &amp; Reliability</strong></h2>
+
+      <div class="carbon-outcome-grid">
+        <div class="carbon-outcome-cell">
+          <div class="carbon-outcome-stat blue">2 min</div>
+          <div class="carbon-outcome-stat-lbl">Time from initial Slack alert to approved production fix</div>
+        </div>
+        <div class="carbon-outcome-cell">
+          <div class="carbon-outcome-stat green">0</div>
+          <div class="carbon-outcome-stat-lbl">Customer-facing checkout drops or transaction errors</div>
+        </div>
+        <div class="carbon-outcome-cell">
+          <div class="carbon-outcome-stat green">100%</div>
+          <div class="carbon-outcome-stat-lbl">Service Level Objective (SLO) compliance maintained</div>
+        </div>
+      </div>
+
+      <div class="carbon-outcome-subgrid">
+        <div class="carbon-outcome-subitem">
+          <div class="carbon-outcome-subval">1 Contextual Click</div>
+          <div class="carbon-outcome-subdesc">Jamie acted directly within existing communication channels without dashboard triage.</div>
+        </div>
+        <div class="carbon-outcome-subitem">
+          <div class="carbon-outcome-subval">100% Guardrail Enforced</div>
+          <div class="carbon-outcome-subdesc">G-01 hard policy protected the peak sales window against disruptive restarts.</div>
+        </div>
+        <div class="carbon-outcome-subitem">
+          <div class="carbon-outcome-subval">Full Audit Synchronization</div>
+          <div class="carbon-outcome-subdesc">ServiceNow tickets, change requests, and canary rollouts were automated end-to-end.</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ═══ CARBON FOOTER ═══ -->
+  <footer class="dark-footer">
+    <div class="df-brand">IBM Network Intelligence · Headless AI Ecosystem</div>
+    <div class="df-flow">
+      Telemetry Stream <span>&rarr;</span> Policy Sandbox <span>&rarr;</span> Contextual Handoff <span>&rarr;</span> Verifiable Resolution
+    </div>
+    <div class="df-credit">
+      IBM Design &amp; Engineering Research · <strong>Predictable Delivery</strong>
+    </div>
+  </footer>
+
+</body>
+</html>

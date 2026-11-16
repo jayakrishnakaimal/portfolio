@@ -1,0 +1,565 @@
+
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>INI + NS1 Foundry: Day 0–2 &amp; The Loop Framework</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    background: #ffffff;
+    color: #1f2328;
+    padding: 40px 20px 60px;
+  }
+  .page { max-width: 760px; margin: 0 auto; }
+
+  h1 { font-size: 22px; font-weight: 700; color: #1f2328; margin-bottom: 4px; }
+  h2 { font-size: 15px; font-weight: 700; color: #1f2328; margin-bottom: 10px; }
+  h3 { font-size: 13px; font-weight: 700; color: #3b82d4; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+  p { margin-bottom: 10px; color: #1f2328; }
+  .muted { color: #57606a; font-size: 13px; }
+
+  .header-block { margin-bottom: 32px; padding-bottom: 18px; border-bottom: 2px solid #e5e7eb; }
+  .subtitle { font-size: 15px; color: #57606a; margin-top: 4px; }
+  .context-box {
+    background: #f7f8fa;
+    border-left: 3px solid #3b82d4;
+    padding: 12px 16px;
+    border-radius: 0 4px 4px 0;
+    margin-bottom: 28px;
+    font-size: 13px;
+    color: #57606a;
+  }
+  .context-box strong { color: #1f2328; }
+
+  /* Day 0/1/2 cards */
+  .day-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 32px; }
+  .day-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .day-header {
+    padding: 10px 14px;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .day-header.d0 { background: #1f2328; color: #ffffff; }
+  .day-header.d1 { background: #3b82d4; color: #ffffff; }
+  .day-header.d2 { background: #7c5cd8; color: #ffffff; }
+  .day-body { padding: 12px 14px; background: #fff; }
+  .day-label { font-size: 11px; font-weight: 700; color: #57606a; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; margin-top: 10px; }
+  .day-label:first-child { margin-top: 0; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 4px; }
+  .tag {
+    font-size: 11px;
+    padding: 2px 7px;
+    border-radius: 3px;
+    border: 1px solid #e5e7eb;
+    color: #57606a;
+    background: #f7f8fa;
+    white-space: nowrap;
+  }
+  .tag.blue { background: #dbeafe; border-color: #bfdbfe; color: #1d4ed8; }
+  .tag.purple { background: #ede9fe; border-color: #ddd6fe; color: #6d28d9; }
+  .tag.dark { background: #f1f3f5; border-color: #d0d7de; color: #1f2328; }
+  .day-item { font-size: 13px; color: #1f2328; padding: 3px 0; border-bottom: 1px solid #f0f0f0; }
+  .day-item:last-child { border-bottom: none; }
+
+  /* Delta table */
+  .section { margin-bottom: 32px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 6px; }
+  thead th { background: #f7f8fa; padding: 8px 10px; text-align: left; font-weight: 700; border: 1px solid #e5e7eb; color: #57606a; text-transform: uppercase; font-size: 11px; letter-spacing: 0.04em; }
+  tbody td { padding: 8px 10px; border: 1px solid #e5e7eb; vertical-align: top; }
+  tbody tr:nth-child(even) td { background: #fafbfc; }
+  .check { color: #22863a; font-weight: 700; }
+  .partial { color: #b08800; font-weight: 700; }
+  .gap { color: #cf222e; font-weight: 700; }
+
+  /* The Loop diagram */
+  .loop-section { margin-bottom: 32px; }
+  .loop-container { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .loop-track {
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .loop-track-header {
+    padding: 9px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .loop-track-header.net { background: #3b82d4; color: #fff; }
+  .loop-track-header.agent { background: #7c5cd8; color: #fff; }
+  .loop-track-body { padding: 12px 14px; }
+  .loop-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .loop-step:last-child { margin-bottom: 0; }
+  .step-num {
+    min-width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .step-num.net { background: #3b82d4; }
+  .step-num.agent { background: #7c5cd8; }
+  .step-text { font-size: 13px; color: #1f2328; }
+  .step-tool { font-size: 11px; color: #57606a; margin-top: 2px; }
+  .loop-arrow {
+    text-align: center;
+    font-size: 11px;
+    color: #57606a;
+    margin: 4px 0;
+    font-style: italic;
+  }
+  .loop-connector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0 6px;
+    color: #57606a;
+    font-size: 12px;
+    font-style: italic;
+    border-top: 1px dashed #e5e7eb;
+    margin-top: 10px;
+    grid-column: 1 / -1;
+  }
+
+  /* Data flow */
+  .flow-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+  .flow-node {
+    background: #f7f8fa;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #1f2328;
+    white-space: nowrap;
+  }
+  .flow-node.ini { background: #dbeafe; border-color: #93c5fd; color: #1d4ed8; }
+  .flow-node.wxo { background: #ede9fe; border-color: #c4b5fd; color: #5b21b6; }
+  .flow-node.sev { background: #dcfce7; border-color: #86efac; color: #15803d; }
+  .flow-node.gov { background: #fef9c3; border-color: #fde047; color: #854d0e; }
+  .flow-node.snow { background: #fce7f3; border-color: #f9a8d4; color: #9d174d; }
+  .flow-node.con { background: #fef3c7; border-color: #fcd34d; color: #92400e; }
+  .flow-arrow-sym {
+    font-size: 16px;
+    color: #57606a;
+    padding: 0 6px;
+  }
+
+  /* Questions */
+  .q-list { list-style: none; padding: 0; }
+  .q-list li {
+    padding: 9px 12px 9px 34px;
+    position: relative;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 13px;
+    color: #1f2328;
+  }
+  .q-list li:last-child { border-bottom: none; }
+  .q-list li::before {
+    content: "?";
+    position: absolute;
+    left: 10px;
+    top: 9px;
+    font-weight: 700;
+    color: #3b82d4;
+    font-size: 14px;
+  }
+  .q-box {
+    background: #f7f8fa;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  /* Opportunity pills */
+  .opp-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .opp-card {
+    background: #f7f8fa;
+    border: 1px solid #e5e7eb;
+    border-radius: 5px;
+    padding: 12px 14px;
+  }
+  .opp-title { font-size: 13px; font-weight: 700; color: #1f2328; margin-bottom: 4px; }
+  .opp-desc { font-size: 12px; color: #57606a; }
+
+  /* Footer */
+  .footer {
+    margin-top: 48px;
+    padding-top: 14px;
+    border-top: 1px solid #e5e7eb;
+    text-align: center;
+    font-size: 12px;
+    color: #57606a;
+  }
+
+  @media (max-width: 560px) {
+    .day-grid { grid-template-columns: 1fr; }
+    .loop-container { grid-template-columns: 1fr; }
+    .opp-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  
+  <div class="header-block">
+    <h1>INI + NS1 Foundry: Day 0–2 &amp; The Loop Framework</h1>
+    <div class="subtitle">Exploring integration between IBM Network Intelligence, NS1 Foundry, SevOne, watsonx Orchestrate &amp; Concert</div>
+  </div>
+
+  
+  <div class="context-box">
+    <strong>Background:</strong> The NS1 Foundry team (already in conversation with SevOne) is exploring how their product and IBM Network Intelligence (INI) can work together. The key questions center on <strong>delta analysis</strong> between the two products, how <strong>data and agent interactions</strong> can be structured across a lifecycle, and where <strong>watsonx Orchestrate agents</strong> and <strong>watsonx.gov</strong> fit into the flow. This document frames the exploration across a Day 0/1/2 model and a dual concurrent loop model.
+  </div>
+
+  
+  <div class="section">
+    <h2>Day 0 · Day 1 · Day 2 Lifecycle</h2>
+    <p class="muted" style="margin-bottom:12px">A phased view of where each product and capability enters the workflow — from initial design through deployment to ongoing operations.</p>
+    <div class="day-grid">
+
+      
+      <div class="day-card">
+        <div class="day-header d0">Day 0 — Design</div>
+        <div class="day-body">
+          <div class="day-label">Theme</div>
+          <div class="day-item">Network &amp; automation architecture design</div>
+          <div class="day-label">INI Role</div>
+          <div class="day-item">Define DNS/network topology, IP schema, traffic policies</div>
+          <div class="day-item">NS1 Foundry: design intent, DDI blueprints</div>
+          <div class="day-label">Agent Setup</div>
+          <div class="day-item">Define agent workflows in watsonx Orchestrate (WxO)</div>
+          <div class="day-item">Model governance rules in watsonx.gov</div>
+          <div class="day-label">Tooling</div>
+          <div class="tag-row">
+            <span class="tag dark">NS1 Foundry</span>
+            <span class="tag blue">INI</span>
+            <span class="tag purple">WxO</span>
+          </div>
+        </div>
+      </div>
+
+      
+      <div class="day-card">
+        <div class="day-header d1">Day 1 — Deploy</div>
+        <div class="day-body">
+          <div class="day-label">Theme</div>
+          <div class="day-item">Connect, test, and activate the designed network</div>
+          <div class="day-label">INI Role</div>
+          <div class="day-item">Provision DNS/DHCP/IPAM into live environment</div>
+          <div class="day-item">Connect SevOne collectors to live network</div>
+          <div class="day-label">Agent Setup</div>
+          <div class="day-item">Deploy WxO agents to production skill catalog</div>
+          <div class="day-item">Connect watsonx.gov policies to live data streams</div>
+          <div class="day-label">Tooling</div>
+          <div class="tag-row">
+            <span class="tag blue">INI</span>
+            <span class="tag dark">SevOne</span>
+            <span class="tag purple">WxO</span>
+          </div>
+        </div>
+      </div>
+
+      
+      <div class="day-card">
+        <div class="day-header d2">Day 2 — Operate</div>
+        <div class="day-body">
+          <div class="day-label">Theme</div>
+          <div class="day-item">Persistent monitoring, anomaly detection, remediation</div>
+          <div class="day-label">INI Role</div>
+          <div class="day-item">Active DNS/network health monitoring</div>
+          <div class="day-item">SevOne: performance data, trending, alerting</div>
+          <div class="day-label">Agent Role</div>
+          <div class="day-item">WxO agents respond to persistent aberrations</div>
+          <div class="day-item">Auto-remediation tickets via Concert / ServiceNow</div>
+          <div class="day-label">Tooling</div>
+          <div class="tag-row">
+            <span class="tag blue">INI</span>
+            <span class="tag dark">SevOne</span>
+            <span class="tag purple">WxO</span>
+            <span class="tag" style="background:#fef3c7;border-color:#fcd34d;color:#92400e">Concert</span>
+            <span class="tag" style="background:#fce7f3;border-color:#f9a8d4;color:#9d174d">ServiceNow</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  
+  <div class="loop-section section">
+    <h2>"The Loop" — Two Concurrent Tracks</h2>
+    <p class="muted" style="margin-bottom:12px">Rather than a purely linear Day 0→1→2 progression, two parallel loops run concurrently once the environment is live. Each loop has its own cadence and connects back to shared systems.</p>
+
+    <div class="loop-container">
+
+      
+      <div class="loop-track">
+        <div class="loop-track-header net">Track A — Network Operations Loop</div>
+        <div class="loop-track-body">
+
+          <div class="loop-step">
+            <div class="step-num net">1</div>
+            <div>
+              <div class="step-text"><strong>Design</strong> — Model network topology, DDI schema, traffic policies</div>
+              <div class="step-tool">NS1 Foundry, INI (Day 0)</div>
+            </div>
+          </div>
+          <div class="loop-arrow">↓</div>
+          <div class="loop-step">
+            <div class="step-num net">2</div>
+            <div>
+              <div class="step-text"><strong>Connect &amp; Test</strong> — Provision and validate live network through INI</div>
+              <div class="step-tool">INI, SevOne collectors (Day 1)</div>
+            </div>
+          </div>
+          <div class="loop-arrow">↓</div>
+          <div class="loop-step">
+            <div class="step-num net">3</div>
+            <div>
+              <div class="step-text"><strong>Monitor &amp; Refine</strong> — Continuous performance monitoring, anomaly surfacing</div>
+              <div class="step-tool">SevOne, INI dashboards (Day 2)</div>
+            </div>
+          </div>
+          <div class="loop-arrow">↓ (feeds back to Design or triggers Agent Loop)</div>
+        </div>
+      </div>
+
+      
+      <div class="loop-track">
+        <div class="loop-track-header agent">Track B — Agentic Automation Loop</div>
+        <div class="loop-track-body">
+
+          <div class="loop-step">
+            <div class="step-num agent">1</div>
+            <div>
+              <div class="step-text"><strong>Detect Pattern</strong> — Persistent or recurring network aberration identified</div>
+              <div class="step-tool">SevOne / INI telemetry (Day 2 trigger)</div>
+            </div>
+          </div>
+          <div class="loop-arrow">↓</div>
+          <div class="loop-step">
+            <div class="step-num agent">2</div>
+            <div>
+              <div class="step-text"><strong>Design Agent</strong> — Define remediation workflow, guard rails, escalation rules</div>
+              <div class="step-tool">watsonx Orchestrate + watsonx.gov (Day 0-style)</div>
+            </div>
+          </div>
+          <div class="loop-arrow">↓</div>
+          <div class="loop-step">
+            <div class="step-num agent">3</div>
+            <div>
+              <div class="step-text"><strong>Test &amp; Deploy Agent</strong> — Validate agent in staging, publish to production</div>
+              <div class="step-tool">WxO agent catalog (Day 1-style)</div>
+            </div>
+          </div>
+          <div class="loop-arrow">↓</div>
+          <div class="loop-step">
+            <div class="step-num agent">4</div>
+            <div>
+              <div class="step-text"><strong>Automate &amp; Track</strong> — Agent acts; results logged back for audit and learning</div>
+              <div class="step-tool">INI, Concert, ServiceNow (Day 2 ongoing)</div>
+            </div>
+          </div>
+          <div class="loop-arrow">↓ (feeds back to Detect or closes ticket)</div>
+        </div>
+      </div>
+
+      <div class="loop-connector">
+        ⟵   Both loops share INI as the network data backbone   ⟶   ·   Aberration signals in Track A trigger Track B entry
+      </div>
+
+    </div>
+  </div>
+
+  
+  <div class="section">
+    <h2>Data Flow Across the Ecosystem</h2>
+    <p class="muted" style="margin-bottom:12px">How data moves between products in the combined architecture.</p>
+
+    <div style="background:#f7f8fa;border:1px solid #e5e7eb;border-radius:6px;padding:16px 18px">
+
+      <div class="day-label" style="margin-bottom:8px">Network Intelligence → Monitoring</div>
+      <div class="flow-row">
+        <span class="flow-node" style="background:#f1f3f5;border-color:#d0d7de">NS1 Foundry</span>
+        <span class="flow-arrow-sym">→</span>
+        <span class="flow-node ini">INI</span>
+        <span class="flow-arrow-sym">→</span>
+        <span class="flow-node sev">SevOne</span>
+        <span class="flow-arrow-sym">→</span>
+        <span class="flow-node ini">INI Dashboards</span>
+      </div>
+
+      <div class="day-label" style="margin-top:14px;margin-bottom:8px">Telemetry → AI Governance → Agents</div>
+      <div class="flow-row">
+        <span class="flow-node sev">SevOne</span>
+        <span class="flow-arrow-sym">→</span>
+        <span class="flow-node gov">watsonx.gov</span>
+        <span class="flow-arrow-sym">→</span>
+        <span class="flow-node ini">INI</span>
+        <span class="flow-arrow-sym">→</span>
+        <span class="flow-node wxo">WxO Agents</span>
+      </div>
+
+      <div class="day-label" style="margin-top:14px;margin-bottom:8px">Agent Actions → Ticketing / ITSM</div>
+      <div class="flow-row">
+        <span class="flow-node wxo">WxO Agents</span>
+        <span class="flow-arrow-sym">→</span>
+        <span class="flow-node con">Concert</span>
+        <span class="flow-arrow-sym">+</span>
+        <span class="flow-node snow">ServiceNow</span>
+        <span class="flow-arrow-sym">→</span>
+        <span class="flow-node ini">INI (closed-loop)</span>
+      </div>
+
+    </div>
+  </div>
+
+  
+  <div class="section">
+    <h2>INI vs. NS1 Foundry — Delta Exploration Areas</h2>
+    <p class="muted" style="margin-bottom:10px">Key capability areas to explore when the NS1 Foundry team meets. This is a starting framework for structured comparison.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Capability Area</th>
+          <th>INI</th>
+          <th>NS1 Foundry</th>
+          <th>Integration Opportunity</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>DNS / DDI Management</td>
+          <td><span class="check">●</span> Core</td>
+          <td><span class="check">●</span> Core</td>
+          <td>Overlap — define authoritative source; sync or federate</td>
+        </tr>
+        <tr>
+          <td>Network Performance Monitoring</td>
+          <td><span class="check">●</span> Via SevOne</td>
+          <td><span class="partial">◐</span> Partial</td>
+          <td>SevOne data enriches Foundry views</td>
+        </tr>
+        <tr>
+          <td>AI / Agentic Automation</td>
+          <td><span class="check">●</span> Via WxO</td>
+          <td><span class="gap">○</span> TBD</td>
+          <td>WxO agents operate on INI + Foundry data</td>
+        </tr>
+        <tr>
+          <td>AI Governance / Model Trust</td>
+          <td><span class="check">●</span> Via watsonx.gov</td>
+          <td><span class="gap">○</span> TBD</td>
+          <td>Foundry data flows into governed AI pipelines</td>
+        </tr>
+        <tr>
+          <td>ITSM / Ticket Integration</td>
+          <td><span class="check">●</span> Concert, ServiceNow</td>
+          <td><span class="partial">◐</span> Partial</td>
+          <td>Single remediation ticket across both platforms</td>
+        </tr>
+        <tr>
+          <td>Network Design / Blueprint</td>
+          <td><span class="partial">◐</span> Configuration</td>
+          <td><span class="check">●</span> Strong</td>
+          <td>Foundry designs feed INI provisioning (Day 0→1)</td>
+        </tr>
+        <tr>
+          <td>Traffic Steering / Anycast</td>
+          <td><span class="partial">◐</span> Standard DNS</td>
+          <td><span class="check">●</span> Advanced</td>
+          <td>Foundry advanced routing surfaces in INI ops view</td>
+        </tr>
+        <tr>
+          <td>Observability Data Platform</td>
+          <td><span class="check">●</span> SevOne + INI</td>
+          <td><span class="gap">○</span> Emerging</td>
+          <td>Position INI as the observability layer for Foundry</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="margin-top:8px;font-size:11px;color:#57606a"><span class="check">●</span> Strong   <span class="partial">◐</span> Partial / In progress   <span class="gap">○</span> Gap / Not present</p>
+  </div>
+
+  
+  <div class="section">
+    <h2>Open Questions to Explore</h2>
+    <div class="q-box">
+      <ul class="q-list">
+        <li>Is INI the <strong>system of record</strong> for network state, or does NS1 Foundry maintain its own authoritative DDI store? How do they reconcile?</li>
+        <li>Does the Day 0 design phase live entirely in NS1 Foundry, with INI serving as the provisioning + ops layer from Day 1 onward?</li>
+        <li>Where does <strong>watsonx.gov</strong> sit in the data pipeline — does it govern agent decisions before they execute, or audit after?</li>
+        <li>Should WxO agents be triggered by <strong>SevOne alerts</strong> directly, or should all triggers be routed through INI first for normalization?</li>
+        <li>Is <strong>Concert</strong> or <strong>ServiceNow</strong> the primary ITSM endpoint for agent-created remediation actions — or both, based on incident type?</li>
+        <li>What is the minimum persistent aberration threshold that should trigger <strong>Track B</strong> (agent loop) vs. a standard alert/notification?</li>
+        <li>How does NS1 Foundry's advanced traffic steering (Anycast, filter chains) map to INI's current traffic visibility model?</li>
+        <li>Is there a unified <strong>data schema</strong> (e.g., IPFIX, OpenTelemetry) that both INI and NS1 Foundry can emit to watsonx.gov?</li>
+      </ul>
+    </div>
+  </div>
+
+  
+  <div class="section">
+    <h2>Key Integration Opportunities</h2>
+    <div class="opp-grid">
+      <div class="opp-card">
+        <div class="opp-title">Design-to-Deploy Bridge</div>
+        <div class="opp-desc">NS1 Foundry Day 0 blueprints push directly into INI as provisioning instructions, eliminating manual re-entry and drift between design intent and live state.</div>
+      </div>
+      <div class="opp-card">
+        <div class="opp-title">Persistent Anomaly → Agent</div>
+        <div class="opp-desc">SevOne/INI telemetry identifies recurring aberrations that cross a defined threshold, automatically triggering a WxO agent design + deploy cycle (Track B).</div>
+      </div>
+      <div class="opp-card">
+        <div class="opp-title">Governed AI Operations</div>
+        <div class="opp-desc">watsonx.gov provides auditability and policy enforcement for every AI-driven decision made by WxO agents acting on network data — critical for regulated environments.</div>
+      </div>
+      <div class="opp-card">
+        <div class="opp-title">Closed-Loop Remediation</div>
+        <div class="opp-desc">Agent actions logged in Concert/ServiceNow feed back into INI as resolved state, creating a closed loop between detection, action, and network truth.</div>
+      </div>
+      <div class="opp-card">
+        <div class="opp-title">Unified Observability Layer</div>
+        <div class="opp-desc">Position INI + SevOne as the shared observability plane that both NS1 Foundry and WxO agents consume — a single source of network truth for all automation.</div>
+      </div>
+      <div class="opp-card">
+        <div class="opp-title">Delta-Driven Roadmap</div>
+        <div class="opp-desc">The capability delta between INI and NS1 Foundry reveals a natural co-sell / co-build opportunity: Foundry's design strengths + INI's ops + AI strengths = full lifecycle.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">Made with IBM Bob</div>
+</div>
+</body>
+</html>

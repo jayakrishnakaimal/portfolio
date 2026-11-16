@@ -1,0 +1,539 @@
+
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Day 0–2 &amp; The Loop: INI Ecosystem Framework</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    background: #ffffff;
+    color: #1f2328;
+    padding: 40px 20px 60px;
+  }
+  .page { max-width: 780px; margin: 0 auto; }
+
+  h1 { font-size: 21px; font-weight: 700; color: #1f2328; margin-bottom: 4px; }
+  h2 { font-size: 15px; font-weight: 700; color: #1f2328; margin-bottom: 10px; margin-top: 36px; }
+  h3 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+  p { font-size: 13px; color: #57606a; margin-bottom: 10px; }
+
+  .subtitle { font-size: 14px; color: #57606a; margin-top: 4px; margin-bottom: 0; }
+  .header-block { padding-bottom: 18px; border-bottom: 2px solid #e5e7eb; margin-bottom: 8px; }
+
+  /* ── SECTION LABEL ── */
+  .section-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.07em; color: #57606a;
+    margin-top: 36px; margin-bottom: 6px;
+    padding-bottom: 5px; border-bottom: 1px solid #e5e7eb;
+  }
+
+  /* ── CALLOUT ── */
+  .callout {
+    background: #f7f8fa; border-left: 3px solid #3b82d4;
+    padding: 11px 15px; border-radius: 0 4px 4px 0;
+    font-size: 13px; color: #57606a; margin-bottom: 0;
+  }
+  .callout strong { color: #1f2328; }
+
+  /* ── TAGS ── */
+  .tag {
+    display: inline-block; font-size: 11px; padding: 2px 7px;
+    border-radius: 3px; border: 1px solid #e5e7eb;
+    background: #f7f8fa; color: #57606a; white-space: nowrap;
+    margin: 2px 2px 2px 0;
+  }
+  .tag.ini  { background: #dbeafe; border-color: #93c5fd; color: #1d4ed8; }
+  .tag.wxo  { background: #ede9fe; border-color: #c4b5fd; color: #5b21b6; }
+  .tag.sev  { background: #dcfce7; border-color: #86efac; color: #15803d; }
+  .tag.gov  { background: #fef9c3; border-color: #fde047; color: #854d0e; }
+  .tag.snow { background: #fce7f3; border-color: #f9a8d4; color: #9d174d; }
+  .tag.con  { background: #fef3c7; border-color: #fcd34d; color: #92400e; }
+  .tag.ns1  { background: #f1f3f5; border-color: #d0d7de; color: #1f2328; }
+
+  /* ── THREE-COLUMN DAY GRID ── */
+  .day-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid #e5e7eb; border-radius: 6px; overflow: hidden; }
+  .day-col { border-right: 1px solid #e5e7eb; }
+  .day-col:last-child { border-right: none; }
+  .day-col-head {
+    padding: 10px 14px; font-size: 12px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.05em; color: #fff;
+  }
+  .day-col-head.d0 { background: #1f2328; }
+  .day-col-head.d1 { background: #3b82d4; }
+  .day-col-head.d2 { background: #7c5cd8; }
+  .day-col-head .sub { font-size: 11px; font-weight: 400; opacity: 0.75; display: block; }
+  .day-col-body { padding: 12px 14px; }
+  .row-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #57606a; margin-top: 12px; margin-bottom: 4px; }
+  .row-label:first-child { margin-top: 0; }
+  .day-item { font-size: 12px; color: #1f2328; padding: 3px 0 3px 10px; position: relative; border-bottom: 1px solid #f5f5f5; }
+  .day-item:last-child { border-bottom: none; }
+  .day-item::before { content: "–"; position: absolute; left: 0; color: #b0b8c2; }
+
+  /* ── LOOP DIAGRAM ── */
+  .loop-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 0; }
+  .loop-track { border: 1px solid #e5e7eb; border-radius: 6px; overflow: hidden; }
+  .loop-head { padding: 10px 14px; }
+  .loop-head.net   { background: #3b82d4; }
+  .loop-head.agent { background: #7c5cd8; }
+  .loop-head-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #fff; }
+  .loop-head-sub   { font-size: 11px; color: rgba(255,255,255,0.75); margin-top: 1px; }
+  .loop-body { padding: 14px 14px 10px; }
+  .loop-step { display: flex; gap: 10px; margin-bottom: 14px; }
+  .loop-step:last-child { margin-bottom: 0; }
+  .step-badge {
+    min-width: 24px; height: 24px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: #fff; flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .step-badge.net   { background: #3b82d4; }
+  .step-badge.agent { background: #7c5cd8; }
+  .step-content {}
+  .step-title { font-size: 13px; font-weight: 600; color: #1f2328; }
+  .step-desc  { font-size: 12px; color: #57606a; margin-top: 2px; }
+  .step-tools { margin-top: 4px; }
+  .loop-divider {
+    text-align: center; font-size: 11px; color: #b0b8c2;
+    padding: 5px 0; letter-spacing: 0.03em; font-style: italic;
+  }
+
+  /* ── BRIDGE BAR ── */
+  .bridge {
+    grid-column: 1 / -1;
+    background: #f7f8fa; border: 1px solid #e5e7eb; border-radius: 5px;
+    padding: 10px 16px; display: flex; gap: 20px; align-items: center;
+    flex-wrap: wrap; margin-top: 0;
+  }
+  .bridge-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #57606a; flex-shrink: 0; }
+  .bridge-flow { display: flex; align-items: center; flex-wrap: wrap; gap: 4px; font-size: 12px; }
+  .fn { font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 3px; border: 1px solid #e5e7eb; }
+  .fn.ini  { background: #dbeafe; border-color: #93c5fd; color: #1d4ed8; }
+  .fn.wxo  { background: #ede9fe; border-color: #c4b5fd; color: #5b21b6; }
+  .fn.sev  { background: #dcfce7; border-color: #86efac; color: #15803d; }
+  .fn.gov  { background: #fef9c3; border-color: #fde047; color: #854d0e; }
+  .fn.snow { background: #fce7f3; border-color: #f9a8d4; color: #9d174d; }
+  .fn.con  { background: #fef3c7; border-color: #fcd34d; color: #92400e; }
+  .fn.ns1  { background: #f1f3f5; border-color: #d0d7de; color: #1f2328; }
+  .arr { color: #b0b8c2; font-size: 14px; }
+
+  /* ── DATA FLOW ROWS ── */
+  .flow-section { background: #f7f8fa; border: 1px solid #e5e7eb; border-radius: 6px; padding: 16px 18px; }
+  .flow-row { margin-bottom: 14px; }
+  .flow-row:last-child { margin-bottom: 0; }
+  .flow-row-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #57606a; margin-bottom: 6px; }
+  .flow-nodes { display: flex; align-items: center; flex-wrap: wrap; gap: 4px; }
+
+  /* ── QUESTIONS ── */
+  .q-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .q-card {
+    background: #f7f8fa; border: 1px solid #e5e7eb; border-radius: 5px;
+    padding: 11px 13px 11px 34px; position: relative; font-size: 13px; color: #1f2328;
+  }
+  .q-card::before {
+    content: "?"; position: absolute; left: 12px; top: 11px;
+    font-weight: 700; color: #3b82d4; font-size: 15px;
+  }
+  .q-card .q-theme { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #57606a; margin-bottom: 3px; }
+
+  /* ── OPPORTUNITY GRID ── */
+  .opp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .opp-card { border: 1px solid #e5e7eb; border-radius: 5px; overflow: hidden; }
+  .opp-head { padding: 7px 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+  .opp-head.a { background: #dbeafe; color: #1d4ed8; }
+  .opp-head.b { background: #ede9fe; color: #5b21b6; }
+  .opp-head.c { background: #dcfce7; color: #15803d; }
+  .opp-head.d { background: #fef9c3; color: #854d0e; }
+  .opp-head.e { background: #fce7f3; color: #9d174d; }
+  .opp-head.f { background: #f1f3f5; color: #1f2328; }
+  .opp-body { padding: 10px 12px; font-size: 12px; color: #57606a; }
+
+  /* ── FOOTER ── */
+  .footer { margin-top: 48px; padding-top: 14px; border-top: 1px solid #e5e7eb; text-align: center; font-size: 12px; color: #57606a; }
+
+  @media (max-width: 580px) {
+    .day-grid { grid-template-columns: 1fr; }
+    .loop-wrapper { grid-template-columns: 1fr; }
+    .q-grid { grid-template-columns: 1fr; }
+    .opp-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  
+  <div class="header-block">
+    <h1>Day 0–2 &amp; "The Loop" — INI Ecosystem Framework</h1>
+    <p class="subtitle">Exploring lifecycle design, agentic automation, and concurrent operational tracks across IBM Network Intelligence, watsonx Orchestrate, SevOne, watsonx.gov, Concert &amp; ServiceNow</p>
+  </div>
+
+  <div style="margin-top:20px">
+    <div class="callout">
+      <strong>Core question being explored:</strong> Is this a linear Day 0→1→2 model, or two concurrent loops — one for network operations and one for agentic automation — that run in parallel once the environment is live, with INI as the shared backbone?
+    </div>
+  </div>
+
+  
+  <div class="section-label" style="margin-top:32px">Model A — Linear Lifecycle</div>
+  <h2 style="margin-top:0">Day 0 · Day 1 · Day 2</h2>
+  <p>A phased view where each stage builds on the last. Day 0 is pure design and intent; Day 1 is activation and deployment; Day 2 is steady-state operations. This is the simplest framing — and likely the entry-point narrative for new customers.</p>
+
+  <div class="day-grid">
+
+    
+    <div class="day-col">
+      <div class="day-col-head d0">Day 0 <span class="sub">Design &amp; Intent</span></div>
+      <div class="day-col-body">
+        <div class="row-label">Network Design</div>
+        <div class="day-item">Define network topology, IP schema, DNS architecture</div>
+        <div class="day-item">Model DDI blueprints (NS1 Foundry or equivalent tool)</div>
+        <div class="day-item">Define traffic policies, routing intent</div>
+        <div class="row-label">Agent Design</div>
+        <div class="day-item">Identify candidate automation workflows</div>
+        <div class="day-item">Design agent skills &amp; guardrails in WxO</div>
+        <div class="day-item">Define AI governance policies in watsonx.gov</div>
+        <div class="row-label">Tooling</div>
+        <div style="margin-top:4px">
+          <span class="tag ns1">NS1 Foundry</span>
+          <span class="tag ini">INI</span>
+          <span class="tag wxo">WxO</span>
+          <span class="tag gov">watsonx.gov</span>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="day-col">
+      <div class="day-col-head d1">Day 1 <span class="sub">Deploy &amp; Connect</span></div>
+      <div class="day-col-body">
+        <div class="row-label">Network Deployment</div>
+        <div class="day-item">Provision DNS/DHCP/IPAM into live environment via INI</div>
+        <div class="day-item">Connect SevOne collectors to live network devices</div>
+        <div class="day-item">Validate configuration against Day 0 design intent</div>
+        <div class="row-label">Agent Deployment</div>
+        <div class="day-item">Publish WxO agents to production skill catalog</div>
+        <div class="day-item">Wire agent triggers to INI / SevOne alert streams</div>
+        <div class="day-item">Activate watsonx.gov monitoring on live data pipelines</div>
+        <div class="row-label">Tooling</div>
+        <div style="margin-top:4px">
+          <span class="tag ini">INI</span>
+          <span class="tag sev">SevOne</span>
+          <span class="tag wxo">WxO</span>
+          <span class="tag gov">watsonx.gov</span>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="day-col">
+      <div class="day-col-head d2">Day 2 <span class="sub">Operate &amp; Refine</span></div>
+      <div class="day-col-body">
+        <div class="row-label">Network Operations</div>
+        <div class="day-item">Continuous performance monitoring in SevOne</div>
+        <div class="day-item">Anomaly detection, trending, capacity planning in INI</div>
+        <div class="day-item">DNS health, IPAM drift detection, policy enforcement</div>
+        <div class="row-label">Agentic Operations</div>
+        <div class="day-item">WxO agents respond to persistent or recurring aberrations</div>
+        <div class="day-item">Auto-create remediation tickets in Concert / ServiceNow</div>
+        <div class="day-item">Closed-loop: agent outcomes feed back into INI state</div>
+        <div class="row-label">Tooling</div>
+        <div style="margin-top:4px">
+          <span class="tag ini">INI</span>
+          <span class="tag sev">SevOne</span>
+          <span class="tag wxo">WxO</span>
+          <span class="tag con">Concert</span>
+          <span class="tag snow">ServiceNow</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+  
+  <div class="section-label" style="margin-top:40px">Model B — Concurrent Loops</div>
+  <h2 style="margin-top:0">"The Loop" — Two Parallel Tracks</h2>
+  <p>Once the environment is live, two loops run concurrently and independently. <strong>Track A</strong> is the ongoing network operations cycle. <strong>Track B</strong> is the agentic automation cycle, which is triggered by outputs from Track A. Each loop has its own design → test → deploy → operate rhythm — but they share INI as the common data backbone.</p>
+
+  <div class="loop-wrapper">
+
+    
+    <div class="loop-track">
+      <div class="loop-head net">
+        <div class="loop-head-title">Track A — Network Operations Loop</div>
+        <div class="loop-head-sub">Design → Connect → Monitor → Refine → repeat</div>
+      </div>
+      <div class="loop-body">
+
+        <div class="loop-step">
+          <div class="step-badge net">1</div>
+          <div class="step-content">
+            <div class="step-title">Design the Network</div>
+            <div class="step-desc">Model topology, DDI schema, and traffic policies. Establish design intent as the authoritative source of truth.</div>
+            <div class="step-tools"><span class="tag ns1">NS1 Foundry</span> <span class="tag ini">INI</span></div>
+          </div>
+        </div>
+        <div class="loop-divider">↓</div>
+
+        <div class="loop-step">
+          <div class="step-badge net">2</div>
+          <div class="step-content">
+            <div class="step-title">Connect &amp; Test</div>
+            <div class="step-desc">Provision the design into the live environment. Validate that live state matches design intent.</div>
+            <div class="step-tools"><span class="tag ini">INI</span> <span class="tag sev">SevOne</span></div>
+          </div>
+        </div>
+        <div class="loop-divider">↓</div>
+
+        <div class="loop-step">
+          <div class="step-badge net">3</div>
+          <div class="step-content">
+            <div class="step-title">Monitor &amp; Refine</div>
+            <div class="step-desc">Continuous telemetry, anomaly surfacing, performance trending. Refine policies and feed findings back to design.</div>
+            <div class="step-tools"><span class="tag sev">SevOne</span> <span class="tag ini">INI</span></div>
+          </div>
+        </div>
+        <div class="loop-divider">↓ loops back to Step 1 · or triggers Track B ↓</div>
+
+      </div>
+    </div>
+
+    
+    <div class="loop-track">
+      <div class="loop-head agent">
+        <div class="loop-head-title">Track B — Agentic Automation Loop</div>
+        <div class="loop-head-sub">Detect → Design Agent → Deploy → Automate → repeat</div>
+      </div>
+      <div class="loop-body">
+
+        <div class="loop-step">
+          <div class="step-badge agent">1</div>
+          <div class="step-content">
+            <div class="step-title">Detect Persistent Aberration</div>
+            <div class="step-desc">A recurring or threshold-crossing network issue is identified. This is the trigger to move from alerting to automation.</div>
+            <div class="step-tools"><span class="tag sev">SevOne</span> <span class="tag ini">INI</span></div>
+          </div>
+        </div>
+        <div class="loop-divider">↓</div>
+
+        <div class="loop-step">
+          <div class="step-badge agent">2</div>
+          <div class="step-content">
+            <div class="step-title">Design the Agent</div>
+            <div class="step-desc">Define the remediation skill, guardrails, escalation thresholds, and governance rules for the new agent workflow.</div>
+            <div class="step-tools"><span class="tag wxo">WxO</span> <span class="tag gov">watsonx.gov</span></div>
+          </div>
+        </div>
+        <div class="loop-divider">↓</div>
+
+        <div class="loop-step">
+          <div class="step-badge agent">3</div>
+          <div class="step-content">
+            <div class="step-title">Test &amp; Deploy Agent</div>
+            <div class="step-desc">Validate the agent in a staging environment against replayed telemetry, then publish to the production skill catalog.</div>
+            <div class="step-tools"><span class="tag wxo">WxO</span> <span class="tag ini">INI</span></div>
+          </div>
+        </div>
+        <div class="loop-divider">↓</div>
+
+        <div class="loop-step">
+          <div class="step-badge agent">4</div>
+          <div class="step-content">
+            <div class="step-title">Automate &amp; Track</div>
+            <div class="step-desc">Agent executes remediation. Results are logged back as resolved network state, closing the loop. Tickets auto-created for audit trail.</div>
+            <div class="step-tools"><span class="tag ini">INI</span> <span class="tag con">Concert</span> <span class="tag snow">ServiceNow</span></div>
+          </div>
+        </div>
+        <div class="loop-divider">↓ loops back to Step 1 · or retires if pattern resolves</div>
+
+      </div>
+    </div>
+
+    
+    <div class="bridge">
+      <div class="bridge-label">Shared Backbone</div>
+      <div class="bridge-flow">
+        <span class="fn ns1">NS1 Foundry</span><span class="arr">→</span>
+        <span class="fn ini">INI</span><span class="arr">⇄</span>
+        <span class="fn sev">SevOne</span><span class="arr">→</span>
+        <span class="fn gov">watsonx.gov</span><span class="arr">→</span>
+        <span class="fn wxo">WxO Agents</span><span class="arr">→</span>
+        <span class="fn con">Concert</span><span class="arr">/</span>
+        <span class="fn snow">ServiceNow</span><span class="arr">→</span>
+        <span class="fn ini">INI (closed loop)</span>
+      </div>
+    </div>
+
+  </div>
+
+
+  
+  <div class="section-label" style="margin-top:40px">Reconciling the Two Models</div>
+  <h2 style="margin-top:0">How Day 0/1/2 Maps onto "The Loop"</h2>
+
+  <div style="border:1px solid #e5e7eb;border-radius:6px;overflow:hidden">
+    <table style="width:100%;border-collapse:collapse;font-size:13px">
+      <thead>
+        <tr>
+          <th style="background:#f7f8fa;padding:9px 12px;border:1px solid #e5e7eb;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;color:#57606a;width:15%">Phase</th>
+          <th style="background:#f7f8fa;padding:9px 12px;border:1px solid #e5e7eb;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;color:#57606a;width:28%">Track A (Network Ops)</th>
+          <th style="background:#f7f8fa;padding:9px 12px;border:1px solid #e5e7eb;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;color:#57606a;width:28%">Track B (Agentic)</th>
+          <th style="background:#f7f8fa;padding:9px 12px;border:1px solid #e5e7eb;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;color:#57606a">Key Tools</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding:9px 12px;border:1px solid #e5e7eb;font-weight:700;background:#1f2328;color:#fff">Day 0</td>
+          <td style="padding:9px 12px;border:1px solid #e5e7eb">Design topology, DDI blueprints, traffic policy</td>
+          <td style="padding:9px 12px;border:1px solid #e5e7eb">Identify automation candidates; design agent skills &amp; governance rules</td>
+          <td style="padding:9px 12px;border:1px solid #e5e7eb"><span class="tag ns1">NS1 Foundry</span> <span class="tag ini">INI</span> <span class="tag wxo">WxO</span> <span class="tag gov">watsonx.gov</span></td>
+        </tr>
+        <tr>
+          <td style="padding:9px 12px;border:1px solid #e5e7eb;font-weight:700;background:#3b82d4;color:#fff">Day 1</td>
+          <td style="padding:9px 12px;border:1px solid #e5e7eb">Provision &amp; validate live network; connect SevOne collectors</td>
+          <td style="padding:9px 12px;border:1px solid #e5e7eb">Deploy agent catalog to production; wire triggers to telemetry streams</td>
+          <td style="padding:9px 12px;border:1px solid #e5e7eb"><span class="tag ini">INI</span> <span class="tag sev">SevOne</span> <span class="tag wxo">WxO</span></td>
+        </tr>
+        <tr>
+          <td style="padding:9px 12px;border:1px solid #e5e7eb;font-weight:700;background:#7c5cd8;color:#fff">Day 2</td>
+          <td style="padding:9px 12px;border:1px solid #e5e7eb">Monitor, detect anomalies, refine policies — loops back to Track A Step 1</td>
+          <td style="padding:9px 12px;border:1px solid #e5e7eb">Detect persistent aberration → triggers new Track B mini-cycle (agent design → deploy → automate)</td>
+          <td style="padding:9px 12px;border:1px solid #e5e7eb"><span class="tag ini">INI</span> <span class="tag sev">SevOne</span> <span class="tag wxo">WxO</span> <span class="tag con">Concert</span> <span class="tag snow">ServiceNow</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="margin-top:12px" class="callout">
+    <strong>Key insight:</strong> Day 2 is not a terminal state — it is the <em>launchpad for new cycles</em>. Every persistent aberration in Track A Day 2 is effectively a new Day 0 for Track B. The two models are complementary, not competing.
+  </div>
+
+
+  
+  <div class="section-label" style="margin-top:40px">Data Flow</div>
+  <h2 style="margin-top:0">How Data Moves Across the Ecosystem</h2>
+
+  <div class="flow-section">
+    <div class="flow-row">
+      <div class="flow-row-label">Design intent → provisioning</div>
+      <div class="flow-nodes">
+        <span class="fn ns1">NS1 Foundry</span><span class="arr"> → </span>
+        <span class="fn ini">INI</span><span class="arr"> → </span>
+        <span class="fn sev">SevOne collectors</span><span class="arr"> → </span>
+        <span class="fn ini">INI (live state)</span>
+      </div>
+    </div>
+    <div style="border-top:1px solid #e5e7eb;margin:12px 0"></div>
+    <div class="flow-row">
+      <div class="flow-row-label">Telemetry → AI governance → agents</div>
+      <div class="flow-nodes">
+        <span class="fn sev">SevOne telemetry</span><span class="arr"> → </span>
+        <span class="fn ini">INI</span><span class="arr"> → </span>
+        <span class="fn gov">watsonx.gov</span><span class="arr"> → </span>
+        <span class="fn wxo">WxO Agents</span>
+      </div>
+    </div>
+    <div style="border-top:1px solid #e5e7eb;margin:12px 0"></div>
+    <div class="flow-row">
+      <div class="flow-row-label">Agent actions → ITSM → closed loop</div>
+      <div class="flow-nodes">
+        <span class="fn wxo">WxO Agents</span><span class="arr"> → </span>
+        <span class="fn con">Concert</span><span class="arr"> / </span>
+        <span class="fn snow">ServiceNow</span><span class="arr"> → </span>
+        <span class="fn ini">INI (resolved state)</span>
+      </div>
+    </div>
+    <div style="border-top:1px solid #e5e7eb;margin:12px 0"></div>
+    <div class="flow-row" style="margin-bottom:0">
+      <div class="flow-row-label">Governance audit trail</div>
+      <div class="flow-nodes">
+        <span class="fn wxo">WxO decision</span><span class="arr"> → </span>
+        <span class="fn gov">watsonx.gov log</span><span class="arr"> → </span>
+        <span class="fn ini">INI audit</span><span class="arr"> → </span>
+        <span class="fn con">Concert risk dashboard</span>
+      </div>
+    </div>
+  </div>
+
+
+  
+  <div class="section-label" style="margin-top:40px">Open Questions</div>
+  <h2 style="margin-top:0">Unresolved Design Decisions</h2>
+
+  <div class="q-grid">
+    <div class="q-card">
+      <div class="q-theme">System of Record</div>
+      Is INI or NS1 Foundry the authoritative source for network state? Do they sync, federate, or one supersedes the other at Day 1?
+    </div>
+    <div class="q-card">
+      <div class="q-theme">Agent Trigger</div>
+      Do WxO agents get triggered directly by SevOne alerts, or does INI normalize and route all triggers first? What is the minimum aberration threshold?
+    </div>
+    <div class="q-card">
+      <div class="q-theme">watsonx.gov Placement</div>
+      Does watsonx.gov govern agent decisions <em>before</em> execution (pre-flight policy check) or <em>after</em> (audit &amp; drift detection)? Or both?
+    </div>
+    <div class="q-card">
+      <div class="q-theme">ITSM Target</div>
+      Is Concert or ServiceNow the primary remediation ticket destination — or does it depend on incident type/severity? How do they avoid duplication?
+    </div>
+    <div class="q-card">
+      <div class="q-theme">Loop Entry for Track B</div>
+      When a Track B agent is retired (pattern resolved), is the agent deactivated, archived, or does it persist in standby? Who governs agent lifecycle?
+    </div>
+    <div class="q-card">
+      <div class="q-theme">Data Schema Alignment</div>
+      Is there a shared data schema (IPFIX, OpenTelemetry, OCSF) that both INI and NS1 Foundry emit so watsonx.gov can ingest without custom ETL?
+    </div>
+    <div class="q-card">
+      <div class="q-theme">NS1 Foundry Delta</div>
+      What capabilities does NS1 Foundry have that INI does not (advanced traffic steering, Anycast filter chains, etc.)? Does INI expose these in its ops view?
+    </div>
+    <div class="q-card">
+      <div class="q-theme">Track B Day 0</div>
+      When Track A Day 2 triggers a new Track B cycle, is the agent design step done by a human or can it be partially automated based on the aberration pattern?
+    </div>
+  </div>
+
+
+  
+  <div class="section-label" style="margin-top:40px">Integration Opportunities</div>
+  <h2 style="margin-top:0">Where the Value Is Created</h2>
+
+  <div class="opp-grid">
+    <div class="opp-card">
+      <div class="opp-head a">Design → Deploy Bridge</div>
+      <div class="opp-body">NS1 Foundry Day 0 blueprints push directly into INI as provisioning instructions — eliminating manual re-entry and drift between design intent and live state.</div>
+    </div>
+    <div class="opp-card">
+      <div class="opp-head b">Aberration → Agent Trigger</div>
+      <div class="opp-body">SevOne/INI telemetry crossing a defined persistence threshold automatically initiates a Track B cycle, moving from human alerting to autonomous remediation design.</div>
+    </div>
+    <div class="opp-card">
+      <div class="opp-head c">Governed AI Operations</div>
+      <div class="opp-body">watsonx.gov provides policy enforcement and auditability for every WxO agent decision acting on network infrastructure — critical for regulated and enterprise environments.</div>
+    </div>
+    <div class="opp-card">
+      <div class="opp-head d">Closed-Loop Remediation</div>
+      <div class="opp-body">Concert/ServiceNow ticket outcomes feed back into INI as resolved network state, creating a verifiable closed loop between detection, agent action, and ground truth.</div>
+    </div>
+    <div class="opp-card">
+      <div class="opp-head e">Unified Observability Plane</div>
+      <div class="opp-body">Position INI + SevOne as the shared observability layer consumed by both NS1 Foundry operational views and WxO agent decision logic — one source of truth for all automation.</div>
+    </div>
+    <div class="opp-card">
+      <div class="opp-head f">Lifecycle-Spanning Co-sell</div>
+      <div class="opp-body">NS1 Foundry's strength in Day 0 network design + INI's strength in Day 1/2 operations + WxO's agentic automation = a complete lifecycle story no single product covers alone.</div>
+    </div>
+  </div>
+
+
+  <div class="footer">Made with IBM Bob</div>
+</div>
+</body>
+</html>
