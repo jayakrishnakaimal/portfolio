@@ -1,7 +1,7 @@
 /* Password gate for casestudy.html. Client-side only: a deterrent, not real security.
    Only a salted PBKDF2 hash is stored. Change it with set-casestudy-password.py */
 (function () {
-  var SALT='6352c2af029b09fdb4a15d46e64f8a33', HASH='04762aa99afd976ac0b10bd5a77f53ad347909d840e21b354c66ebd2c72ad793', ITER=150000, KEY='jk-cs-unlock';
+  var SALT='0e79aa86b2e61054e8cff5ed64da661e', HASH='60d6ba6d56368691e2d61643805eaa845c5b88f20dddc812b0340b1d6da0d525', ITER=150000, KEY='jk-cs-unlock';
   var d = document, root = d.documentElement;
   if (!HASH) return;                       // no password set -> page stays open
 
