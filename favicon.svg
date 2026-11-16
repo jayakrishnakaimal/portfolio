@@ -1,0 +1,23 @@
+<svg viewBox="0 0 36 36" width="36" height="36" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="a" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#19f0ff"/>
+      <stop offset="50%" stop-color="#9d6bff"/>
+      <stop offset="100%" stop-color="#ff4fb8"/>
+    </linearGradient>
+    <linearGradient id="b" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ff4fb8"/>
+      <stop offset="100%" stop-color="#19f0ff"/>
+    </linearGradient>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1b1233"/>
+      <stop offset="100%" stop-color="#05050d"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="36" height="36" rx="9" fill="url(#bg)"/>
+  <rect x="1.2" y="1.2" width="33.6" height="33.6" rx="8" stroke="url(#a)" stroke-width="1.2" stroke-opacity=".8"/>
+  <path d="M15 8.5V20.5C15 24 12.5 26.5 9 26.5C6.5 26.5 5 25 5 23" stroke="url(#a)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M15 17L26 8.5" stroke="url(#a)" stroke-width="3.2" stroke-linecap="round"/>
+  <path d="M15 17L26.5 26.5" stroke="url(#b)" stroke-width="3.2" stroke-linecap="round"/>
+  <circle cx="26" cy="8.5" r="1.8" fill="#19f0ff"/>
+</svg>
