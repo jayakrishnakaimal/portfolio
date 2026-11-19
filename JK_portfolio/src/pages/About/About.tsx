@@ -9,16 +9,18 @@ const About: React.FC = () => {
         <div className="about__content">
           <div className="about__text">
             <p>
-              Hello! I'm Jayakrishna Kaimal, a passionate Full Stack Developer
-              who loves turning ideas into beautiful and functional web applications.
+              I'm Jayakrishna Kaimal, a Design Manager with 10+ years across three
+              companies and 40+ designers led. I work at the intersection of user
+              empathy, business outcomes, and engineering feasibility.
             </p>
             <p>
-              I specialize in building modern web experiences using React, TypeScript,
-              and Node.js. I care deeply about clean code, performance, and accessibility.
+              I build reusable thinking, not one-off solutions: systems before
+              screens, and clarity over cleverness. Every decision I make should
+              reduce friction for users or for the teams building the product.
             </p>
             <p>
-              When I'm not coding, you'll find me exploring new technologies, contributing
-              to open source, or enjoying a good book.
+              I influence through evidence. I equip teams with research, data, and
+              narrative so design earns a seat at every table.
             </p>
             <div className="about__details">
               <div className="about__detail-item">

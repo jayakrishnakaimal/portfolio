@@ -3,21 +3,20 @@ import './Skills.css';
 import { Skill } from '../../types';
 
 const skills: Skill[] = [
-  { name: 'React', level: 'Expert', category: 'Frontend' },
-  { name: 'TypeScript', level: 'Advanced', category: 'Frontend' },
-  { name: 'JavaScript', level: 'Expert', category: 'Frontend' },
-  { name: 'HTML & CSS', level: 'Expert', category: 'Frontend' },
-  { name: 'Node.js', level: 'Advanced', category: 'Backend' },
-  { name: 'Express', level: 'Intermediate', category: 'Backend' },
-  { name: 'PostgreSQL', level: 'Intermediate', category: 'Backend' },
-  { name: 'MongoDB', level: 'Intermediate', category: 'Backend' },
-  { name: 'Git', level: 'Advanced', category: 'Tools' },
-  { name: 'Docker', level: 'Intermediate', category: 'DevOps' },
-  { name: 'AWS', level: 'Intermediate', category: 'DevOps' },
-  { name: 'REST APIs', level: 'Expert', category: 'Backend' },
+  { name: 'Problem framing', level: 'Expert', category: 'Strategy' },
+  { name: 'Research & discovery', level: 'Advanced', category: 'Strategy' },
+  { name: 'Metrics & ROI storytelling', level: 'Advanced', category: 'Strategy' },
+  { name: 'Design systems', level: 'Expert', category: 'Systems' },
+  { name: 'Design tokens', level: 'Advanced', category: 'Systems' },
+  { name: 'Governance & adoption', level: 'Expert', category: 'Systems' },
+  { name: 'Team building & mentorship', level: 'Expert', category: 'Leadership' },
+  { name: 'Cross-functional influence', level: 'Expert', category: 'Leadership' },
+  { name: 'DesignOps', level: 'Advanced', category: 'Leadership' },
+  { name: 'Prototyping & usability testing', level: 'Advanced', category: 'Craft' },
+  { name: 'Accessibility', level: 'Advanced', category: 'Craft' },
 ];
 
-const categories = ['Frontend', 'Backend', 'DevOps', 'Tools'] as const;
+const categories = ['Strategy', 'Systems', 'Leadership', 'Craft'] as const;
 
 const Skills: React.FC = () => {
   return (

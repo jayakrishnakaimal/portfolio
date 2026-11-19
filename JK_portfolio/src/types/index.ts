@@ -1,19 +1,33 @@
 // Shared TypeScript types for the portfolio
 
-export interface Project {
+/** One design decision, traced from the evidence behind it to the effect it had. */
+export interface Decision {
+  evidence: string;
+  decision: string;
+  effect: string;
+}
+
+export interface Outcome {
+  value: string;
+  label: string;
+}
+
+export interface CaseStudy {
   id: number;
   title: string;
-  description: string;
-  techStack: string[];
-  liveUrl?: string;
-  repoUrl?: string;
-  imageUrl?: string;
+  problem: string;
+  /** How the parts of the system (teams, tools, product) connect. */
+  systemView: string;
+  role: string;
+  decisions: Decision[];
+  outcomes: Outcome[];
+  lesson?: string;
 }
 
 export interface Skill {
   name: string;
   level: 'Beginner' | 'Intermediate' | 'Advanced' | 'Expert';
-  category: 'Frontend' | 'Backend' | 'DevOps' | 'Tools' | 'Other';
+  category: 'Strategy' | 'Systems' | 'Leadership' | 'Craft';
 }
 
 export interface NavLink {

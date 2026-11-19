@@ -7,12 +7,12 @@ const Hero: React.FC = () => {
       <div className="hero__content">
         <p className="hero__greeting">Hi, I'm</p>
         <h1 className="hero__name">Jayakrishna Kaimal</h1>
-        <h2 className="hero__role">Full Stack Developer</h2>
+        <h2 className="hero__role">Design Manager</h2>
         <p className="hero__tagline">
-          I build clean, fast, and accessible web experiences.
+          I connect design decisions to product outcomes, and build systems that scale across teams.
         </p>
         <div className="hero__cta">
-          <a href="#projects" className="btn btn--primary">View My Work</a>
+          <a href="#projects" className="btn btn--primary">View Case Studies</a>
           <a href="#contact" className="btn btn--outline">Get In Touch</a>
         </div>
       </div>

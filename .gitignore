@@ -16,3 +16,6 @@ ini[0-9].png
 
 # someone else's resume - not part of this portfolio
 princy_resume/
+
+# local only - not for GitHub
+bob/
